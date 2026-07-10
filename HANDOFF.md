@@ -158,3 +158,6 @@ Remove `.codex-test` after verification; do not commit it.
   - English: Added a maximum visible-width validator and a rule that insufficient generated poses require complete-row regeneration; grouping or duplicating figures to fill frame counts is prohibited.
   - 中文：最终图集通过 v2、透明度、基线、跨行高度和单格宽度校验，并已重新安装且删除备份目录。
   - English: The final atlas passes v2, transparency, baseline, cross-row height, and per-cell width validation; it was reinstalled and the backup directory was removed.
+- 2026-07-11 — 本地插件升级 / Local plugin upgrade
+  - 中文：真实用户 Codex 已升级并启用 codex-pet-forge 0.1.7。
+  - English: The real user Codex installation was upgraded to and enabled codex-pet-forge 0.1.7.
