@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.5` (published GPT娘 identity-locked rebuild)
+- Current release: `v0.1.7` (GPT娘 single-character right-drag repair)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -150,3 +150,11 @@ Remove `.codex-test` after verification; do not commit it.
   - Change: regenerated the complete right-drag row as a three-quarter pose to match canonical practical scale; validated and reinstalled, deleting the backup to prevent duplicates. GitHub sample package updated.
   - Validation: v2 validator passes with equal 194px median visible height across rows 0-10.
 
+
+- 2026-07-11 — GPT娘向右拖拽单角色修复 / GPT娘 single-character right-drag repair
+  - 中文：确认 v0.1.6 源图只生成 7 个相连人物，自动分割把多个角色塞入单帧；废弃该行，改为将已批准的向左整行整体镜像为向右整行，确保每格一个角色且体型完全一致。
+  - English: Confirmed that the v0.1.6 source returned only seven touching figures and automatic segmentation packed multiple characters into cells; discarded that row and mirrored the approved complete left-drag row to produce the right-drag row, guaranteeing one character per cell and identical proportions.
+  - 中文：新增单格最大可见宽度校验，并规定生成数量不足时必须整行重生，禁止通过分组或复制补足帧数。
+  - English: Added a maximum visible-width validator and a rule that insufficient generated poses require complete-row regeneration; grouping or duplicating figures to fill frame counts is prohibited.
+  - 中文：最终图集通过 v2、透明度、基线、跨行高度和单格宽度校验，并已重新安装且删除备份目录。
+  - English: The final atlas passes v2, transparency, baseline, cross-row height, and per-cell width validation; it was reinstalled and the backup directory was removed.

@@ -82,7 +82,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
   <run>/spritesheet.webp --output <run>/contact-sheet.png
 ```
 
-8. Inspect the contact sheet. Require recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise. The validator also rejects excessive per-row visible-baseline drift, which commonly catches detached shoes, missing feet, and sliced-body registration. If it fails, regenerate and replace the complete row; never move or paste one foot/limb cell manually. A fast-draft atlas is not production-ready until it has passed the identity-locked review.
+8. Inspect the contact sheet. Require exactly one complete character per used cell, recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise. The validator rejects excessive visible width, baseline drift, and identity-height drift. If a generator returns fewer poses than requested, reject/regenerate the complete row; never group, duplicate, or auto-segment source figures merely to reach the required frame count. A fast-draft atlas is not production-ready until it has passed the identity-locked review.
 9. Write and install the package:
 
 ```powershell

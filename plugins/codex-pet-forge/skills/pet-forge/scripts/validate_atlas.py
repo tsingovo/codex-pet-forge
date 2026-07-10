@@ -149,6 +149,12 @@ def main() -> None:
         default=0.12,
         help="Maximum relative median visible-height drift of standard rows 1-8 versus idle.",
     )
+    parser.add_argument(
+        "--max-visible-width",
+        type=int,
+        default=180,
+        help="Maximum visible width per cell; catches multiple sprites packed into one frame.",
+    )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
@@ -244,6 +250,13 @@ def main() -> None:
                 # of accepting a structurally valid but visibly misregistered cell.
                 row_bottoms[row_index].append((column_index, bbox[3]))
                 row_heights[row_index].append(bbox[3] - bbox[1])
+                visible_width = bbox[2] - bbox[0]
+                if visible_width > args.max_visible_width:
+                    errors.append(
+                        f"{state} row {row_index} column {column_index} visible width is "
+                        f"{visible_width}px (limit {args.max_visible_width}px); this usually means "
+                        "multiple characters or neighboring-frame fragments were packed into one cell"
+                    )
             if used and chroma_leak_pixels > args.max_chroma_leak_pixels:
                 message = (
                     f"{state} row {row_index} column {column_index} has {chroma_leak_pixels} "
