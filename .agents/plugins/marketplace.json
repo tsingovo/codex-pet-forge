@@ -1,0 +1,20 @@
+{
+  "name": "codex-pet-forge",
+  "interface": {
+    "displayName": "Codex Pet Forge"
+  },
+  "plugins": [
+    {
+      "name": "codex-pet-forge",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-pet-forge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

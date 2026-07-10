@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pet Forge"
+  short_description: "Create Codex pets from character reference images"
+  default_prompt: "Create a Codex pet from my uploaded character image using the fast validated workflow."

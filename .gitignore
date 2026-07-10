@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+dist/
+runs/
+generated_images/
+*.before-*.webp
+.DS_Store

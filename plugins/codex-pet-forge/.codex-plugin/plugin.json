@@ -1,0 +1,18 @@
+{
+  "name": "codex-pet-forge",
+  "version": "0.1.0",
+  "description": "Create validated Codex v2 pets from uploaded character images.",
+  "author": {
+    "name": "Codex Pet Forge contributors"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Pet Forge",
+    "shortDescription": "Turn a character image into a Codex pet.",
+    "longDescription": "A fast reference-image workflow for generating, validating, repairing, previewing, and installing Codex v2 animated pets.",
+    "developerName": "Codex Pet Forge contributors",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Create a Codex pet from my uploaded character image using the fast validated workflow."
+  }
+}
