@@ -6,7 +6,7 @@ Every production pet has exactly one approved **master character**. Treat that m
 
 1. Generate one calm, front-facing, full-body canonical image from the user reference on a flat chroma-key background.
 2. Approve its face, head-to-body ratio, hair silhouette, outfit construction, palette, shoes, and practical scale.
-3. Attach that approved canonical image to **every** action-row and look-direction generation request. It is the primary identity input; the original user image is secondary provenance only.
+3. Generate an exact eight-view orthographic turnaround from the canonical image, then attach both approved internal identity assets to **every** action-row and look-direction generation request. The user still supplies only the original single reference image.
 4. Request pose-only changes. Do not ask the model to redesign, reinterpret, age/de-age, re-proportion, or restyle the character.
 5. After each row, run structural validation and inspect the row beside the canonical image. If head/body scale, face, hair, clothing, or shoe construction drifts, reject and regenerate the entire row.
 
@@ -27,3 +27,4 @@ character's apparent age or body type.
 - Every row must preserve the same baseline and pass the per-row baseline-drift check.
 - Direction rows may change apparent width for rotation, but must retain the master face, clothing, and scale.
 - Passing numeric checks is necessary but not sufficient: contact-sheet visual review remains the final identity gate.
+- Inspect motion GIFs as well as the contact sheet; a still sheet cannot prove natural phase timing, loop closure, or multi-frame expression development.

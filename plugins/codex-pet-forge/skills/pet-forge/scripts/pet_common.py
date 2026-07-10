@@ -36,7 +36,9 @@ def save_lossless(image: Image.Image, png_path: Path | None, webp_path: Path | N
         image.save(png_path, "PNG")
     if webp_path:
         webp_path.parent.mkdir(parents=True, exist_ok=True)
-        image.save(webp_path, "WEBP", lossless=True, method=6)
+        # `exact=True` preserves the deliberately cleared RGB=(0,0,0) under
+        # alpha=0; without it libwebp may synthesize hidden RGB during encoding.
+        image.save(webp_path, "WEBP", lossless=True, method=6, exact=True)
 
 
 def clear_unused_cells(image: Image.Image) -> None:

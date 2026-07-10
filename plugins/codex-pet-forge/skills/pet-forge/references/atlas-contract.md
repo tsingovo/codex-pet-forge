@@ -21,3 +21,10 @@
 | 10 | look B | 0-7 | 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 |
 
 `000` means up. `090` means screen-right. `180` means down. `270` means screen-left.
+
+## Playback invariants
+
+- Row 0 columns 0-5 are the automatic idle loop used when no other action state is active; column 6 is the neutral fallback, not a seventh idle phase.
+- Runtime frame counts and playback cadence are host-controlled. A pet cannot declare a custom FPS in `pet.json`.
+- Smoothness therefore requires every available runtime frame to be distinct, evenly phased, and loop-compatible; duplicating a pose lowers effective frame rate and is rejected.
+- Expressive rows 0 and 3-8 must develop the face across multiple frames, not reserve expression for one isolated frame.

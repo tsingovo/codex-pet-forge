@@ -8,11 +8,25 @@ Turn a character reference image into a validated Codex v2 animated pet.
 
 ## 生产级身份锁定 / Production identity lock
 
-正式宠物先生成并确认一张标准全身形象；后续每个动作行都必须以它为唯一角色依据，只允许改变姿势与表情。
-A production pet starts with one approved canonical full-body image; every action row must use it as the sole character model and may change only pose/expression.
+用户只需上传一张参考图；插件会先生成标准全身形象和八方向正交转台，再用这两张内部锚点逐行动作生成。
+The user uploads only one reference image; the plugin first derives a canonical full-body model and an eight-view orthographic turnaround, then generates each action row from those two internal anchors.
 
-这会固定头身比、脸型、发型、服装、鞋子、配色、线条、实际尺寸和脚底基线；快速整图生成仅用于草稿。
-This locks head/body ratio, face, hair, outfit, shoes, palette, line weight, practical scale, and baseline; fast full-atlas generation is draft-only.
+这会固定头身比、脸型、手臂/腿/手/鞋比例、发型体积、每层衣物与非对称装饰、配色、线条、实际尺寸和脚底基线，使不同动作接近同一个 3D 模型的不同姿势与方向。
+This locks head/body ratio, face, arm/leg/hand/shoe proportions, hair volumes, every garment layer and asymmetric ornament, palette, line weight, practical scale, and baseline so actions resemble one 3D model rendered in different poses and directions.
+
+快速整图生成仅用于草稿；正式成品必须逐行生成、逐行验证，生成数量不足时整行重做，禁止复制、拼人或局部换手换脚补帧。
+Fast full-atlas generation is draft-only; production pets use complete-row generation and validation, and a row with insufficient figures must be regenerated instead of duplicating/grouping figures or patching isolated hands/feet.
+
+## 动作、表情与待机 / Motion, expression, and idle
+
+Codex 主程序固定了每个状态的帧位与播放节奏，宠物清单不能自定义 FPS；流畅度来自用满全部帧、相邻帧均匀推进、禁止重复帧并保证末帧自然回到首帧。
+The Codex host fixes state frame slots and playback cadence, and pet manifests cannot declare custom FPS; smoothness comes from using every frame, even phase progression, no duplicates, and natural last-to-first loop closure.
+
+第 0 行会在没有其他状态时自动触发待机循环：呼吸、眨眼、轻微视线变化、回稳。第 6 行则是等待用户输入/批准，二者不会混用。
+Row 0 automatically plays as the idle loop when no other state is active: breathing, blink, tiny gaze change, and return. Row 6 is specifically waiting for user input/approval; the two are not interchangeable.
+
+所有有情绪的动作行都必须让表情在至少三帧中自然发展，不能只有一帧突然出现表情；动作必须包含起势、发展与回位，而不是随机摆手脚。
+Every expressive action row must develop the face naturally across at least three frames rather than showing expression in one isolated frame; motion needs anticipation, development, and return instead of random limb movement.
 
 ## 安装插件 / Install the plugin
 
@@ -35,17 +49,20 @@ Upload a character reference image, then ask Codex to use Pet Forge's identity-l
 示例提示词：`根据这张图创建宠物。先确认标准全身形象，再逐行动作生成；所有动作必须锁定同一头身比和服装。`
 Example prompt: `Create a pet from this image. Approve a canonical full-body character first, then generate actions row by row; lock the same proportions and outfit in every action.`
 
-验证器会检查图集尺寸、透明背景、空单元格、脚底基线和跨行动作的可见高度漂移；安装前仍必须检查联系表。
-The validator checks atlas geometry, transparency, empty cells, shoe baseline, and cross-row visible-height drift; the contact sheet still requires review before installation.
+验证器会检查图集尺寸、透明背景、空单元格、单格多人物、脚底基线、跨行高度、重复帧、动作跳变与多帧头部变化；联系表和 8 FPS 动作预览仍必须人工检查。
+The validator checks atlas geometry, transparency, empty cells, multi-character cells, baseline, cross-row height, duplicate frames, abrupt steps, and multi-frame head-region changes; the contact sheet and 8 FPS motion previews still require review.
+
+低 Token 通过把人物规则、逐帧时间线、提示词和 QA 报告保存在工作文件中实现；聊天只返回路径、失败门槛和最终状态，质量门槛不会因节省 Token 而缩短。
+Low token use comes from storing rig rules, per-frame timelines, prompts, and QA reports in working files; chat returns only paths, failed gates, and final status, while quality gates are never shortened to save tokens.
 
 ## GPT娘样例 / GPT娘 example
 
 仓库提供完整的 GPT娘 身份锁定样例，包括原始参考、标准形象、最终联系表和可直接安装包。
 The repository includes a complete identity-locked GPT娘 example with its source reference, canonical character, final contact sheet, and direct install package.
 
-| 参考图 / Reference | 标准形象 / Canonical model | 最终图集 / Final atlas |
-| --- | --- | --- |
-| ![参考图](examples/gpt-niang/reference.png) | ![标准形象](examples/gpt-niang/canonical.png) | ![最终图集](examples/gpt-niang/contact-sheet.png) |
+| 参考图 / Reference | 标准形象 / Canonical model | 八方向转台 / Turnaround | 最终图集 / Final atlas |
+| --- | --- | --- | --- |
+| ![参考图](examples/gpt-niang/reference.png) | ![标准形象](examples/gpt-niang/canonical.png) | ![八方向转台](examples/gpt-niang/turnaround.png) | ![最终图集](examples/gpt-niang/contact-sheet.png) |
 
 可从 [gpt-niang-pet.zip](examples/gpt-niang/gpt-niang-pet.zip) 下载并解压，然后将 `gpt-niang` 文件夹复制到 `$HOME/.codex/pets/gpt-niang`。
 Download and extract [gpt-niang-pet.zip](examples/gpt-niang/gpt-niang-pet.zip), then copy the `gpt-niang` folder to `$HOME/.codex/pets/gpt-niang`.

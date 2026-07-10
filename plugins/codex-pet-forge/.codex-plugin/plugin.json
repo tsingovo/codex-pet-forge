@@ -1,19 +1,19 @@
 {
   "name": "codex-pet-forge",
-  "version": "0.1.7",
-  "description": "Create validated Codex v2 pets from uploaded character images.",
+  "version": "0.1.8",
+  "description": "Create identity-locked Codex v2 pets from one character reference image.",
   "author": {
     "name": "HASEE"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Codex Pet Forge",
-    "shortDescription": "Turn a character image into a Codex pet.",
-    "longDescription": "A fast reference-image workflow for generating, validating, repairing, previewing, and installing Codex v2 animated pets.",
+    "shortDescription": "Turn one character image into a coherent Codex pet.",
+    "longDescription": "A quality-first, token-light workflow that derives one canonical rig and eight-view turnaround, generates meaningful full action rows, validates identity and motion continuity, previews loops, and installs Codex v2 pets.",
     "developerName": "HASEE",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": "Create a Codex pet from my uploaded character image using the fast validated workflow."
+    "defaultPrompt": "Create a production Codex pet from my single uploaded reference using the identity-locked canonical-rig workflow."
   }
 }
 

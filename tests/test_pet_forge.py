@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -26,10 +27,13 @@ class PetForgeTests(unittest.TestCase):
         cell_w, cell_h = 1024 / 8, 1536 / 11
         for row, used in enumerate(USED_COUNTS):
             for col in range(used):
-                cx = int((col + 0.5) * cell_w)
+                phase = 2 * math.pi * col / used
+                cx = int((col + 0.5) * cell_w + 5 * math.sin(phase))
                 y0 = int(row * cell_h + 15)
                 y1 = int((row + 1) * cell_h - 15)
-                draw.ellipse((cx - 24, y0, cx + 24, y1), fill=(20 + row * 8, 80, 160))
+                color_shift = round(10 * math.sin(phase))
+                second_shift = round(10 * math.cos(phase))
+                draw.ellipse((cx - 24, y0, cx + 24, y1), fill=(20 + row * 8, 90 + color_shift, 160 + second_shift))
         image.save(path)
 
     def test_prepare_normalize_manifest_and_install_dry_run(self) -> None:
@@ -74,6 +78,22 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertTrue(json.loads((run / "validation.json").read_text(encoding="utf-8"))["ok"])
 
+            rows_dir = run / "rows"
+            rows_dir.mkdir()
+            with Image.open(run / "spritesheet.png") as opened:
+                atlas_png = opened.convert("RGBA")
+            for row, count in enumerate(USED_COUNTS):
+                atlas_png.crop((0, row * CELL_H, count * CELL_W, (row + 1) * CELL_H)).save(rows_dir / f"row-{row:02d}.png")
+            self.run_script(
+                "assemble_rows.py", "--rows-dir", str(rows_dir),
+                "--output", str(run / "reassembled.webp"), "--png-output", str(run / "reassembled.png"),
+            )
+            self.run_script(
+                "validate_atlas.py", str(run / "reassembled.webp"), "--require-v2",
+                "--chroma-key", "#FF00FF", "--json-out", str(run / "reassembled-validation.json"),
+            )
+            self.assertTrue(json.loads((run / "reassembled-validation.json").read_text(encoding="utf-8"))["ok"])
+
             self.run_script("write_pet_manifest.py", "--pet-id", "momo", "--display-name", "Momo", "--description", "Test pet", "--output", str(run / "pet.json"))
             manifest = json.loads((run / "pet.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["spriteVersionNumber"], 2)
@@ -85,6 +105,52 @@ class PetForgeTests(unittest.TestCase):
         self.assertIn("Pointer enter/hover selects", text)
         self.assertIn("horizontal movement only", text)
         self.assertIn("does not select an animation state", text)
+
+    def test_identity_locked_prompt_pack_uses_one_reference_and_idle_timeline(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            reference = root / "single-reference.png"
+            Image.new("RGB", (300, 400), "white").save(reference)
+            run = root / "run"
+            self.run_script(
+                "prepare_identity_locked_run.py",
+                "--reference", str(reference),
+                "--pet-name", "Momo",
+                "--output-dir", str(run),
+            )
+            workflow = json.loads((run / "pet-workflow.json").read_text(encoding="utf-8"))
+            self.assertTrue(workflow["oneReferenceOnly"])
+            self.assertEqual(workflow["userInputs"], ["reference.png"])
+            self.assertEqual(len(workflow["jobs"]), 11)
+            self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
+            self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
+            with Image.open(run / "guides" / "row-00.png") as guide:
+                self.assertEqual(guide.size, (7 * CELL_W, CELL_H))
+            idle = (run / "prompts" / "row-00-idle.md").read_text(encoding="utf-8")
+            self.assertIn("idle loop", idle)
+            self.assertIn("no duplicate frames", idle)
+
+    def test_validator_rejects_duplicate_animation_frame(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            duplicate = atlas.crop((0, CELL_H, CELL_W, 2 * CELL_H))
+            atlas.paste((0, 0, 0, 0), (CELL_W, CELL_H, 2 * CELL_W, 2 * CELL_H))
+            atlas.alpha_composite(duplicate, (CELL_W, CELL_H))
+            atlas.save(root / "duplicate.png")
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "duplicate.png"), "--require-v2", "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("duplicate/near-duplicate", result.stdout)
 
 
 if __name__ == "__main__":

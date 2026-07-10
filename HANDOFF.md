@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.7` (GPT娘 single-character right-drag repair)
+- Current release: `v0.1.8` (one-reference canonical-rig and motion QA publication prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -16,16 +16,18 @@
 ## Current architecture
 
 ```text
-reference image
-  -> prepare_fast_pet.py (reference copy, layout guide, compact generation prompt)
-  -> one image-generation job (fast mode)
-  -> normalize_generated_atlas.py
-  -> despill_chroma_edges.py
-  -> validate_atlas.py + make_contact_sheet.py
-  -> write_pet_manifest.py + install_pet.py
+one user reference
+  -> prepare_identity_locked_run.py (file-based prompt pack + exact strip guides)
+  -> canonical.png (immutable full-body rig)
+  -> turnaround.png (eight orthographic identity anchors)
+  -> 11 exact complete-row jobs (meaningful pose + multi-frame expression timelines)
+  -> validate_row_strip.py for every row
+  -> assemble_rows.py -> despill_chroma_edges.py -> validate_atlas.py
+  -> make_contact_sheet.py + make_motion_previews.py
+  -> write_pet_manifest.py + install_pet.py --replace (no backup when requested)
 ```
 
-If the complete atlas fails, use `replace_atlas_row.py` to repair only one horizontal action row.
+Fast one-atlas generation remains draft-only. Production repair regenerates only the complete failed row; isolated body-part repair and missing-frame duplication/grouping are forbidden.
 
 ## Non-negotiable runtime facts
 
@@ -44,6 +46,10 @@ Source: `plugins/codex-pet-forge/skills/pet-forge/references/trigger-semantics.m
 - Skill: `plugins/codex-pet-forge/skills/pet-forge/SKILL.md`
 - Fast generator prompt: `plugins/codex-pet-forge/skills/pet-forge/scripts/prepare_fast_pet.py`
 - Contract: `plugins/codex-pet-forge/skills/pet-forge/references/atlas-contract.md`
+- Rig contract: `plugins/codex-pet-forge/skills/pet-forge/references/character-rig-contract.md`
+- One-reference prompt pack: `plugins/codex-pet-forge/skills/pet-forge/scripts/prepare_identity_locked_run.py`
+- Row/atlas motion validators: `validate_row_strip.py`, `validate_atlas.py`
+- Motion QA renderer: `make_motion_previews.py`
 - Tests: `tests/test_pet_forge.py`
 
 ## Verification commands
@@ -68,7 +74,7 @@ Remove `.codex-test` after verification; do not commit it.
 
 ## Release state and upload
 
-- Release archives: sibling files through `F:\桌面\小学期\codex-pet-forge-v0.1.3.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.4.zip` from the final v0.1.4 commit before upload.
+- Release archives: sibling files through `F:\桌面\小学期\codex-pet-forge-v0.1.7.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.8.zip` from the final v0.1.8 commit before upload.
 - GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
 - Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
 - Published baseline: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and source ZIP asset). Main branch is the source of truth.
@@ -161,3 +167,15 @@ Remove `.codex-test` after verification; do not commit it.
 - 2026-07-11 — 本地插件升级 / Local plugin upgrade
   - 中文：真实用户 Codex 已升级并启用 codex-pet-forge 0.1.7。
   - English: The real user Codex installation was upgraded to and enabled codex-pet-forge 0.1.7.
+
+- 2026-07-11 — 单参考图人物骨架与动作质量升级 / One-reference rig and motion-quality upgrade
+  - 中文：产品入口保持只需一张用户参考图；`prepare_identity_locked_run.py` 现在生成标准人物、八方向正交转台、11 条逐行动作提示、精确帧位布局和逐帧动作/表情时间线。标准形象锁定头身比、脸型、手脚与四肢比例、发型体积、每层衣物及非对称装饰。
+  - English: The product still accepts one user reference only; `prepare_identity_locked_run.py` now emits canonical-model, eight-view turnaround, eleven complete-row prompts, exact slot guides, and per-frame motion/expression timelines. The canonical rig locks head/body ratio, face, limb/hand/shoe proportions, hair volumes, garment layers, and asymmetric ornaments.
+  - 中文：新增 `character-rig-contract.md`、`validate_row_strip.py`、`assemble_rows.py` 与 `make_motion_previews.py`；图集验证器新增重复帧、动作突跳和多帧头部变化检查。Codex 播放节奏由主程序固定，因此产品通过用满帧位、均匀相位和无重复帧提高有效流畅度，不伪造不存在的 FPS 清单字段。
+  - English: Added `character-rig-contract.md`, `validate_row_strip.py`, `assemble_rows.py`, and `make_motion_previews.py`; atlas validation now checks duplicate frames, abrupt motion steps, and multi-frame head-region changes. Codex playback cadence is host-controlled, so effective smoothness comes from full frame use, even phases, and no duplicates rather than an unsupported manifest FPS field.
+  - 中文：明确第 0 行会在无其他状态时自动触发呼吸—眨眼—视线—回稳待机循环；第 6 行仍是等待用户输入。所有情绪动作必须在至少三帧中发展表情，动作必须有起势、发展和回位。
+  - English: Clarified that row 0 automatically triggers the breathing-blink-gaze-return idle loop while no other state is active; row 6 remains user-input waiting. Every expressive action develops across at least three frames and has anticipation, development, and return.
+  - 中文：现有 GPT娘 的两条方向行原先各有一个复制帧，已分别用标准形象、旧方向参考和精确 8 格布局重生；新方向行每格唯一、194px 统一高度、无重复帧，完整 v2 验证通过并以无备份方式覆盖安装。本地只保留 `gpt-niang` 一个目录。
+  - English: The existing GPT娘 direction rows each contained one duplicated frame; both were regenerated using the canonical model, prior direction reference, and exact eight-slot guides. The new direction cells are unique, share a 194px height, pass full v2 validation, and were installed in-place without backup; only the `gpt-niang` directory remains locally.
+  - 中文：GitHub 样例新增八方向转台与 8 FPS 待机/悬停/思考 GIF；所有新增 README 英文说明继续遵守中文在前、英文在后的规则。
+  - English: The GitHub sample now includes the eight-view turnaround and 8 FPS idle/hover/thinking GIFs; all new README explanations continue to place Chinese before the corresponding English.

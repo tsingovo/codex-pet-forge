@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 from statistics import median
 
-from PIL import Image, ImageFilter
+from PIL import Image, ImageChops, ImageFilter
 
 COLUMNS = 8
 ROWS = 9
@@ -124,6 +124,13 @@ def alpha_bbox(image: Image.Image) -> tuple[int, int, int, int] | None:
     return image.getchannel("A").getbbox()
 
 
+def mean_frame_difference(first: Image.Image, second: Image.Image) -> float:
+    """Return normalized mean absolute RGBA difference in the range 0..1."""
+    diff = ImageChops.difference(first.convert("RGBA"), second.convert("RGBA"))
+    data = diff.tobytes()
+    return sum(data) / (len(data) * 255) if data else 0.0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
@@ -155,6 +162,24 @@ def main() -> None:
         default=180,
         help="Maximum visible width per cell; catches multiple sprites packed into one frame.",
     )
+    parser.add_argument(
+        "--min-frame-difference",
+        type=float,
+        default=0.002,
+        help="Minimum normalized difference between adjacent frames; rejects duplicate animation frames.",
+    )
+    parser.add_argument(
+        "--min-expressive-transitions",
+        type=int,
+        default=2,
+        help="Minimum changed head-region transitions in expressive rows.",
+    )
+    parser.add_argument(
+        "--max-step-outlier-ratio",
+        type=float,
+        default=3.0,
+        help="Maximum action-frame step difference relative to the row median; catches abrupt jumps.",
+    )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
@@ -169,6 +194,7 @@ def main() -> None:
     near_opaque_used_cells: dict[str, list[int]] = defaultdict(list)
     row_bottoms: dict[int, list[tuple[int, int]]] = defaultdict(list)
     row_heights: dict[int, list[int]] = defaultdict(list)
+    row_animation_cells: dict[int, list[Image.Image]] = defaultdict(list)
     cells: list[dict[str, object]] = []
 
     try:
@@ -240,6 +266,8 @@ def main() -> None:
             )
             cell_info["chroma_fringe_pixels"] = chroma_fringe_pixels
             cells.append(cell_info)
+            if column_index < frame_count:
+                row_animation_cells[row_index].append(cell)
             if used and nontransparent < args.min_used_pixels:
                 errors.append(
                     f"{state} row {row_index} column {column_index} is empty or too sparse ({nontransparent} pixels)"
@@ -330,6 +358,51 @@ def main() -> None:
                     "regenerate this complete row using the approved canonical character image"
                 )
 
+    motion_metrics: dict[str, object] = {}
+    expressive_rows = {0, 3, 4, 5, 6, 7, 8}
+    for row_index, frames in row_animation_cells.items():
+        if len(frames) < 2:
+            continue
+        state, _ = ROW_BY_INDEX[row_index]
+        differences = [
+            mean_frame_difference(frames[index], frames[(index + 1) % len(frames)])
+            for index in range(len(frames))
+        ]
+        duplicates = [index for index, value in enumerate(differences) if value < args.min_frame_difference]
+        if duplicates:
+            errors.append(
+                f"{state} row {row_index} has duplicate/near-duplicate transitions after columns "
+                f"{', '.join(map(str, duplicates))} (minimum {args.min_frame_difference:.4f}); "
+                "use every runtime frame with a distinct meaningful pose/expression"
+            )
+        row_median = median(differences)
+        if row_index <= 8 and row_median > 0:
+            outliers = [index for index, value in enumerate(differences) if value > row_median * args.max_step_outlier_ratio]
+            if outliers:
+                errors.append(
+                    f"{state} row {row_index} has abrupt motion transitions after columns "
+                    f"{', '.join(map(str, outliers))}; regenerate evenly phased complete-row motion"
+                )
+        head_differences: list[float] = []
+        if row_index in expressive_rows:
+            heads = [frame.crop((0, 0, CELL_WIDTH, 120)) for frame in frames]
+            head_differences = [
+                mean_frame_difference(heads[index], heads[(index + 1) % len(heads)])
+                for index in range(len(heads))
+            ]
+            expressive_transitions = sum(value >= args.min_frame_difference for value in head_differences)
+            if expressive_transitions < args.min_expressive_transitions:
+                errors.append(
+                    f"{state} row {row_index} changes the head/expression region in only "
+                    f"{expressive_transitions} transitions (minimum {args.min_expressive_transitions}); "
+                    "expression must evolve naturally across multiple frames"
+                )
+        motion_metrics[str(row_index)] = {
+            "state": state,
+            "frame_differences": [round(value, 6) for value in differences],
+            "head_differences": [round(value, 6) for value in head_differences],
+        }
+
     alpha_count = alpha_nonzero_count(image)
     if alpha_count == ATLAS_WIDTH * ATLAS_HEIGHT:
         message = "atlas is fully opaque; custom pets require a transparent sprite background"
@@ -356,6 +429,7 @@ def main() -> None:
         "height": image.height,
         "transparent_rgb_residue_pixels": transparent_rgb_residue,
         "identity_height_medians": identity_height_medians,
+        "motion_metrics": motion_metrics,
         "errors": errors,
         "warnings": warnings,
         "cells": cells,

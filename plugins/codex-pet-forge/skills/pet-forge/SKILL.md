@@ -1,11 +1,11 @@
 ---
 name: pet-forge
-description: Create, validate, repair, preview, and install Codex v2 pets from user-supplied character reference images. Use when a user asks to turn an image, drawing, avatar, anime character, mascot, or original character into a Codex pet, or asks to package or repair a custom 1536x2288 pet atlas. Defaults to a one-image fast atlas workflow and falls back to one-row repair only when validation fails.
+description: Create, validate, repair, preview, and install identity-locked Codex v2 pets from one user-supplied character reference image. Use when a user asks to turn an image, drawing, avatar, anime character, mascot, or original character into a coherent animated Codex pet, or asks to package or repair a custom 1536x2288 pet atlas.
 ---
 
 # Pet Forge
 
-Create a Codex v2 pet from a reference image with deterministic normalization, QA, packaging, and installation. Production pets use an identity-locked canonical character; the one-atlas path is only a quick draft.
+Create a Codex v2 pet from exactly one user reference image with deterministic prompt preparation, identity locking, animation QA, packaging, and installation. Production pets behave like one rigged model rendered in different poses/directions; the one-atlas path is draft-only.
 
 ## Runtime
 
@@ -22,7 +22,7 @@ PYTHON=<absolute Python executable>
 
 Use this workflow whenever the user expects a coherent finished pet. It prevents the common failure where each action becomes a differently proportioned character.
 
-1. Read `references/identity-lock.md`.
+1. Read `references/identity-lock.md`, `references/character-rig-contract.md`, `references/trigger-semantics.md`, and `references/atlas-contract.md`.
 2. Prepare the run:
 
 ```powershell
@@ -32,10 +32,23 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
   --output-dir <absolute-run-dir>
 ```
 
-3. Generate and approve one canonical full-body sprite using `canonical-generation-prompt.md`, then save it as `<run>/canonical.png`.
-4. Attach `<run>/canonical.png` to every row job and include the exact identity-lock clause from `row-generation-contract.md`. Generate each complete action row, never isolated cells.
-5. Assemble with `replace_atlas_row.py`, then validate with `validate_atlas.py --require-v2`. The validator rejects excessive baseline drift and identity-height drift in standard rows.
-6. Inspect the final contact sheet against `canonical.png`. Do not install if the face, head/body ratio, hair, outfit, shoes, or practical scale changes between rows.
+3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`.
+4. Run the listed row prompt files one at a time, attaching both internal identity assets. Require the exact figure count; never group/duplicate figures to compensate for a missing pose.
+5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py --require-v2`. Reject duplicate frames, multi-character cells, baseline/height drift, and chroma/geometry failures.
+6. Render both `make_contact_sheet.py` and `make_motion_previews.py --fps 8`. Inspect the still identity comparison and every real loop; do not install if anatomy ratios, face, hair, garment layers/ornaments, practical scale, motion meaning, loop continuity, or expression continuity changes between rows.
+7. Row 0 is the automatically triggered idle loop when no other state is active. Require breathing/blink/gaze/return across its six runtime frames; column 6 remains the neutral fallback.
+
+Compact QA commands:
+
+```powershell
+& $PYTHON "$SKILL_DIR/scripts/validate_row_strip.py" <run>/rows/row-00.png --row 0
+& $PYTHON "$SKILL_DIR/scripts/assemble_rows.py" --rows-dir <run>/rows `
+  --output <run>/spritesheet.webp --png-output <run>/spritesheet.png
+& $PYTHON "$SKILL_DIR/scripts/validate_atlas.py" <run>/spritesheet.webp `
+  --require-v2 --chroma-key '#FF00FF' --json-out <run>/validation.json
+& $PYTHON "$SKILL_DIR/scripts/make_motion_previews.py" <run>/spritesheet.webp `
+  --output-dir <run>/motion-previews --fps 8
+```
 
 ## Fast draft workflow
 
@@ -91,7 +104,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
   --output <run>/pet.json
 
 & $PYTHON "$SKILL_DIR/scripts/install_pet.py" `
-  --package-dir <run> --replace --backup
+  --package-dir <run> --replace
 ```
 
 ## Repair Only the Failed Row
@@ -115,12 +128,14 @@ Then run the single final despill pass, validation, contact-sheet review, and in
 - A question mark must touch or overlap hair/hood; reject detached punctuation.
 - Preserve user identity and supplied art cues, but do not copy unrelated scenery, text, UI, or another character from expression references.
 - Never modify Codex application files or `app.asar`.
-- Back up an existing same-ID pet before replacement.
+- Keep no backup when the user explicitly requests replacement without old copies; verify only one same-ID pet directory remains.
 - Do not install unless `validate_atlas.py --require-v2` passes.
+- Reject any used row containing duplicate/near-duplicate adjacent frames or only one expressive frame.
+- Reject fewer/more generated figures than requested; do not fill missing frames by duplicating, grouping, or isolated body-part repair.
 
 ## Modes
 
-- **Identity-locked (default for finished pets):** one approved canonical character image, then one coherent row at a time with that same canonical image attached to every job.
+- **Identity-locked (default for finished pets):** one user reference produces an approved canonical image and eight-view turnaround, then one coherent row at a time with both identity anchors attached.
 - **Fast draft:** one full-atlas generation, deterministic normalization, targeted row repair if needed; never install until it has passed identity-locked review.
 
 Detailed format and prompts live under `references/`; do not repeat them in chat unless needed.
