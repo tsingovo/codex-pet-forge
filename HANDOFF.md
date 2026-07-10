@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.8` (one-reference canonical-rig and motion QA publication prepared)
+- Current release: `v0.1.8` (published one-reference canonical-rig and motion QA upgrade)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -82,6 +82,7 @@ Remove `.codex-test` after verification; do not commit it.
 - Published repair release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.2`, with the corrected `gpt-niang-pet.zip` and source archive. Verify both artifacts are reachable after publication.
 - Published guard release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.3`, with the registration-validation guard and current GPT娘 sample package.
 - Published identity-lock release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.4`, with the canonical-character workflow and current GPT娘 sample package.
+- Published one-reference rig release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.8`, with the source archive and validated direct GPT娘 package.
 
 ## Change log
 
@@ -179,3 +180,10 @@ Remove `.codex-test` after verification; do not commit it.
   - English: The existing GPT娘 direction rows each contained one duplicated frame; both were regenerated using the canonical model, prior direction reference, and exact eight-slot guides. The new direction cells are unique, share a 194px height, pass full v2 validation, and were installed in-place without backup; only the `gpt-niang` directory remains locally.
   - 中文：GitHub 样例新增八方向转台与 8 FPS 待机/悬停/思考 GIF；所有新增 README 英文说明继续遵守中文在前、英文在后的规则。
   - English: The GitHub sample now includes the eight-view turnaround and 8 FPS idle/hover/thinking GIFs; all new README explanations continue to place Chinese before the corresponding English.
+- 2026-07-11 — v0.1.8 发布与本地启用 / v0.1.8 release and local activation
+  - 中文：GitHub v0.1.8 已公开发布，包含源码 ZIP 和已验证的 GPT娘 直装包；发布说明继续采用中文在前、英文在后的格式。
+  - English: GitHub v0.1.8 is publicly released with the source ZIP and validated direct GPT娘 package; release notes continue the Chinese-first, English-second format.
+  - 中文：真实用户 Codex 已升级并启用 `codex-pet-forge@0.1.8`；宠物目录只保留 `C:\Users\HASEE\.codex\pets\gpt-niang`，无旧备份目录。
+  - English: The real user Codex installation now runs `codex-pet-forge@0.1.8`; only `C:\Users\HASEE\.codex\pets\gpt-niang` remains, with no old backup directory.
+  - 中文：发布前证据包括 11 条行级验证全部通过、重新装配图集通过、4 项单元测试通过、技能/插件验证通过、临时 marketplace 安装为 0.1.8、GitHub 两个发布资产均已上传。
+  - English: Pre-release evidence includes all eleven row validators passing, reassembled atlas validation passing, four unit tests passing, skill/plugin validation passing, temporary marketplace installation at 0.1.8, and both GitHub release assets uploaded.
