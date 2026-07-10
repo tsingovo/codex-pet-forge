@@ -145,3 +145,8 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: v2 validator passed; final contact sheet visually reviewed for consistent character scale, complete limbs, empty cells, and direction coverage. Local replacement installed with backup, then the backup folder was deleted to avoid duplicate Codex pets.
   - Release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.5` publishes both the source archive and updated `gpt-niang-pet.zip`.
   - Next action: use the installed v0.1.5 workflow for future pets; retain Chinese-first/English-second documentation when adding or revising GitHub explanations.
+
+- 2026-07-11 — GPT娘 right-drag scale repair
+  - Change: regenerated the complete right-drag row as a three-quarter pose to match canonical practical scale; validated and reinstalled, deleting the backup to prevent duplicates. GitHub sample package updated.
+  - Validation: v2 validator passes with equal 194px median visible height across rows 0-10.
+
