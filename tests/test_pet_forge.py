@@ -176,6 +176,27 @@ class PetForgeTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("palette drift", result.stdout)
 
+    def test_desktop_validator_rejects_eleven_row_install_atlas(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            # A valid-looking 11-row sheet must still be rejected by default:
+            # Desktop CSS slices exactly 8x9 and would mix vertical rows.
+            atlas = Image.new("RGBA", (ATLAS_W, 11 * CELL_H), (0, 0, 0, 0))
+            for row, count in enumerate((*USED_COUNTS, 8, 8)):
+                for column in range(count):
+                    ImageDraw.Draw(atlas).ellipse(
+                        (column * CELL_W + 48, row * CELL_H + 24, column * CELL_W + 144, row * CELL_H + 184),
+                        fill=(40, 90, 160, 255),
+                    )
+            path = root / "eleven-row.png"
+            atlas.save(path)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("1536x1872", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
