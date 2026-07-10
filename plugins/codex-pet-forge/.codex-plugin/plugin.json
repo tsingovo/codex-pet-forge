@@ -1,6 +1,6 @@
 {
   "name": "codex-pet-forge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Create validated Codex v2 pets from uploaded character images.",
   "author": {
     "name": "HASEE"
