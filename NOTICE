@@ -1,0 +1,8 @@
+Codex Pet Forge
+Copyright (c) 2026 HASEE
+
+Original project concept, repository architecture, documentation, motion semantics, prompt design, and project-specific code are copyright HASEE.
+
+This repository includes modified deterministic utility code derived from the Apache-2.0 licensed OpenAI Hatch Pet skill. Attribution and modification details are recorded in UPSTREAM.md.
+
+The Apache-2.0 license applies to repository code and documentation. It does not grant rights to the HASEE name, user reference images, generated character art, or third-party character IP.
