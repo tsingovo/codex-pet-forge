@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.5` (GPT娘 identity-locked rebuild in progress)
+- Current release: `v0.1.5` (published GPT娘 identity-locked rebuild)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -143,4 +143,5 @@ Remove `.codex-test` after verification; do not commit it.
 - 2026-07-11 — GPT娘 identity-locked rebuild and bilingual documentation
   - Change: rebuilt GPT娘 from a newly approved canonical full-body character, generated the action/look rows with that canonical image as sole identity input, validated and installed the new v2 package. Replaced the GitHub showcase assets and direct ZIP. Rewrote root and sample README content so each Chinese explanation immediately precedes its English equivalent.
   - Validation: v2 validator passed; final contact sheet visually reviewed for consistent character scale, complete limbs, empty cells, and direction coverage. Local replacement installed with backup, then the backup folder was deleted to avoid duplicate Codex pets.
-  - Next action: commit, tag/push v0.1.5, create the release, attach source and GPT娘 ZIP assets, and verify GitHub presentation.
+  - Release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.5` publishes both the source archive and updated `gpt-niang-pet.zip`.
+  - Next action: use the installed v0.1.5 workflow for future pets; retain Chinese-first/English-second documentation when adding or revising GitHub explanations.
