@@ -33,7 +33,7 @@ class PetForgeTests(unittest.TestCase):
                 y1 = int((row + 1) * cell_h - 15)
                 color_shift = round(10 * math.sin(phase))
                 second_shift = round(10 * math.cos(phase))
-                draw.ellipse((cx - 24, y0, cx + 24, y1), fill=(20 + row * 8, 90 + color_shift, 160 + second_shift))
+                draw.ellipse((cx - 24, y0, cx + 24, y1), fill=(40, 90 + color_shift, 160 + second_shift))
         image.save(path)
 
     def test_prepare_normalize_manifest_and_install_dry_run(self) -> None:
@@ -151,6 +151,31 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("duplicate/near-duplicate", result.stdout)
+
+    def test_validator_rejects_palette_identity_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            box = (0, 3 * CELL_H, CELL_W, 4 * CELL_H)
+            cell = atlas.crop(box)
+            recolored = [(250, 220, 20, alpha) if alpha > 0 else (0, 0, 0, 0) for _, _, _, alpha in cell.getdata()]
+            cell.putdata(recolored)
+            atlas.paste((0, 0, 0, 0), box)
+            atlas.alpha_composite(cell, (0, 3 * CELL_H))
+            atlas.save(root / "palette-drift.png")
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "palette-drift.png"), "--require-v2", "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("palette drift", result.stdout)
 
 
 if __name__ == "__main__":

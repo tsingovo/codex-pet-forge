@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.8` (published one-reference canonical-rig and motion QA upgrade)
+- Current release: `v0.1.9` (palette and proportion-profile consistency guard prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -187,3 +187,10 @@ Remove `.codex-test` after verification; do not commit it.
   - English: The real user Codex installation now runs `codex-pet-forge@0.1.8`; only `C:\Users\HASEE\.codex\pets\gpt-niang` remains, with no old backup directory.
   - 中文：发布前证据包括 11 条行级验证全部通过、重新装配图集通过、4 项单元测试通过、技能/插件验证通过、临时 marketplace 安装为 0.1.8、GitHub 两个发布资产均已上传。
   - English: Pre-release evidence includes all eleven row validators passing, reassembled atlas validation passing, four unit tests passing, skill/plugin validation passing, temporary marketplace installation at 0.1.8, and both GitHub release assets uploaded.
+- 2026-07-11 — 配色与纵向比例一致性门槛 / Palette and vertical-proportion consistency gates
+  - 中文：`validate_atlas.py` 新增每格 4×4×4 可见 RGB 直方图，与标准待机帧计算总变差距离，默认超过 25% 即拒绝，用于拦截头发、肤色、衣物和装饰主配色漂移。
+  - English: `validate_atlas.py` now computes a 4×4×4 visible RGB histogram per cell and total-variation distance from canonical idle; drift above 25% is rejected to catch primary hair, skin, garment, and ornament color changes.
+  - 中文：新增人物可见 alpha 的上/中/下三段质量分布，与标准待机帧比较，默认超过 15% 即拒绝，用作头部、躯干和腿部比例突变的自动代理指标。
+  - English: Added top/middle/bottom visible-alpha mass comparison against canonical idle; drift above 15% is rejected as an automated proxy for head, torso, and leg proportion changes.
+  - 中文：GPT娘 新样例在全部 79 个运行帧上通过配色、纵向比例、194px 高度、基线、单人物、重复帧、动作连续性与表情变化门槛；4 项单元测试和插件验证再次通过。
+  - English: The updated GPT娘 sample passes palette, vertical proportion, 194px height, baseline, one-character, duplicate-frame, motion-continuity, and expression-change gates across all 79 runtime frames; four unit tests and plugin validation pass again.

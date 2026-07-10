@@ -131,6 +131,37 @@ def mean_frame_difference(first: Image.Image, second: Image.Image) -> float:
     return sum(data) / (len(data) * 255) if data else 0.0
 
 
+def coarse_palette(image: Image.Image) -> list[float]:
+    """Return a 4x4x4 normalized RGB histogram for visible opaque pixels."""
+    bins = [0] * 64
+    total = 0
+    for red, green, blue, alpha in image.convert("RGBA").getdata():
+        if alpha <= 128:
+            continue
+        bins[(red // 64) * 16 + (green // 64) * 4 + blue // 64] += 1
+        total += 1
+    return [value / total for value in bins] if total else [0.0] * 64
+
+
+def total_variation(first: list[float], second: list[float]) -> float:
+    return sum(abs(a - b) for a, b in zip(first, second)) / 2
+
+
+def vertical_mass_profile(image: Image.Image) -> list[float]:
+    alpha = image.convert("RGBA").getchannel("A")
+    bbox = alpha.getbbox()
+    if bbox is None:
+        return [0.0, 0.0, 0.0]
+    alpha = alpha.crop(bbox)
+    total = sum(alpha.histogram()[1:])
+    if not total:
+        return [0.0, 0.0, 0.0]
+    return [
+        sum(alpha.crop((0, round(index * alpha.height / 3), alpha.width, round((index + 1) * alpha.height / 3))).histogram()[1:]) / total
+        for index in range(3)
+    ]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
@@ -179,6 +210,18 @@ def main() -> None:
         type=float,
         default=3.0,
         help="Maximum action-frame step difference relative to the row median; catches abrupt jumps.",
+    )
+    parser.add_argument(
+        "--max-palette-drift",
+        type=float,
+        default=0.25,
+        help="Maximum coarse visible-color histogram drift versus idle frame 0.",
+    )
+    parser.add_argument(
+        "--max-proportion-profile-drift",
+        type=float,
+        default=0.15,
+        help="Maximum top/middle/bottom visible-mass drift versus idle frame 0.",
     )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
@@ -358,6 +401,34 @@ def main() -> None:
                     "regenerate this complete row using the approved canonical character image"
                 )
 
+    identity_reference = image.crop((0, 0, CELL_WIDTH, CELL_HEIGHT))
+    reference_palette = coarse_palette(identity_reference)
+    reference_profile = vertical_mass_profile(identity_reference)
+    identity_metrics: dict[str, object] = {}
+    for row_index in range(row_count):
+        state, frame_count = ROW_BY_INDEX[row_index]
+        row_metrics = []
+        for column_index in range(frame_count):
+            cell = image.crop((column_index * CELL_WIDTH, row_index * CELL_HEIGHT, (column_index + 1) * CELL_WIDTH, (row_index + 1) * CELL_HEIGHT))
+            palette_drift = total_variation(reference_palette, coarse_palette(cell))
+            profile_drift = total_variation(reference_profile, vertical_mass_profile(cell))
+            row_metrics.append({
+                "column": column_index,
+                "palette_drift": round(palette_drift, 6),
+                "proportion_profile_drift": round(profile_drift, 6),
+            })
+            if palette_drift > args.max_palette_drift:
+                errors.append(
+                    f"{state} row {row_index} column {column_index} palette drift is {palette_drift:.1%} "
+                    f"(limit {args.max_palette_drift:.1%}); verify immutable outfit/hair/skin colors"
+                )
+            if profile_drift > args.max_proportion_profile_drift:
+                errors.append(
+                    f"{state} row {row_index} column {column_index} vertical body-mass drift is {profile_drift:.1%} "
+                    f"(limit {args.max_proportion_profile_drift:.1%}); verify head/torso/leg proportions"
+                )
+        identity_metrics[str(row_index)] = {"state": state, "cells": row_metrics}
+
     motion_metrics: dict[str, object] = {}
     expressive_rows = {0, 3, 4, 5, 6, 7, 8}
     for row_index, frames in row_animation_cells.items():
@@ -430,6 +501,7 @@ def main() -> None:
         "transparent_rgb_residue_pixels": transparent_rgb_residue,
         "identity_height_medians": identity_height_medians,
         "motion_metrics": motion_metrics,
+        "identity_metrics": identity_metrics,
         "errors": errors,
         "warnings": warnings,
         "cells": cells,

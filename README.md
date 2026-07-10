@@ -52,6 +52,9 @@ Example prompt: `Create a pet from this image. Approve a canonical full-body cha
 验证器会检查图集尺寸、透明背景、空单元格、单格多人物、脚底基线、跨行高度、重复帧、动作跳变与多帧头部变化；联系表和 8 FPS 动作预览仍必须人工检查。
 The validator checks atlas geometry, transparency, empty cells, multi-character cells, baseline, cross-row height, duplicate frames, abrupt steps, and multi-frame head-region changes; the contact sheet and 8 FPS motion previews still require review.
 
+验证器还会把每格的粗粒度可见配色和“头部/躯干/腿部”纵向质量分布与标准待机帧比较，拦截衣物配色漂移和明显的上下身比例变化；细小饰品与脸部细节继续由转台和人工联系表确认。
+The validator also compares each cell's coarse visible-color histogram and top/middle/bottom mass profile with the canonical idle frame, rejecting outfit-color drift and obvious body-proportion changes; fine ornaments and facial details remain turnaround/contact-sheet review gates.
+
 低 Token 通过把人物规则、逐帧时间线、提示词和 QA 报告保存在工作文件中实现；聊天只返回路径、失败门槛和最终状态，质量门槛不会因节省 Token 而缩短。
 Low token use comes from storing rig rules, per-frame timelines, prompts, and QA reports in working files; chat returns only paths, failed gates, and final status, while quality gates are never shortened to save tokens.
 
