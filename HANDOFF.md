@@ -136,3 +136,7 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: identity-locked preparation smoke test succeeded; corrected GPT娘 atlas passes the new height and baseline gates; unit tests and plugin validation pass.
   - Trade-off: consistent production animation requires one canonical generation plus coherent full-row generations. It uses more visual jobs than draft mode, but avoids spending time repairing a different character in every action.
   - Next action: tag/push and release v0.1.4; keep fast mode only for early previews, and install only after identity-locked contact-sheet approval.
+- 2026-07-11 — local Codex plugin activation
+  - Change: added marketplace `tsingovo/codex-pet-forge` and installed `codex-pet-forge@codex-pet-forge` into the real user Codex home at `C:\Users\HASEE\.codex`; active marketplace version is `0.1.4`.
+  - Validation: `codex plugin list` reported `installed, enabled` for `codex-pet-forge@codex-pet-forge` version `0.1.4`.
+  - Next action: restart/refresh Codex before invoking the identity-locked workflow in a new task.
