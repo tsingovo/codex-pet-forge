@@ -37,8 +37,8 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: The product default is now `1536×1872`, 8×9, and `spriteVersionNumber: 1`; generation, normalization, row assembly, installation, contact sheets, motion previews, row replacement, validator, and tests now use the Desktop contract. Eleven-row turnarounds are offline QA only and cannot be installed.
 - 中文：GPT娘 样例已裁切为 9 行实际桌面图集，重新生成联系表和直接安装包；验证器报告 `desktop_installable: true`、每行中位可见高度均为 194px、无透明 RGB 残留及无错误。
 - English: The GPT娘 sample is now a nine-row Desktop atlas with regenerated contact sheet and direct package; the validator reports `desktop_installable: true`, 194px median visible height in every row, no hidden transparent RGB, and no errors.
-- 中文：验证证据：`python -m unittest discover -s tests -v` 通过 5 项；样例图集通过完整桌面验证。待下一步：发布 v0.2.0，并以无备份覆盖方式安装至真实 Codex。
-- English: Verification evidence: all five unit tests pass and the sample atlas passes full Desktop validation. Next action: publish v0.2.0 and replace the real Codex pet in place with no backup.
+- 中文：验证证据：`python -m unittest discover -s tests -v` 通过 6 项（新增 11 行安装图集拒绝测试）；样例图集通过完整桌面验证。待下一步：发布 v0.2.0，并以无备份覆盖方式安装至真实 Codex。
+- English: Verification evidence: all six unit tests pass (including the new eleven-row install-atlas rejection test), and the sample atlas passes full Desktop validation. Next action: publish v0.2.0 and replace the real Codex pet in place with no backup.
 
 ## Non-negotiable runtime facts
 
