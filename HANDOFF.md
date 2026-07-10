@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.3` (published registration guard)
+- Current release: `v0.1.4` (published identity-lock workflow)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -68,13 +68,14 @@ Remove `.codex-test` after verification; do not commit it.
 
 ## Release state and upload
 
-- Release archives: sibling files through `F:\桌面\小学期\codex-pet-forge-v0.1.2.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.3.zip` from the final v0.1.3 commit before upload.
+- Release archives: sibling files through `F:\桌面\小学期\codex-pet-forge-v0.1.3.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.4.zip` from the final v0.1.4 commit before upload.
 - GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
 - Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
 - Published baseline: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and source ZIP asset). Main branch is the source of truth.
 - Published sample release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.1`, with both `codex-pet-forge-v0.1.1.zip` and the direct `gpt-niang-pet.zip` asset. Confirm the public repository/release pages and both assets are reachable after publication.
 - Published repair release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.2`, with the corrected `gpt-niang-pet.zip` and source archive. Verify both artifacts are reachable after publication.
 - Published guard release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.3`, with the registration-validation guard and current GPT娘 sample package.
+- Published identity-lock release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.4`, with the canonical-character workflow and current GPT娘 sample package.
 
 ## Change log
 
@@ -129,3 +130,9 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: the corrected GPT娘 atlas passes the new guard and all existing structural/chroma validation.
   - Limitation: this is a preventive gate, not a guarantee that every generated pose is artistically correct. The mandatory contact-sheet visual review remains required before installation.
   - Next action: tag/push v0.1.3, release the source archive and current direct GPT娘 package, then verify public assets.
+- 2026-07-11 — identity-locked character workflow
+  - Change: introduced `prepare_identity_locked_run.py` and `references/identity-lock.md`. Production flow now creates and approves one canonical full-body character first, then requires that exact canonical image as input for every complete action/look row. Fast one-atlas generation is now explicitly draft-only. The fast prompt also now specifies a row-0 master model rather than independent character redraws.
+  - Validator: added cross-row median visible-height drift checking for standard rows 0–8 (default 12% relative to idle), complementing the existing per-row baseline guard. It rejects evident practical-scale/proportion changes; final face/outfit/head-ratio review stays manual.
+  - Validation: identity-locked preparation smoke test succeeded; corrected GPT娘 atlas passes the new height and baseline gates; unit tests and plugin validation pass.
+  - Trade-off: consistent production animation requires one canonical generation plus coherent full-row generations. It uses more visual jobs than draft mode, but avoids spending time repairing a different character in every action.
+  - Next action: tag/push and release v0.1.4; keep fast mode only for early previews, and install only after identity-locked contact-sheet approval.

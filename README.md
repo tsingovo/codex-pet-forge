@@ -29,6 +29,10 @@ Codex reads the bundled format and trigger rules, generates one complete fast at
 
 The default fast path uses one primary generation job. A failed expression or motion is repaired as one row instead of rebuilding the whole pet.
 
+### Production identity lock
+
+For a finished pet, use the **identity-locked workflow** rather than the one-atlas draft: first approve one canonical full-body character image, then provide that exact image to every complete action row. This keeps the face, head-to-body ratio, hair, outfit, shoes, scale, and baseline fixed while only pose/expression changes. The validator now checks both row baseline and cross-row visible-height drift; the final contact sheet must still be reviewed before installation.
+
 ## Install from GitHub
 
 Install the published marketplace from `tsingovo/codex-pet-forge`:

@@ -5,7 +5,7 @@ description: Create, validate, repair, preview, and install Codex v2 pets from u
 
 # Pet Forge
 
-Create a Codex v2 pet from a reference image with one primary image-generation job plus deterministic normalization, QA, packaging, and installation.
+Create a Codex v2 pet from a reference image with deterministic normalization, QA, packaging, and installation. Production pets use an identity-locked canonical character; the one-atlas path is only a quick draft.
 
 ## Runtime
 
@@ -18,7 +18,26 @@ SKILL_DIR=<absolute path to this skill>
 PYTHON=<absolute Python executable>
 ```
 
-## Fast Workflow
+## Identity-locked workflow (required for production)
+
+Use this workflow whenever the user expects a coherent finished pet. It prevents the common failure where each action becomes a differently proportioned character.
+
+1. Read `references/identity-lock.md`.
+2. Prepare the run:
+
+```powershell
+& $PYTHON "$SKILL_DIR/scripts/prepare_identity_locked_run.py" `
+  --reference <absolute-image-path> `
+  --pet-name <display-name> `
+  --output-dir <absolute-run-dir>
+```
+
+3. Generate and approve one canonical full-body sprite using `canonical-generation-prompt.md`, then save it as `<run>/canonical.png`.
+4. Attach `<run>/canonical.png` to every row job and include the exact identity-lock clause from `row-generation-contract.md`. Generate each complete action row, never isolated cells.
+5. Assemble with `replace_atlas_row.py`, then validate with `validate_atlas.py --require-v2`. The validator rejects excessive baseline drift and identity-height drift in standard rows.
+6. Inspect the final contact sheet against `canonical.png`. Do not install if the face, head/body ratio, hair, outfit, shoes, or practical scale changes between rows.
+
+## Fast draft workflow
 
 1. Inspect the user's reference image. Treat it as identity/style grounding, not as a ready sprite.
 2. Read `references/trigger-semantics.md` and `references/atlas-contract.md`.
@@ -63,7 +82,7 @@ PYTHON=<absolute Python executable>
   <run>/spritesheet.webp --output <run>/contact-sheet.png
 ```
 
-8. Inspect the contact sheet. Require recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise. The validator also rejects excessive per-row visible-baseline drift, which commonly catches detached shoes, missing feet, and sliced-body registration. If it fails, regenerate and replace the complete row; never move or paste one foot/limb cell manually.
+8. Inspect the contact sheet. Require recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise. The validator also rejects excessive per-row visible-baseline drift, which commonly catches detached shoes, missing feet, and sliced-body registration. If it fails, regenerate and replace the complete row; never move or paste one foot/limb cell manually. A fast-draft atlas is not production-ready until it has passed the identity-locked review.
 9. Write and install the package:
 
 ```powershell
@@ -101,7 +120,7 @@ Then run the single final despill pass, validation, contact-sheet review, and in
 
 ## Modes
 
-- **Fast (default):** one full-atlas generation, deterministic normalization, targeted row repair if needed.
-- **Reliable:** generate one coherent row at a time when the fast atlas cannot maintain identity or geometry. Keep prompts in files and return only selected paths to reduce chat token use.
+- **Identity-locked (default for finished pets):** one approved canonical character image, then one coherent row at a time with that same canonical image attached to every job.
+- **Fast draft:** one full-atlas generation, deterministic normalization, targeted row repair if needed; never install until it has passed identity-locked review.
 
 Detailed format and prompts live under `references/`; do not repeat them in chat unless needed.

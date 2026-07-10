@@ -33,7 +33,7 @@ def prompt(name: str) -> str:
 
 Use the character reference as the only identity/style source. Use the layout guide only for slot order and safe padding; do not copy its lines, labels, numbers, or text.
 
-Create one portrait atlas on a perfectly flat solid #FF00FF background, arranged as 8 columns x 11 rows. Every slot contains one complete separated full-body chibi sprite, centered and padded. Preserve the same face, hair, palette, outfit, proportions, materials, and outline in every slot. No scenery, floor, shadows, text, UI, labels, visible grid, guide marks, detached effects, or cropped limbs.
+Create one portrait atlas on a perfectly flat solid #FF00FF background, arranged as 8 columns x 11 rows. Every slot contains one complete separated full-body chibi sprite, centered and padded. First establish the row-0 column-0 character as the master model, then clone that exact same character model into every other slot: identical head-to-body ratio, face/eye shape, hairstyle and length, outfit cut, palette, shoes, line weight, practical scale, and baseline. Change only pose, gaze, expression, or the explicitly requested limb position. Do not redraw a variant, change proportions, add/remove garments, or change apparent age/body type. No scenery, floor, shadows, text, UI, labels, visible grid, guide marks, detached effects, or cropped limbs.
 
 If the reference shows only a face, bust, or partial body, preserve every visible identity cue and infer unseen clothing, legs, and footwear conservatively as a simple coherent extension of the visible design. Do not invent logos, weapons, complex props, or a second character.
 

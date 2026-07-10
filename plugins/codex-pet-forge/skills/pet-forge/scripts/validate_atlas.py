@@ -9,6 +9,7 @@ import math
 import re
 from collections import defaultdict
 from pathlib import Path
+from statistics import median
 
 from PIL import Image, ImageFilter
 
@@ -142,6 +143,12 @@ def main() -> None:
         default=18,
         help="Maximum visible-bottom difference across the used frames of one row (pixels).",
     )
+    parser.add_argument(
+        "--max-identity-height-drift",
+        type=float,
+        default=0.12,
+        help="Maximum relative median visible-height drift of standard rows 1-8 versus idle.",
+    )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
@@ -155,6 +162,7 @@ def main() -> None:
     warnings: list[str] = []
     near_opaque_used_cells: dict[str, list[int]] = defaultdict(list)
     row_bottoms: dict[int, list[tuple[int, int]]] = defaultdict(list)
+    row_heights: dict[int, list[int]] = defaultdict(list)
     cells: list[dict[str, object]] = []
 
     try:
@@ -235,6 +243,7 @@ def main() -> None:
                 # bottom dramatically. Check the entire action row below instead
                 # of accepting a structurally valid but visibly misregistered cell.
                 row_bottoms[row_index].append((column_index, bbox[3]))
+                row_heights[row_index].append(bbox[3] - bbox[1])
             if used and chroma_leak_pixels > args.max_chroma_leak_pixels:
                 message = (
                     f"{state} row {row_index} column {column_index} has {chroma_leak_pixels} "
@@ -285,6 +294,29 @@ def main() -> None:
                 "detached feet or sliced-body registration"
             )
 
+    identity_height_medians = {
+        row_index: median(values)
+        for row_index, values in row_heights.items()
+        if values
+    }
+    # Rows 0-8 should be the same animation model. Direction rows intentionally
+    # change apparent width/contour, so visual review rather than this scalar gate
+    # owns them. Height drift still catches a newly redrawn tall/short character.
+    idle_height = identity_height_medians.get(0)
+    if is_extended_atlas and idle_height:
+        for row_index in range(1, 9):
+            row_height = identity_height_medians.get(row_index)
+            if row_height is None:
+                continue
+            drift = abs(row_height - idle_height) / idle_height
+            if drift > args.max_identity_height_drift:
+                state, _ = ROW_BY_INDEX[row_index]
+                errors.append(
+                    f"{state} row {row_index} median visible height is {row_height}px versus idle "
+                    f"{idle_height}px ({drift:.1%} drift; limit {args.max_identity_height_drift:.1%}); "
+                    "regenerate this complete row using the approved canonical character image"
+                )
+
     alpha_count = alpha_nonzero_count(image)
     if alpha_count == ATLAS_WIDTH * ATLAS_HEIGHT:
         message = "atlas is fully opaque; custom pets require a transparent sprite background"
@@ -310,6 +342,7 @@ def main() -> None:
         "width": image.width,
         "height": image.height,
         "transparent_rgb_residue_pixels": transparent_rgb_residue,
+        "identity_height_medians": identity_height_medians,
         "errors": errors,
         "warnings": warnings,
         "cells": cells,
