@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.0` (published on GitHub)
+- Current release: `v0.1.1` (published on GitHub)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -68,11 +68,11 @@ Remove `.codex-test` after verification; do not commit it.
 
 ## Release state and upload
 
-- Release archive: sibling file `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip`, regenerated with `git archive` from the final release commit before upload.
+- Release archives: sibling file `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip` remains the baseline release; generate `F:\桌面\小学期\codex-pet-forge-v0.1.1.zip` from the final v0.1.1 commit before upload.
 - GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
 - Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
-- Published release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and ZIP asset). Main branch is the source of truth.
-- Release verification: confirm the public repository page, `v0.1.0` release page, and ZIP asset are reachable after each publication.
+- Published baseline: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and source ZIP asset). Main branch is the source of truth.
+- Published sample release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.1`, with both `codex-pet-forge-v0.1.1.zip` and the direct `gpt-niang-pet.zip` asset. Confirm the public repository/release pages and both assets are reachable after publication.
 
 ## Change log
 
@@ -106,3 +106,14 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: marketplace add/plugin add succeeded in the sandbox; the generated atlas was structurally normalized to v2 (`1536x2288`, `8x11`) and `validate_atlas.py --require-v2` passed after chroma removal and cell cleanup.
   - Risk: the image model returned only ten source bands and did not preserve exact cell registration. A temporary structural repair was sufficient for validator coverage but the final contact-sheet visual QA found horizontal clipping and a duplicated thinking/review pose. **Do not install or release that sample.**
   - Next action: improve the fast prompt/layout strategy or use the reliable row-by-row fallback for a production GPT娘; require contact-sheet visual approval before running `install_pet.py`.
+- 2026-07-10 — GPT娘 production sample and package
+  - Change: completed a second reconstruction with per-sprite component registration to prevent cell clipping, replaced the thinking row with a generated hand-under-chin strip, validated the final v2 atlas, and installed it as `C:\Users\HASEE\.codex\pets\gpt-niang`.
+  - Validation: `validate_atlas.py --require-v2` passed with zero warnings/errors; the final contact sheet was visually reviewed for slot clipping, empty-cell cleanup, hover question-mark attachment, and row coverage. `install_pet.py --replace --backup` returned `ok: true`.
+  - Publication: added `examples/gpt-niang/` containing the reference image, contact sheet, `pet.json`, `spritesheet.webp`, and directly usable `gpt-niang-pet.zip`; README now links the showcase and install flow.
+  - Asset caveat: code remains Apache-2.0, but example/reference-character rights are not granted by the code license. Preserve this caveat whenever publishing character samples supplied by users.
+  - Next action: commit/push the sample files and attach `gpt-niang-pet.zip` to a GitHub release so users can install without cloning.
+- 2026-07-10 — v0.1.1 packaging
+  - Change: bumped the marketplace plugin manifest from `0.1.0` to `0.1.1` so clients can distinguish the published sample update.
+  - Validation: plugin validation must pass again before tagging; GitHub release must contain the full source archive plus the direct GPT娘 package.
+  - Risk: the sample asset package is a convenience artifact, not a grant of rights to external character references; retain the example asset notice.
+  - Next action: archive the final commit, tag/push `v0.1.1`, create the GitHub release, attach both ZIP files, and verify the public assets.

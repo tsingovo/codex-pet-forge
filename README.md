@@ -42,6 +42,16 @@ codex plugin add codex-pet-forge@codex-pet-forge
 
 This is a public GitHub marketplace, so anyone can view the repository, release, and install instructions. It is **not automatically listed in Codex's global plugin search**: each user needs to add the marketplace once with the command above, then it appears in that user's `codex plugin list` result and can be installed. Share this repository URL with users who should install it.
 
+## Ready-to-use example: GPT娘
+
+The repository includes a complete, installed-and-validated sample pet at [`examples/gpt-niang`](examples/gpt-niang/):
+
+| Character reference | Generated pet contact sheet |
+| --- | --- |
+| ![GPT娘 reference](examples/gpt-niang/reference.png) | ![GPT娘 pet atlas](examples/gpt-niang/contact-sheet.png) |
+
+Download [`gpt-niang-pet.zip`](examples/gpt-niang/gpt-niang-pet.zip), extract it, and copy its `gpt-niang` folder to `$HOME/.codex/pets/gpt-niang`; then restart Codex and select **GPT娘**. The sample package is Codex v2 (`8x11`, `1536x2288`, WebP) and has passed the supplied atlas validator. See the [sample README](examples/gpt-niang/README.md) for the exact command and asset notice.
+
 Restart Codex or open a new task after installation.
 
 For local development:
