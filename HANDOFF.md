@@ -101,3 +101,8 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: command names verified with `codex plugin --help` (`marketplace`, `list`, and `add`).
   - Risk: marketplace discovery behavior is controlled by Codex; if a future official directory/index becomes available, update this README section and this handoff in the same commit.
   - Next action: push this documentation clarification to `main`; no release asset change is required.
+- 2026-07-10 — GPT娘 fast-workflow sample audit
+  - Change: exercised the public marketplace installation command in a sandboxed Codex runtime and ran the fast workflow against a user-provided anime character reference.
+  - Validation: marketplace add/plugin add succeeded in the sandbox; the generated atlas was structurally normalized to v2 (`1536x2288`, `8x11`) and `validate_atlas.py --require-v2` passed after chroma removal and cell cleanup.
+  - Risk: the image model returned only ten source bands and did not preserve exact cell registration. A temporary structural repair was sufficient for validator coverage but the final contact-sheet visual QA found horizontal clipping and a duplicated thinking/review pose. **Do not install or release that sample.**
+  - Next action: improve the fast prompt/layout strategy or use the reliable row-by-row fallback for a production GPT娘; require contact-sheet visual approval before running `install_pet.py`.
