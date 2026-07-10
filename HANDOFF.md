@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.0` (GitHub publication in progress)
+- Current release: `v0.1.0` (published on GitHub)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -71,7 +71,8 @@ Remove `.codex-test` after verification; do not commit it.
 - Release archive: sibling file `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip`, regenerated with `git archive` from the final release commit before upload.
 - GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
 - Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
-- Next release steps: push `main`, create the `v0.1.0` tag/release, upload the ZIP archive, then record the release URL and verification result here in the same commit if any metadata changes.
+- Published release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and ZIP asset). Main branch is the source of truth.
+- Release verification: confirm the public repository page, `v0.1.0` release page, and ZIP asset are reachable after each publication.
 
 ## Change log
 
@@ -90,3 +91,8 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: authenticated GitHub API identity returned `tsingovo`; `origin` points to the public repository.
   - Risk: Windows Git initially failed HTTPS push using the system Schannel backend; use the GitHub connector/API or the repository-local OpenSSL override, never store an access token in Git configuration.
   - Next action: complete push and GitHub release, then replace this entry's next action with permanent release evidence.
+- 2026-07-10 — GitHub v0.1.0 publication
+  - Change: pushed `main` to `https://github.com/tsingovo/codex-pet-forge`, created the `v0.1.0` release, and attached the source archive `codex-pet-forge-v0.1.0.zip`.
+  - Validation: GitHub release and repository API checks completed after publication.
+  - Risk: for this Windows environment, Git HTTPS push requires the repository-local OpenSSL backend and transient Basic authorization header; do not persist the token. GitHub CLI API calls remain usable through `.gh-auth/`.
+  - Next action: for every future change, update this handoff document in the same commit, run the listed checks, push `main`, and create a new versioned release/archive.
