@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.9` (palette and proportion-profile consistency guard prepared)
+- Current release: `v0.1.9` (published palette and proportion-profile consistency guards)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -83,6 +83,7 @@ Remove `.codex-test` after verification; do not commit it.
 - Published guard release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.3`, with the registration-validation guard and current GPT娘 sample package.
 - Published identity-lock release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.4`, with the canonical-character workflow and current GPT娘 sample package.
 - Published one-reference rig release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.8`, with the source archive and validated direct GPT娘 package.
+- Published identity-metric release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.9`, with palette/proportion guards, source archive, and the validated direct GPT娘 package.
 
 ## Change log
 
@@ -194,3 +195,8 @@ Remove `.codex-test` after verification; do not commit it.
   - English: Added top/middle/bottom visible-alpha mass comparison against canonical idle; drift above 15% is rejected as an automated proxy for head, torso, and leg proportion changes.
   - 中文：GPT娘 新样例在全部 79 个运行帧上通过配色、纵向比例、194px 高度、基线、单人物、重复帧、动作连续性与表情变化门槛；4 项单元测试和插件验证再次通过。
   - English: The updated GPT娘 sample passes palette, vertical proportion, 194px height, baseline, one-character, duplicate-frame, motion-continuity, and expression-change gates across all 79 runtime frames; four unit tests and plugin validation pass again.
+- 2026-07-11 — v0.1.9 发布与本地启用 / v0.1.9 release and local activation
+  - 中文：GitHub v0.1.9 已公开发布并上传源码与 GPT娘 直装包；真实用户 Codex 已升级并启用 `codex-pet-forge@0.1.9`。
+  - English: GitHub v0.1.9 is publicly released with source and direct GPT娘 assets; the real user Codex installation now runs `codex-pet-forge@0.1.9`.
+  - 中文：本地宠物仍只保留 `gpt-niang` 一个目录，无旧备份；其图集内容未因验证器升级而改变，并继续通过新门槛。
+  - English: Only the `gpt-niang` local directory remains with no backup; its atlas content was unchanged by the validator upgrade and continues to pass the new gates.
