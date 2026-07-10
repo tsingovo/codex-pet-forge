@@ -96,3 +96,8 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: GitHub release and repository API checks completed after publication.
   - Risk: for this Windows environment, Git HTTPS push requires the repository-local OpenSSL backend and transient Basic authorization header; do not persist the token. GitHub CLI API calls remain usable through `.gh-auth/`.
   - Next action: for every future change, update this handoff document in the same commit, run the listed checks, push `main`, and create a new versioned release/archive.
+- 2026-07-10 — Marketplace visibility clarification
+  - Change: documented that the public GitHub marketplace is visible to anyone, but it is not automatically indexed by Codex global plugin search; users must add `tsingovo/codex-pet-forge` once before it appears in their local plugin list.
+  - Validation: command names verified with `codex plugin --help` (`marketplace`, `list`, and `add`).
+  - Risk: marketplace discovery behavior is controlled by Codex; if a future official directory/index becomes available, update this README section and this handoff in the same commit.
+  - Next action: push this documentation clarification to `main`; no release asset change is required.

@@ -38,6 +38,10 @@ codex plugin marketplace add tsingovo/codex-pet-forge
 codex plugin add codex-pet-forge@codex-pet-forge
 ```
 
+### Visibility in Codex
+
+This is a public GitHub marketplace, so anyone can view the repository, release, and install instructions. It is **not automatically listed in Codex's global plugin search**: each user needs to add the marketplace once with the command above, then it appears in that user's `codex plugin list` result and can be installed. Share this repository URL with users who should install it.
+
 Restart Codex or open a new task after installation.
 
 For local development:
