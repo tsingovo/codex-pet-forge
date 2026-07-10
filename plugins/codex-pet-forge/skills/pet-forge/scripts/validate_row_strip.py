@@ -18,7 +18,7 @@ def difference(first: Image.Image, second: Image.Image) -> float:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Validate one normalized complete animation row")
     ap.add_argument("strip")
-    ap.add_argument("--row", type=int, required=True, choices=range(11))
+    ap.add_argument("--row", type=int, required=True, choices=range(9))
     ap.add_argument("--json-out")
     ap.add_argument("--min-frame-difference", type=float, default=0.002)
     ap.add_argument("--max-visible-width", type=int, default=180)

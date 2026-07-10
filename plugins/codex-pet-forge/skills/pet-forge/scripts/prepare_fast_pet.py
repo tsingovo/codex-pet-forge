@@ -10,7 +10,7 @@ from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, COLS, ROWS, slugify
 
 ROW_LABELS = [
     "idle + neutral", "drag right", "drag left", "greeting", "hover curious",
-    "failed", "waiting", "thinking chin", "review", "look 000-157.5", "look 180-337.5",
+    "failed", "waiting", "thinking chin", "review",
 ]
 
 
@@ -29,11 +29,11 @@ def create_guide(path: Path) -> None:
 
 
 def prompt(name: str) -> str:
-    return f"""# Generate one complete Codex v2 pet atlas for {name}
+    return f"""# Generate one complete Codex Desktop pet atlas for {name}
 
 Use the character reference as the only identity/style source. Use the layout guide only for slot order and safe padding; do not copy its lines, labels, numbers, or text.
 
-Create one portrait atlas on a perfectly flat solid #FF00FF background, arranged as 8 columns x 11 rows. Every slot contains one complete separated full-body chibi sprite, centered and padded. First establish the row-0 column-0 character as the master model, then clone that exact same character model into every other slot: identical head-to-body ratio, face/eye shape, hairstyle and length, outfit cut, palette, shoes, line weight, practical scale, and baseline. Change only pose, gaze, expression, or the explicitly requested limb position. Do not redraw a variant, change proportions, add/remove garments, or change apparent age/body type. No scenery, floor, shadows, text, UI, labels, visible grid, guide marks, detached effects, or cropped limbs.
+Create one portrait atlas on a perfectly flat solid #FF00FF background, arranged as exactly 8 columns x 9 rows (1536x1872 final). Every slot contains one complete separated full-body chibi sprite, centered and padded. First establish the row-0 column-0 character as the master model, then clone that exact same character model into every other slot: identical head-to-body ratio, face/eye shape, hairstyle and length, outfit cut, palette, shoes, line weight, practical scale, and baseline. Change only pose, gaze, expression, or the explicitly requested limb position. Do not redraw a variant, change proportions, add/remove garments, or change apparent age/body type. No scenery, floor, shadows, text, UI, labels, visible grid, guide marks, detached effects, or cropped limbs.
 
 If the reference shows only a face, bust, or partial body, preserve every visible identity cue and infer unseen clothing, legs, and footwear conservatively as a simple coherent extension of the visible design. Do not invent logos, weapons, complex props, or a second character.
 
@@ -47,8 +47,6 @@ Rows, top to bottom:
 6 waiting: six expectant user-input frames with a restrained head tilt; remaining slots empty.
 7 active thinking: six frames with the same screen-right hand stably under the chin, other arm relaxed, head/body fixed; animate only eyes, lids, brows and tiny mouth. No repeated head swing. Remaining slots empty.
 8 review: six focused-to-pleased inspection frames; remaining slots empty.
-9 clockwise looks: up, up-right x3, right, down-right x3.
-10 clockwise looks: down, down-left x3, left, up-left x3.
 
 Viewer coordinates are absolute: right means nose/pupils toward the image-right edge; left means image-left. Keep all characters the same practical scale and baseline. Output artwork only on flat magenta, without any visible construction marks.
 """
@@ -83,7 +81,7 @@ def main() -> None:
         "layoutGuide": guide.name,
         "generatedAtlas": "generated-atlas.png",
         "chromaKey": "#FF00FF",
-        "spriteVersionNumber": 2,
+        "spriteVersionNumber": 1,
     }
     (out / "pet-request.json").write_text(json.dumps(request, ensure_ascii=False, indent=2), encoding="utf-8")
     # ASCII-safe stdout avoids mojibake in Windows shells; UTF-8 files retain display names.

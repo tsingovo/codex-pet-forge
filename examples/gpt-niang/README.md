@@ -25,8 +25,8 @@ Download and extract [gpt-niang-pet.zip](gpt-niang-pet.zip), then copy its `gpt-
 Copy-Item .\gpt-niang "$HOME\.codex\pets\gpt-niang" -Recurse -Force
 ```
 
-图集已通过 v2 结构、透明背景、单格人物数量、脚底基线、跨行高度、重复帧和动作连续性校验；安装前仍建议查看联系表与动作预览。
-The atlas passed v2 geometry, transparency, per-cell figure count, baseline, cross-row height, duplicate-frame, and motion-continuity checks; review the contact sheet and motion previews before installation.
+图集已通过桌面端 `1536×1872` / 8×9 结构、透明背景、单格人物数量、脚底基线、跨行高度、重复帧和动作连续性校验；安装前仍建议查看联系表与动作预览。
+The atlas passed Desktop `1536×1872` / 8×9 geometry, transparency, per-cell figure count, baseline, cross-row height, duplicate-frame, and motion-continuity checks; review the contact sheet and motion previews before installation.
 
 代码采用 Apache-2.0；本样例的角色参考图不因代码许可而自动获得再分发权。
 The code is Apache-2.0; this sample's character reference does not automatically receive redistribution rights through the code license.

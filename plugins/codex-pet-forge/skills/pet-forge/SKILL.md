@@ -1,11 +1,11 @@
 ---
 name: pet-forge
-description: Create, validate, repair, preview, and install identity-locked Codex v2 pets from one user-supplied character reference image. Use when a user asks to turn an image, drawing, avatar, anime character, mascot, or original character into a coherent animated Codex pet, or asks to package or repair a custom 1536x2288 pet atlas.
+description: Create, validate, repair, preview, and install identity-locked Codex Desktop 8x9 pets from one user-supplied character reference image. Use when a user asks to turn an image, drawing, avatar, anime character, mascot, or original character into a coherent animated pet, or asks to package or repair a custom 1536x1872 pet atlas.
 ---
 
 # Pet Forge
 
-Create a Codex v2 pet from exactly one user reference image with deterministic prompt preparation, identity locking, animation QA, packaging, and installation. Production pets behave like one rigged model rendered in different poses/directions; the one-atlas path is draft-only.
+Create a Codex Desktop 8x9 pet from exactly one user reference image with deterministic prompt preparation, identity locking, animation QA, packaging, and installation. Production pets behave like one rigged model rendered in different poses; the one-atlas path is draft-only. Eleven-row turnarounds are offline-only QA artifacts and are never installed.
 
 ## Runtime
 
@@ -34,7 +34,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
 
 3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`.
 4. Run the listed row prompt files one at a time, attaching both internal identity assets. Require the exact figure count; never group/duplicate figures to compensate for a missing pose.
-5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py --require-v2`. Reject duplicate frames, multi-character cells, baseline/height drift, and chroma/geometry failures.
+5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, and chroma/geometry failures.
 6. Render both `make_contact_sheet.py` and `make_motion_previews.py --fps 8`. Inspect the still identity comparison and every real loop; do not install if anatomy ratios, face, hair, garment layers/ornaments, practical scale, motion meaning, loop continuity, or expression continuity changes between rows.
 7. Row 0 is the automatically triggered idle loop when no other state is active. Require breathing/blink/gaze/return across its six runtime frames; column 6 remains the neutral fallback.
 
@@ -45,7 +45,7 @@ Compact QA commands:
 & $PYTHON "$SKILL_DIR/scripts/assemble_rows.py" --rows-dir <run>/rows `
   --output <run>/spritesheet.webp --png-output <run>/spritesheet.png
 & $PYTHON "$SKILL_DIR/scripts/validate_atlas.py" <run>/spritesheet.webp `
-  --require-v2 --chroma-key '#FF00FF' --json-out <run>/validation.json
+  --chroma-key '#FF00FF' --json-out <run>/validation.json
 & $PYTHON "$SKILL_DIR/scripts/make_motion_previews.py" <run>/spritesheet.webp `
   --output-dir <run>/motion-previews --fps 8
 ```
@@ -88,7 +88,7 @@ Compact QA commands:
 
 ```powershell
 & $PYTHON "$SKILL_DIR/scripts/validate_atlas.py" `
-  <run>/spritesheet.webp --require-v2 --chroma-key '#FF00FF' `
+  <run>/spritesheet.webp --chroma-key '#FF00FF' `
   --json-out <run>/validation.json
 
 & $PYTHON "$SKILL_DIR/scripts/make_contact_sheet.py" `
@@ -113,7 +113,7 @@ Do not regenerate the full atlas when one row fails. Generate one horizontal str
 
 ```powershell
 & $PYTHON "$SKILL_DIR/scripts/replace_atlas_row.py" `
-  --base <run>/spritesheet.webp --row <0-10> `
+  --base <run>/spritesheet.webp --row <0-8> `
   --strip <generated-row.png> --output <run>/spritesheet-repaired.webp `
   --chroma-key '#FF00FF'
 ```
@@ -129,7 +129,7 @@ Then run the single final despill pass, validation, contact-sheet review, and in
 - Preserve user identity and supplied art cues, but do not copy unrelated scenery, text, UI, or another character from expression references.
 - Never modify Codex application files or `app.asar`.
 - Keep no backup when the user explicitly requests replacement without old copies; verify only one same-ID pet directory remains.
-- Do not install unless `validate_atlas.py --require-v2` passes.
+- Do not install unless `validate_atlas.py` passes and reports `desktop_installable: true`.
 - Reject any used row containing duplicate/near-duplicate adjacent frames or only one expressive frame.
 - Reject fewer/more generated figures than requested; do not fill missing frames by duplicating, grouping, or isolated body-part repair.
 

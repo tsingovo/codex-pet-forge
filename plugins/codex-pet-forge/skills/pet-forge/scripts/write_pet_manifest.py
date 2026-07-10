@@ -8,7 +8,7 @@ from pet_common import slugify
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Write a Codex v2 pet.json")
+    ap = argparse.ArgumentParser(description="Write a Codex Desktop-compatible pet.json")
     ap.add_argument("--pet-id", required=True)
     ap.add_argument("--display-name", required=True)
     ap.add_argument("--description", required=True)
@@ -18,7 +18,10 @@ def main() -> None:
         "id": slugify(args.pet_id),
         "displayName": args.display_name,
         "description": args.description,
-        "spriteVersionNumber": 2,
+        # Desktop currently has a fixed 8x9 renderer.  Version 1 makes that
+        # contract explicit and prevents a 11-row terminal-only atlas from
+        # being mistaken for a desktop sprite sheet.
+        "spriteVersionNumber": 1,
         "spritesheetPath": "spritesheet.webp",
     }
     path = Path(args.output)

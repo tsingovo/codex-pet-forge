@@ -22,9 +22,9 @@ class PetForgeTests(unittest.TestCase):
         return subprocess.run([sys.executable, str(SCRIPTS / name), *args], check=True, text=True, capture_output=True)
 
     def make_generated_atlas(self, path: Path) -> None:
-        image = Image.new("RGB", (1024, 1536), (255, 0, 255))
+        image = Image.new("RGB", (1024, 1248), (255, 0, 255))
         draw = ImageDraw.Draw(image)
-        cell_w, cell_h = 1024 / 8, 1536 / 11
+        cell_w, cell_h = 1024 / 8, 1248 / 9
         for row, used in enumerate(USED_COUNTS):
             for col in range(used):
                 phase = 2 * math.pi * col / used
@@ -70,7 +70,6 @@ class PetForgeTests(unittest.TestCase):
             self.run_script(
                 "validate_atlas.py",
                 str(run / "spritesheet.webp"),
-                "--require-v2",
                 "--chroma-key",
                 "#FF00FF",
                 "--json-out",
@@ -89,14 +88,14 @@ class PetForgeTests(unittest.TestCase):
                 "--output", str(run / "reassembled.webp"), "--png-output", str(run / "reassembled.png"),
             )
             self.run_script(
-                "validate_atlas.py", str(run / "reassembled.webp"), "--require-v2",
+                "validate_atlas.py", str(run / "reassembled.webp"),
                 "--chroma-key", "#FF00FF", "--json-out", str(run / "reassembled-validation.json"),
             )
             self.assertTrue(json.loads((run / "reassembled-validation.json").read_text(encoding="utf-8"))["ok"])
 
             self.run_script("write_pet_manifest.py", "--pet-id", "momo", "--display-name", "Momo", "--description", "Test pet", "--output", str(run / "pet.json"))
             manifest = json.loads((run / "pet.json").read_text(encoding="utf-8"))
-            self.assertEqual(manifest["spriteVersionNumber"], 2)
+            self.assertEqual(manifest["spriteVersionNumber"], 1)
             result = self.run_script("install_pet.py", "--package-dir", str(run), "--codex-home", str(root / ".codex"), "--dry-run")
             self.assertTrue(json.loads(result.stdout)["ok"])
 
@@ -121,7 +120,7 @@ class PetForgeTests(unittest.TestCase):
             workflow = json.loads((run / "pet-workflow.json").read_text(encoding="utf-8"))
             self.assertTrue(workflow["oneReferenceOnly"])
             self.assertEqual(workflow["userInputs"], ["reference.png"])
-            self.assertEqual(len(workflow["jobs"]), 11)
+            self.assertEqual(len(workflow["jobs"]), 9)
             self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
             self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
             with Image.open(run / "guides" / "row-00.png") as guide:
@@ -146,7 +145,7 @@ class PetForgeTests(unittest.TestCase):
             atlas.alpha_composite(duplicate, (CELL_W, CELL_H))
             atlas.save(root / "duplicate.png")
             result = subprocess.run(
-                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "duplicate.png"), "--require-v2", "--allow-chroma-fringe"],
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "duplicate.png"), "--allow-chroma-fringe"],
                 text=True, capture_output=True,
             )
             self.assertNotEqual(result.returncode, 0)
@@ -171,7 +170,7 @@ class PetForgeTests(unittest.TestCase):
             atlas.alpha_composite(cell, (0, 3 * CELL_H))
             atlas.save(root / "palette-drift.png")
             result = subprocess.run(
-                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "palette-drift.png"), "--require-v2", "--allow-chroma-fringe"],
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "palette-drift.png"), "--allow-chroma-fringe"],
                 text=True, capture_output=True,
             )
             self.assertNotEqual(result.returncode, 0)

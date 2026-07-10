@@ -9,7 +9,7 @@ from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Normalize a generated 8x11 pet atlas")
+    ap = argparse.ArgumentParser(description="Normalize a generated Codex Desktop 8x9 pet atlas")
     ap.add_argument("--input", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--webp-output")

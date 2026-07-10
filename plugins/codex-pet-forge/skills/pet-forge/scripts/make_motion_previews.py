@@ -32,8 +32,8 @@ def main() -> None:
         raise SystemExit("fps must be positive")
 
     atlas = Image.open(Path(args.atlas).expanduser().resolve()).convert("RGBA")
-    if atlas.size != (8 * CELL_W, 11 * CELL_H):
-        raise SystemExit(f"expected 1536x2288 atlas, got {atlas.width}x{atlas.height}")
+    if atlas.size != (8 * CELL_W, 9 * CELL_H):
+        raise SystemExit(f"expected 1536x1872 desktop atlas, got {atlas.width}x{atlas.height}")
     out = Path(args.output_dir).expanduser().resolve()
     out.mkdir(parents=True, exist_ok=True)
     duration = max(20, round(1000 / args.fps))
@@ -44,7 +44,7 @@ def main() -> None:
         ]
         target = out / f"row-{row:02d}-{STATE_NAMES[row]}.gif"
         frames[0].save(target, save_all=True, append_images=frames[1:], duration=duration, loop=args.loops, disposal=2)
-    print(f"wrote 11 motion previews at {args.fps:g} fps -> {out}")
+    print(f"wrote 9 motion previews at {args.fps:g} fps -> {out}")
 
 
 if __name__ == "__main__":

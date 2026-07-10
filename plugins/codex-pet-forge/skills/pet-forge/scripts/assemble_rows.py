@@ -9,7 +9,7 @@ from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, clear_unus
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Assemble eleven approved normalized row strips")
+    ap = argparse.ArgumentParser(description="Assemble nine approved Codex Desktop row strips")
     ap.add_argument("--rows-dir", required=True)
     ap.add_argument("--output", required=True, help="Lossless WebP output")
     ap.add_argument("--png-output")
@@ -28,7 +28,7 @@ def main() -> None:
         atlas.alpha_composite(strip, (0, row * CELL_H))
     clear_unused_cells(atlas)
     save_lossless(atlas, Path(args.png_output).resolve() if args.png_output else None, Path(args.output).resolve())
-    print(f"assembled 11 approved rows -> {args.output}")
+    print(f"assembled 9 approved desktop rows -> {args.output}")
 
 
 if __name__ == "__main__":

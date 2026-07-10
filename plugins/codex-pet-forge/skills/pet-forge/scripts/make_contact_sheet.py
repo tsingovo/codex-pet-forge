@@ -23,22 +23,15 @@ ROW_NAMES = [
     "waiting",
     "running",
     "review",
-    "look 000-157.5",
-    "look 180-337.5",
 ]
-USED_COUNTS = [6, 8, 8, 4, 5, 8, 6, 6, 6, 8, 8]
-EXTENDED_NEUTRAL_LOOK_FRAME = (0, 6)
+USED_COUNTS = [7, 8, 8, 4, 5, 8, 6, 6, 6]
 
 
 def is_used_cell(rows: int, row: int, column: int) -> bool:
-    return column < USED_COUNTS[row] or (
-        rows == 11 and (row, column) == EXTENDED_NEUTRAL_LOOK_FRAME
-    )
+    return column < USED_COUNTS[row]
 
 
 def frame_count_label(rows: int, row: int) -> str:
-    if rows == 11 and row == EXTENDED_NEUTRAL_LOOK_FRAME[0]:
-        return "6 + neutral"
     return f"{USED_COUNTS[row]} frames"
 
 
@@ -62,8 +55,8 @@ def main() -> None:
     with Image.open(Path(args.atlas).expanduser().resolve()) as opened:
         atlas = opened.convert("RGBA")
     rows = atlas.height // CELL_HEIGHT
-    if atlas.width != COLUMNS * CELL_WIDTH or rows not in {9, 11}:
-        raise SystemExit(f"atlas must be 1536x1872 or 1536x2288; got {atlas.width}x{atlas.height}")
+    if atlas.width != COLUMNS * CELL_WIDTH or rows != ROWS:
+        raise SystemExit(f"atlas must be 1536x1872 (8x9 Codex Desktop); got {atlas.width}x{atlas.height}")
 
     cell_w = max(1, round(CELL_WIDTH * args.scale))
     cell_h = max(1, round(CELL_HEIGHT * args.scale))

@@ -22,7 +22,9 @@ ATLAS_WIDTH = COLUMNS * CELL_WIDTH
 ATLAS_HEIGHT = ROWS * CELL_HEIGHT
 EXTENDED_ATLAS_HEIGHT = EXTENDED_ROWS * CELL_HEIGHT
 ROW_BY_INDEX = {
-    0: ("idle", 6),
+    # Desktop's idle row owns seven populated cells: six loop poses plus the
+    # neutral/rest frame used by the host's return-to-idle path.
+    0: ("idle", 7),
     1: ("running-right", 8),
     2: ("running-left", 8),
     3: ("waving", 4),
@@ -227,7 +229,14 @@ def main() -> None:
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
     parser.add_argument("--allow-chroma-fringe", action="store_true")
-    parser.add_argument("--require-v2", action="store_true")
+    parser.add_argument(
+        "--allow-extended-qa",
+        action="store_true",
+        help="Allow a 1536x2288 eleven-row offline QA sheet. It is never desktop-installable.",
+    )
+    # Kept only so older automation gets an explicit compatibility error rather
+    # than silently shipping an atlas the Desktop renderer cannot slice.
+    parser.add_argument("--require-v2", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     atlas_path = Path(args.atlas).expanduser().resolve()
@@ -250,19 +259,16 @@ def main() -> None:
         print(json.dumps(result, indent=2))
         raise SystemExit(1) from exc
 
-    expected_heights = (
-        {EXTENDED_ATLAS_HEIGHT}
-        if args.require_v2
-        else {
-            ATLAS_HEIGHT,
-            EXTENDED_ATLAS_HEIGHT,
-        }
-    )
+    expected_heights = {ATLAS_HEIGHT}
+    if args.allow_extended_qa:
+        expected_heights.add(EXTENDED_ATLAS_HEIGHT)
+    if args.require_v2:
+        errors.append("--require-v2 is retired: Codex Desktop requires a 1536x1872 8x9 install atlas")
     if image.width != ATLAS_WIDTH or image.height not in expected_heights:
         expected = (
-            f"{ATLAS_WIDTH}x{EXTENDED_ATLAS_HEIGHT} for a v2 pet"
-            if args.require_v2
-            else f"{ATLAS_WIDTH}x{ATLAS_HEIGHT} or {ATLAS_WIDTH}x{EXTENDED_ATLAS_HEIGHT}"
+            f"{ATLAS_WIDTH}x{ATLAS_HEIGHT} for a Codex Desktop pet"
+            if not args.allow_extended_qa
+            else f"{ATLAS_WIDTH}x{ATLAS_HEIGHT} (desktop) or {ATLAS_WIDTH}x{EXTENDED_ATLAS_HEIGHT} (offline QA only)"
         )
         errors.append(f"expected {expected}, got {image.width}x{image.height}")
 
@@ -387,7 +393,7 @@ def main() -> None:
     # change apparent width/contour, so visual review rather than this scalar gate
     # owns them. Height drift still catches a newly redrawn tall/short character.
     idle_height = identity_height_medians.get(0)
-    if is_extended_atlas and idle_height:
+    if idle_height:
         for row_index in range(1, 9):
             row_height = identity_height_medians.get(row_index)
             if row_height is None:
@@ -496,6 +502,7 @@ def main() -> None:
         "columns": COLUMNS,
         "rows": row_count,
         "sprite_version_number": 2 if is_extended_atlas else 1,
+        "desktop_installable": not is_extended_atlas,
         "width": image.width,
         "height": image.height,
         "transparent_rgb_residue_pixels": transparent_rgb_residue,

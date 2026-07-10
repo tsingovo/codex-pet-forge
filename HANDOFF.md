@@ -7,8 +7,8 @@
 ## Project identity
 
 - Repository: `codex-pet-forge`
-- Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.9` (published palette and proportion-profile consistency guards)
+- Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
+- Current release: `v0.2.0` (Desktop atlas compatibility repair; pending publication)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -20,7 +20,7 @@ one user reference
   -> prepare_identity_locked_run.py (file-based prompt pack + exact strip guides)
   -> canonical.png (immutable full-body rig)
   -> turnaround.png (eight orthographic identity anchors)
-  -> 11 exact complete-row jobs (meaningful pose + multi-frame expression timelines)
+  -> 9 exact complete-row jobs (meaningful pose + multi-frame expression timelines)
   -> validate_row_strip.py for every row
   -> assemble_rows.py -> despill_chroma_edges.py -> validate_atlas.py
   -> make_contact_sheet.py + make_motion_previews.py
@@ -28,6 +28,17 @@ one user reference
 ```
 
 Fast one-atlas generation remains draft-only. Production repair regenerates only the complete failed row; isolated body-part repair and missing-frame duplication/grouping are forbidden.
+
+### 2026-07-11 — Desktop 8×9 runtime-compatibility repair / Desktop 8×9 runtime compatibility repair
+
+- 中文：用户反馈 GPT娘 在实际 Codex 中出现 1/2/3 个人串帧、向右拖拽变瘦变高。根因已确认：旧版安装了 1536×2288 的 11 行图集，而桌面端固定按 `background-size: 800% 900%` 切 8×9 单元格，纵向重采样会把相邻行串入动画。
+- English: The user reported 1/2/3-character frame mixing and a tall/thin right-drag pose. Root cause is confirmed: the former 1536×2288 eleven-row sheet was installed while Desktop slices a fixed 8×9 grid with `background-size: 800% 900%`, so vertical resampling mixes neighboring rows.
+- 中文：产品默认格式已改为 `1536×1872`、8×9、`spriteVersionNumber: 1`；生成、归一化、逐行装配、安装、联系表、动图预览、行替换、验证器与测试均已改为桌面端契约。11 行转台仅允许作为离线 QA，不得安装。
+- English: The product default is now `1536×1872`, 8×9, and `spriteVersionNumber: 1`; generation, normalization, row assembly, installation, contact sheets, motion previews, row replacement, validator, and tests now use the Desktop contract. Eleven-row turnarounds are offline QA only and cannot be installed.
+- 中文：GPT娘 样例已裁切为 9 行实际桌面图集，重新生成联系表和直接安装包；验证器报告 `desktop_installable: true`、每行中位可见高度均为 194px、无透明 RGB 残留及无错误。
+- English: The GPT娘 sample is now a nine-row Desktop atlas with regenerated contact sheet and direct package; the validator reports `desktop_installable: true`, 194px median visible height in every row, no hidden transparent RGB, and no errors.
+- 中文：验证证据：`python -m unittest discover -s tests -v` 通过 5 项；样例图集通过完整桌面验证。待下一步：发布 v0.2.0，并以无备份覆盖方式安装至真实 Codex。
+- English: Verification evidence: all five unit tests pass and the sample atlas passes full Desktop validation. Next action: publish v0.2.0 and replace the real Codex pet in place with no backup.
 
 ## Non-negotiable runtime facts
 

@@ -1,7 +1,7 @@
 {
   "name": "codex-pet-forge",
-  "version": "0.1.9",
-  "description": "Create identity-locked Codex v2 pets from one character reference image.",
+  "version": "0.2.0",
+  "description": "Create identity-locked Codex Desktop 8x9 pets from one character reference image.",
   "author": {
     "name": "HASEE"
   },
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Codex Pet Forge",
     "shortDescription": "Turn one character image into a coherent Codex pet.",
-    "longDescription": "A quality-first, token-light workflow that derives one canonical rig and eight-view turnaround, generates meaningful full action rows, validates identity and motion continuity, previews loops, and installs Codex v2 pets.",
+    "longDescription": "A quality-first, token-light workflow that derives one canonical rig and eight-view turnaround, generates meaningful full action rows, validates identity and motion continuity, previews loops, and installs Desktop-safe 8x9 pets without 11-row scaling artifacts.",
     "developerName": "HASEE",
     "category": "Productivity",
     "capabilities": [],

@@ -4,10 +4,14 @@ import re
 from pathlib import Path
 from PIL import Image
 
-COLS, ROWS = 8, 11
+# Codex Desktop slices its pet background with a fixed 8 x 9 CSS grid.
+# Keep this as the default product contract.  Eleven-row sheets are useful
+# as offline turnaround QA artifacts, but must never be installed as the
+# desktop pet atlas: the renderer will vertically resample them and mix rows.
+COLS, ROWS = 8, 9
 CELL_W, CELL_H = 192, 208
 ATLAS_W, ATLAS_H = COLS * CELL_W, ROWS * CELL_H
-USED_COUNTS = (7, 8, 8, 4, 5, 8, 6, 6, 6, 8, 8)
+USED_COUNTS = (7, 8, 8, 4, 5, 8, 6, 6, 6)
 
 
 def slugify(value: str) -> str:

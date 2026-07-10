@@ -1,7 +1,7 @@
 # Codex Pet Forge / Codex 宠物锻造器
 
-将人物参考图转换为经验证的 Codex v2 动态宠物。
-Turn a character reference image into a validated Codex v2 animated pet.
+将人物参考图转换为经验证、可被 Codex 桌面端正确切帧的动态宠物。
+Turn a character reference image into a validated animated pet that Codex Desktop can slice correctly.
 
 > 版权所有 © 2026 HASEE。详见 NOTICE 与 LICENSE。
 > Copyright (c) 2026 HASEE. See [NOTICE](NOTICE) and [LICENSE](LICENSE).
@@ -13,6 +13,9 @@ The user uploads only one reference image; the plugin first derives a canonical 
 
 这会固定头身比、脸型、手臂/腿/手/鞋比例、发型体积、每层衣物与非对称装饰、配色、线条、实际尺寸和脚底基线，使不同动作接近同一个 3D 模型的不同姿势与方向。
 This locks head/body ratio, face, arm/leg/hand/shoe proportions, hair volumes, every garment layer and asymmetric ornament, palette, line weight, practical scale, and baseline so actions resemble one 3D model rendered in different poses and directions.
+
+安装图集严格固定为 `1536×1872`、`8×9`、`192×208` 单元格和 `spriteVersionNumber: 1`；旧的 11 行图集只能作为离线转台 QA，绝不安装，因为桌面端会把它错误重采样并串行人物。
+The install atlas is strictly `1536×1872`, `8×9`, `192×208` cells, and `spriteVersionNumber: 1`; eleven-row sheets are offline turnaround QA only and are never installed because Desktop resamples them incorrectly and can mix character rows.
 
 快速整图生成仅用于草稿；正式成品必须逐行生成、逐行验证，生成数量不足时整行重做，禁止复制、拼人或局部换手换脚补帧。
 Fast full-atlas generation is draft-only; production pets use complete-row generation and validation, and a row with insufficient figures must be regenerated instead of duplicating/grouping figures or patching isolated hands/feet.

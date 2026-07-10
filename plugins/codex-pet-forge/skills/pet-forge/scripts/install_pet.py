@@ -28,8 +28,8 @@ def main() -> None:
         raise SystemExit("package must contain pet.json and spritesheet.webp")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     required = {"id", "displayName", "description", "spriteVersionNumber", "spritesheetPath"}
-    if not required.issubset(manifest) or manifest["spriteVersionNumber"] != 2:
-        raise SystemExit("invalid v2 pet manifest")
+    if not required.issubset(manifest) or manifest["spriteVersionNumber"] != 1:
+        raise SystemExit("invalid desktop pet manifest: spriteVersionNumber must be 1 (8x9 atlas)")
     with Image.open(sheet_path) as image:
         if image.size != (ATLAS_W, ATLAS_H) or image.mode != "RGBA":
             raise SystemExit(f"spritesheet must be RGBA {ATLAS_W}x{ATLAS_H}")

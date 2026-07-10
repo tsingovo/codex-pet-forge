@@ -27,8 +27,6 @@ ROWS = [
     (6, "waiting", 6, "Six user-input waiting poses: attentive; tiny head tilt; hopeful eyes; patient blink; slight asking smile; return attentive. This is distinct from ordinary idle and changes expression across the row."),
     (7, "thinking", 6, "Six stable hand-under-chin thinking poses: focused; eyes shift; brow narrows; small realization; restrained smile; focused return. Same hand stays under chin and body does not swing; face changes in every frame."),
     (8, "review", 6, "Six review poses: focus; careful look; blink; understanding; pleased eyes; small satisfied smile. No new props; expression develops continuously."),
-    (9, "look-000-157", 8, "Eight exact rig directions: 000 back/up, 022.5, 045, 067.5, 090 right, 112.5, 135, 157.5. Neutral relaxed face where visible; exact clothing ornaments remain attached to the same physical side."),
-    (10, "look-180-337", 8, "Eight exact rig directions: 180 front/down, 202.5, 225, 247.5, 270 left, 292.5, 315, 337.5. Neutral relaxed face where visible; exact clothing ornaments remain attached to the same physical side."),
 ]
 
 
@@ -104,12 +102,13 @@ animation frame must transition naturally back to the first.
         })
 
     model = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "petId": args.pet_id or slugify(args.pet_name),
         "displayName": args.pet_name,
         "userInputs": [copied.name],
         "canonicalOutput": "canonical.png",
         "turnaroundOutput": "turnaround.png",
+        "desktopAtlas": {"columns": 8, "rows": 9, "width": 1536, "height": 1872},
         "identityLock": True,
         "oneReferenceOnly": True,
         "jobs": jobs_json,

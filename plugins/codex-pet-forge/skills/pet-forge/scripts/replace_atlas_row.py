@@ -8,9 +8,9 @@ from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Replace one row of a Codex v2 atlas")
+    ap = argparse.ArgumentParser(description="Replace one row of a Codex Desktop atlas")
     ap.add_argument("--base", required=True)
-    ap.add_argument("--row", type=int, required=True, choices=range(11))
+    ap.add_argument("--row", type=int, required=True, choices=range(9))
     ap.add_argument("--strip", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--png-output")
