@@ -118,6 +118,11 @@ def chroma_fringe_count(
     )
 
 
+def alpha_bbox(image: Image.Image) -> tuple[int, int, int, int] | None:
+    """Return the visible-alpha bounds for registration checks."""
+    return image.getchannel("A").getbbox()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
@@ -131,6 +136,12 @@ def main() -> None:
     parser.add_argument("--chroma-fringe-edge-radius", type=int, default=2)
     parser.add_argument("--chroma-fringe-alpha-minimum", type=int, default=16)
     parser.add_argument("--max-chroma-fringe-pixels", type=int, default=0)
+    parser.add_argument(
+        "--max-baseline-drift",
+        type=int,
+        default=18,
+        help="Maximum visible-bottom difference across the used frames of one row (pixels).",
+    )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
@@ -143,6 +154,7 @@ def main() -> None:
     errors: list[str] = []
     warnings: list[str] = []
     near_opaque_used_cells: dict[str, list[int]] = defaultdict(list)
+    row_bottoms: dict[int, list[tuple[int, int]]] = defaultdict(list)
     cells: list[dict[str, object]] = []
 
     try:
@@ -196,6 +208,9 @@ def main() -> None:
                 "used": used,
                 "nontransparent_pixels": nontransparent,
             }
+            bbox = alpha_bbox(cell)
+            if bbox is not None:
+                cell_info["visible_bbox"] = list(bbox)
             chroma_leak_pixels = opaque_chroma_key_count(
                 cell,
                 chroma_key,
@@ -215,6 +230,11 @@ def main() -> None:
                 errors.append(
                     f"{state} row {row_index} column {column_index} is empty or too sparse ({nontransparent} pixels)"
                 )
+            if used and bbox is not None:
+                # A detached/missing foot or a sliced body often shifts the alpha
+                # bottom dramatically. Check the entire action row below instead
+                # of accepting a structurally valid but visibly misregistered cell.
+                row_bottoms[row_index].append((column_index, bbox[3]))
             if used and chroma_leak_pixels > args.max_chroma_leak_pixels:
                 message = (
                     f"{state} row {row_index} column {column_index} has {chroma_leak_pixels} "
@@ -250,6 +270,20 @@ def main() -> None:
             warnings.append(message)
         else:
             errors.append(message)
+
+    for row_index, values in row_bottoms.items():
+        if len(values) < 2:
+            continue
+        bottoms = [bottom for _, bottom in values]
+        drift = max(bottoms) - min(bottoms)
+        if drift > args.max_baseline_drift:
+            state, _ = ROW_BY_INDEX[row_index]
+            columns = ", ".join(str(column) for column, _ in values)
+            errors.append(
+                f"{state} row {row_index} visible baseline drift is {drift}px across columns "
+                f"{columns} (limit {args.max_baseline_drift}px); repair the complete row to avoid "
+                "detached feet or sliced-body registration"
+            )
 
     alpha_count = alpha_nonzero_count(image)
     if alpha_count == ATLAS_WIDTH * ATLAS_HEIGHT:

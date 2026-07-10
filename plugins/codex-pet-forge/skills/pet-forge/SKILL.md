@@ -63,7 +63,7 @@ PYTHON=<absolute Python executable>
   <run>/spritesheet.webp --output <run>/contact-sheet.png
 ```
 
-8. Inspect the contact sheet. Require recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise.
+8. Inspect the contact sheet. Require recognizable identity, correct row semantics, no clipping, no copied grid, and no detached noise. The validator also rejects excessive per-row visible-baseline drift, which commonly catches detached shoes, missing feet, and sliced-body registration. If it fails, regenerate and replace the complete row; never move or paste one foot/limb cell manually.
 9. Write and install the package:
 
 ```powershell

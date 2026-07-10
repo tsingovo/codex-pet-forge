@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.2` (published animation alignment repair)
+- Current release: `v0.1.3` (published registration guard)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -68,12 +68,13 @@ Remove `.codex-test` after verification; do not commit it.
 
 ## Release state and upload
 
-- Release archives: sibling files `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip` and `F:\桌面\小学期\codex-pet-forge-v0.1.1.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.2.zip` from the final v0.1.2 commit before upload.
+- Release archives: sibling files through `F:\桌面\小学期\codex-pet-forge-v0.1.2.zip` are historical releases; generate `F:\桌面\小学期\codex-pet-forge-v0.1.3.zip` from the final v0.1.3 commit before upload.
 - GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
 - Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
 - Published baseline: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.0` (tag and source ZIP asset). Main branch is the source of truth.
 - Published sample release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.1`, with both `codex-pet-forge-v0.1.1.zip` and the direct `gpt-niang-pet.zip` asset. Confirm the public repository/release pages and both assets are reachable after publication.
 - Published repair release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.2`, with the corrected `gpt-niang-pet.zip` and source archive. Verify both artifacts are reachable after publication.
+- Published guard release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.3`, with the registration-validation guard and current GPT娘 sample package.
 
 ## Change log
 
@@ -123,3 +124,8 @@ Remove `.codex-test` after verification; do not commit it.
   - Validation: inspected the final contact sheet visually: every hover/running frame has full legs and shoes below the skirt, no clipped limbs or loose shoe components, and the question mark only appears above the hair in its intended hover frame. `validate_atlas.py --require-v2` passed with zero errors/warnings; `install_pet.py --replace --backup` returned `ok: true`.
   - Risk: generated character clothing still includes reference-inspired emblem details; the existing sample asset-rights notice remains mandatory. Do not repair individual foot cells—regenerate and replace the entire action row.
   - Next action: run plugin validation, commit/push, tag `v0.1.2`, create the release with the updated direct package, and verify the public assets.
+- 2026-07-10 — registration guard for future pets
+  - Change: added a visible-alpha baseline-drift check to `validate_atlas.py`; it rejects action rows whose sprite bottoms diverge by more than 18 pixels, an objective signal for detached shoes, missing feet, or sliced-body registration. Updated the skill to require a complete-row regeneration rather than a one-cell limb patch.
+  - Validation: the corrected GPT娘 atlas passes the new guard and all existing structural/chroma validation.
+  - Limitation: this is a preventive gate, not a guarantee that every generated pose is artistically correct. The mandatory contact-sheet visual review remains required before installation.
+  - Next action: tag/push v0.1.3, release the source archive and current direct GPT娘 package, then verify public assets.
