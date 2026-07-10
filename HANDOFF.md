@@ -8,8 +8,8 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex v2 pet.
-- Current release: `v0.1.0` (unpublished local baseline)
-- Baseline commit: `77673a1 feat: add Codex Pet Forge fast pet plugin`
+- Current release: `v0.1.0` (GitHub publication in progress)
+- Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
 
@@ -68,10 +68,10 @@ Remove `.codex-test` after verification; do not commit it.
 
 ## Release state and upload
 
-- Release archive: sibling file `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip` generated with `git archive` from the baseline commit.
-- GitHub remote: not configured yet.
-- Upload blocker at last audit: GitHub CLI has no local authenticated account despite the user reporting a connected GitHub plugin; no GitHub connector tool was exposed in this task runtime.
-- Safe next action after authentication: create the GitHub repository, add `origin`, push `main`, then create a `v0.1.0` GitHub release using the ZIP archive.
+- Release archive: sibling file `F:\桌面\小学期\codex-pet-forge-v0.1.0.zip`, regenerated with `git archive` from the final release commit before upload.
+- GitHub remote: public repository `https://github.com/tsingovo/codex-pet-forge`; `origin` has been configured.
+- Authentication: GitHub account `tsingovo` is connected. The repository-local `.gh-auth/` directory holds transient CLI configuration and is ignored; never commit or archive it.
+- Next release steps: push `main`, create the `v0.1.0` tag/release, upload the ZIP archive, then record the release URL and verification result here in the same commit if any metadata changes.
 
 ## Change log
 
@@ -85,3 +85,8 @@ Remove `.codex-test` after verification; do not commit it.
 - Validation evidence: unit tests pass; skill validator passes; plugin validator passes; temporary local marketplace installation and plugin add/list pass; independent forward test prepared a run successfully.
 - Risks: a single full-atlas generation can still drift on complex/asymmetric characters; use reliable one-row repair. Partial face-only references require conservative inference for unseen clothing/body.
 - Next action: publish to GitHub after authenticated repository creation, then replace `OWNER` in README install examples with the actual GitHub owner/repository.
+- 2026-07-10 — GitHub publication preparation
+  - Change: created public remote `tsingovo/codex-pet-forge`, updated README installation command, and protected repository-local GitHub CLI configuration with `.gitignore`.
+  - Validation: authenticated GitHub API identity returned `tsingovo`; `origin` points to the public repository.
+  - Risk: Windows Git initially failed HTTPS push using the system Schannel backend; use the GitHub connector/API or the repository-local OpenSSL override, never store an access token in Git configuration.
+  - Next action: complete push and GitHub release, then replace this entry's next action with permanent release evidence.

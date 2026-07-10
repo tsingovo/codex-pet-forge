@@ -6,3 +6,4 @@ runs/
 generated_images/
 *.before-*.webp
 .DS_Store
+.gh-auth/

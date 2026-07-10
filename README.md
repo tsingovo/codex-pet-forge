@@ -31,10 +31,10 @@ The default fast path uses one primary generation job. A failed expression or mo
 
 ## Install from GitHub
 
-After publishing this repository as `OWNER/codex-pet-forge`:
+Install the published marketplace from `tsingovo/codex-pet-forge`:
 
 ```powershell
-codex plugin marketplace add OWNER/codex-pet-forge
+codex plugin marketplace add tsingovo/codex-pet-forge
 codex plugin add codex-pet-forge@codex-pet-forge
 ```
 
