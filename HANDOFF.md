@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.5` (lossless prompt-budget and failed-row retry contract prepared)
+- Current release: `v0.2.5` (published; lossless prompt-budget and failed-row retry contract)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -135,8 +135,12 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: The identity lock repeated across ten image jobs is compacted from 742 to 518 characters while retaining every head/body, face/eye, hair, shoulder/hip, limb/hand/shoe length-volume, garment/ornament-side, palette/line, practical-height, baseline, and safe-box invariant; one production run saves roughly 560 prompt tokens with no quality gate removed.
 - 中文：`prompt-budget.json` 记录每个提示的字符数、保守 Token 上限、节省量与 `qualityGatesRemoved: 0`；`pet-workflow.json.retryPolicy` 规定失败时只复用原 canonical/turnaround 重做完整失败行，聊天只返回失败行、门槛、提示路径和最终状态。
 - English: `prompt-budget.json` records per-prompt characters, a conservative token ceiling, savings, and `qualityGatesRemoved: 0`; `pet-workflow.json.retryPolicy` requires reusing the original canonical/turnaround to regenerate only the complete failed row, while chat reports only failed row, gates, prompt path, and final status.
-- 中文：新增契约测试把身份锁上限固定为 520 字符、单流程至少节省 550 个估算提示 Token，并证明单参考输入与全部质量门槛保持不变；下一步为完整测试、样例流程审计、v0.2.5 发布与本地覆盖。
-- English: Added contract tests capping the identity lock at 520 characters, requiring at least 550 estimated prompt tokens saved per run, and proving one-reference input plus all quality gates remain intact; next actions are full tests, sample workflow audit, v0.2.5 publication, and local replacement.
+- 中文：新增契约测试把身份锁上限固定为 520 字符、单流程至少节省 550 个估算提示 Token，并证明单参考输入与全部质量门槛保持不变；完整 11 项测试、技能校验、插件校验及 GPT娘预算审计均通过。
+- English: Added contract tests capping the identity lock at 520 characters, requiring at least 550 estimated prompt tokens saved per run, and proving one-reference input plus all quality gates remain intact; all eleven tests, skill validation, plugin validation, and GPT娘 budget audit pass.
+- 中文：GitHub `main`、`v0.2.5` 标签与公开 Release 已同步：`https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.5`；源码和 GPT娘直装包均已上传，说明继续采用中文段落在对应英文之前。
+- English: GitHub `main`, the `v0.2.5` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.5`; source and direct GPT娘 packages are uploaded, with each Chinese paragraph before its matching English paragraph.
+- 中文：真实 Codex 插件已升级到 `0.2.5`，GPT娘以 `--replace` 无备份覆盖；样例与安装图集哈希一致，本地仅有一个 `gpt-niang` 目录。
+- English: The real Codex plugin is upgraded to `0.2.5`, and GPT娘 is replaced with `--replace` and no backup; sample and installed atlas hashes match, with exactly one local `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
