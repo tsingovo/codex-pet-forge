@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.1` (completeness/component and motion-uniformity guards prepared)
+- Current release: `v0.2.1` (published completeness, motion-uniformity, and overlay-clipping diagnosis)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -74,6 +74,15 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - 中文：资产侧缓解进一步收紧为统一 176px 可见高度、14px 鞋底缓冲和 16px 横向装配安全框；这不能替代宿主修复，但能降低短暂窗口裁切对人物头发和四肢的影响。
 - English: Asset-side mitigation is tightened to a uniform 176px visible height, 14px shoe clearance, and 16px horizontal assembly safe box; this does not replace a host fix, but reduces the impact of transient window clipping on hair and limbs.
 
+### 2026-07-11 — v0.2.1 发布与本地覆盖 / v0.2.1 publication and local replacement
+
+- 中文：GitHub `main`、`v0.2.1` 标签和公开 Release 已同步，包含源码 ZIP 与 GPT娘 直装包；发布说明继续保持每段中文在对应英文之前。
+- English: GitHub `main`, the `v0.2.1` tag, and the public Release are synchronized with source ZIP and direct GPT娘 package; every release-note Chinese paragraph remains before its matching English paragraph.
+- 中文：9 项单元测试全部通过；GPT娘 诊断报告为 `asset_safe: true`、`desktop_installable: true`、`host-overlay-bounds-desynchronization-likely`，九行动作中位高度均为 176px。
+- English: All nine unit tests pass; GPT娘 diagnosis reports `asset_safe: true`, `desktop_installable: true`, and `host-overlay-bounds-desynchronization-likely`, with a 176px median height in all nine action rows.
+- 中文：真实 Codex 插件已由 0.2.0 升级到 0.2.1，GPT娘 已无备份覆盖；样例与安装图集 SHA256 完全一致，本地仍只有一个 `gpt-niang` 目录。
+- English: The real Codex plugin was upgraded from 0.2.0 to 0.2.1 and GPT娘 replaced without backup; sample and installed atlas SHA256 values match exactly, and only one `gpt-niang` directory remains.
+
 ## Non-negotiable runtime facts
 
 Source: `plugins/codex-pet-forge/skills/pet-forge/references/trigger-semantics.md`, verified against Codex Desktop `26.707.3748.0` local frontend code.
@@ -130,6 +139,7 @@ Remove `.codex-test` after verification; do not commit it.
 - Published one-reference rig release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.8`, with the source archive and validated direct GPT娘 package.
 - Published identity-metric release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.9`, with palette/proportion guards, source archive, and the validated direct GPT娘 package.
 - Published Desktop-safe release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.0`, with the 8×9 renderer fix, uniform head-safe registration, source archive, and corrected GPT娘 direct package.
+- Published completeness/diagnostic release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.1`, with connected-component completeness, cyclic motion uniformity, split-screen overlay diagnosis, source archive, and corrected GPT娘 package.
 
 ## Change log
 
