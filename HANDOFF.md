@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.6` (within-action structural median gate prepared)
+- Current release: `v0.2.6` (published; within-action structural median gate and repaired GPT娘)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -152,8 +152,12 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: All nine GPT娘 actions pass, with a worst-case new-gate value of `0.016868`; the focused test disables the global `0.11` gate and still independently rejects a single enlarged body/outfit frame.
 - 中文：应用户要求实际更新宠物而非只升级验证器：原先偏瘦的等待、托腮思考、复核行分别应用经人工审查的 `1.1467 / 1.1416 / 1.1302` 整行横向校正；三行全局结构漂移降至 `0.03` 以下，同时保持 176px 高度、18px 头顶、14px 鞋底和原动作/表情时间线。
 - English: Per the user's request, the pet itself—not only the validator—is updated: the formerly thin waiting, hand-under-chin thinking, and review rows receive reviewed whole-row width factors `1.1467 / 1.1416 / 1.1302`; global structural drift for all three falls below `0.03` while preserving 176px height, 18px head clearance, 14px shoe clearance, and the original motion/expression timelines.
-- 中文：新增 `register_row_widths.py`，仅允许 0.75–1.25 的显式人工审查整行系数，并拒绝超过横向安全框的结果；已重建 GPT娘联系表、9 个 GIF、验证报告、裁切诊断和直装包，新图集 SHA256 为 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`。下一步为完整测试、v0.2.6 发布与本地覆盖。
-- English: Added `register_row_widths.py`, accepting only explicit reviewed 0.75–1.25 whole-row factors and rejecting results beyond the horizontal safe box; rebuilt the GPT娘 contact sheet, nine GIFs, validation report, clipping diagnosis, and direct package, with new atlas SHA256 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`. Next actions are full tests, v0.2.6 publication, and local replacement.
+- 中文：新增 `register_row_widths.py`，仅允许 0.75–1.25 的显式人工审查整行系数，并拒绝超过横向安全框的结果；已重建 GPT娘联系表、9 个 GIF、验证报告、裁切诊断和直装包，新图集 SHA256 为 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`。完整 12 项测试、技能、插件与图集验证均通过。
+- English: Added `register_row_widths.py`, accepting only explicit reviewed 0.75–1.25 whole-row factors and rejecting results beyond the horizontal safe box; rebuilt the GPT娘 contact sheet, nine GIFs, validation report, clipping diagnosis, and direct package, with new atlas SHA256 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`. All twelve tests plus skill, plugin, and atlas validation pass.
+- 中文：GitHub `main`、`v0.2.6` 标签与公开 Release 已同步：`https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.6`；源码和更新后的 GPT娘直装包均已上传，说明继续采用中文段落在对应英文之前。
+- English: GitHub `main`, the `v0.2.6` tag, and public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.6`; source and updated direct GPT娘 packages are uploaded, with each Chinese paragraph before its matching English paragraph.
+- 中文：真实 Codex 插件已升级到 `0.2.6`，新 GPT娘以 `--replace` 无备份覆盖；安装图集与样例 SHA256 完全一致，本地仅保留一个 `gpt-niang` 目录。
+- English: The real Codex plugin is upgraded to `0.2.6`, and the repaired GPT娘 is installed with `--replace` and no backup; installed and sample atlas SHA256 values match exactly, with only one local `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
