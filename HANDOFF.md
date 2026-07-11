@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.4` (multi-frame expression continuity gate prepared)
+- Current release: `v0.2.4` (published; multi-frame expression continuity gate)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -122,8 +122,12 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: The former default allowed two head changes, so an isolated “same face → one special face → same face” accent could pass; the minimum head-region transition count is now raised from two to three, explicitly rejecting a single-frame expression with only enter/exit changes.
 - 中文：工作流 JSON 新增 `expressionContinuityGate`，覆盖待机、招呼、悬停疑惑、失败、等待、托腮思考与复核行；生成规则与文档统一要求表情在至少三次相邻帧变化中自然发展。
 - English: Workflow JSON now includes `expressionContinuityGate` for idle, greeting, hover curiosity, failed, waiting, hand-under-chin thinking, and review rows; generation rules and documentation consistently require expression to evolve naturally across at least three adjacent-frame transitions.
-- 中文：新增保持下半身动作不同、但让头部仅在一帧变化的失败测试，证明门槛针对表情时间线而不是依赖整帧重复检测；下一步为完整测试、样例重验、v0.2.4 发布与本地覆盖。
-- English: Added a failure test that keeps lower-body motion distinct while changing the head in only one frame, proving the gate targets the expression timeline rather than relying on whole-frame duplicate detection; next actions are full tests, sample revalidation, v0.2.4 publication, and local replacement.
+- 中文：新增保持下半身动作不同、但让头部仅在一帧变化的失败测试，证明门槛针对表情时间线而不是依赖整帧重复检测；完整 11 项测试、技能校验、插件校验与 GPT娘样例重验全部通过。
+- English: Added a failure test that keeps lower-body motion distinct while changing the head in only one frame, proving the gate targets the expression timeline rather than relying on whole-frame duplicate detection; all eleven tests, skill validation, plugin validation, and GPT娘 sample revalidation pass.
+- 中文：GitHub `main`、`v0.2.4` 标签与公开 Release 已同步：`https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.4`；源码与 GPT娘直装包均已上传，发布说明继续遵守中文段落在对应英文之前。
+- English: GitHub `main`, the `v0.2.4` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.4`; source and direct GPT娘 packages are uploaded, with every Chinese paragraph before its matching English paragraph.
+- 中文：真实 Codex 插件已升级到 `0.2.4`，GPT娘以 `--replace` 无备份覆盖；样例与安装图集哈希一致，本地仅有一个 `gpt-niang` 目录。
+- English: The real Codex plugin is upgraded to `0.2.4`, and GPT娘 is replaced with `--replace` and no backup; sample and installed atlas hashes match, with exactly one local `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
