@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.0` (Desktop atlas compatibility repair; pending publication)
+- Current release: `v0.2.0` (published Desktop 8×9 compatibility and head-safe registration)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -48,6 +48,13 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: Safe-box registration now runs in full-atlas normalization, row assembly, and single-row replacement; the validator adds hard minimums of 10px above the head and 8px below the shoes, plus a top-touching head rejection test.
 - 中文：GPT娘 已重新注册并通过验证：9 行中位可见高度全部为 184px、透明 RGB 残留为 0、无错误；联系表和全部 9 行 8 FPS 预览已重建。
 - English: GPT娘 was re-registered and passes validation: all nine rows have a 184px median visible height, transparent RGB residue is zero, and there are no errors; the contact sheet and all nine 8 FPS previews were rebuilt.
+
+### 2026-07-11 — v0.2.0 发布与本地覆盖 / v0.2.0 publication and local replacement
+
+- 中文：`main` 已同步到 GitHub，`v0.2.0` 标签与 Release 已发布；资产为 `codex-pet-forge-v0.2.0.zip` 和 `gpt-niang-pet.zip`，Release 说明继续遵循中文在前、英文在后的双语格式。
+- English: `main` is synchronized to GitHub, and the `v0.2.0` tag and Release are published with `codex-pet-forge-v0.2.0.zip` and `gpt-niang-pet.zip`; release notes retain Chinese-first, English-second bilingual ordering.
+- 中文：真实 Codex marketplace 已升级，旧的 `codex-pet-forge@0.1.9` 已移除并安装 `0.2.0`；GPT娘 使用 `--replace` 无备份覆盖，本地仅存在一个 `gpt-niang` 目录。
+- English: The real Codex marketplace was upgraded, `codex-pet-forge@0.1.9` was removed and `0.2.0` installed; GPT娘 was replaced in place with `--replace` and no backup, leaving exactly one `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
@@ -104,6 +111,7 @@ Remove `.codex-test` after verification; do not commit it.
 - Published identity-lock release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.4`, with the canonical-character workflow and current GPT娘 sample package.
 - Published one-reference rig release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.8`, with the source archive and validated direct GPT娘 package.
 - Published identity-metric release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.1.9`, with palette/proportion guards, source archive, and the validated direct GPT娘 package.
+- Published Desktop-safe release: `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.0`, with the 8×9 renderer fix, uniform head-safe registration, source archive, and corrected GPT娘 direct package.
 
 ## Change log
 
