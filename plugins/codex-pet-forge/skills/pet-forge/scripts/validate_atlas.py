@@ -299,8 +299,8 @@ def main() -> None:
     parser.add_argument(
         "--min-expressive-transitions",
         type=int,
-        default=2,
-        help="Minimum changed head-region transitions in expressive rows.",
+        default=3,
+        help="Minimum changed head-region transitions in expressive rows; three rejects a one-frame-only accent.",
     )
     parser.add_argument(
         "--max-step-outlier-ratio",
@@ -619,6 +619,7 @@ def main() -> None:
                     f"{', '.join(map(str, outliers))}; regenerate evenly phased complete-row motion"
                 )
         head_differences: list[float] = []
+        expressive_transitions = 0
         if row_index in expressive_rows:
             heads = [frame.crop((0, 0, CELL_WIDTH, 120)) for frame in frames]
             head_differences = [
@@ -636,6 +637,7 @@ def main() -> None:
             "state": state,
             "frame_differences": [round(value, 6) for value in differences],
             "head_differences": [round(value, 6) for value in head_differences],
+            "expressive_transition_count": expressive_transitions,
             "motion_step_cv": round(step_cv, 6),
         }
 

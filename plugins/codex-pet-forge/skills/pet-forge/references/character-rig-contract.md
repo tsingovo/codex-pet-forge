@@ -48,7 +48,7 @@ Every occupied cell contains exactly one complete character from highest hair/ef
 
 - Use every runtime frame. Adjacent frames must be distinct, evenly phased, and lead naturally into the next frame and back to frame 0.
 - Each action has a physical intention and a beginning, development, and return. Random limb motion is not animation.
-- Expression is a timeline, not a single accent frame. At least three frames in every expressive row must change eyes, brows, and/or mouth naturally.
+- Expression is a timeline, not a single accent frame. At least three head-region transitions in every expressive row must change eyes, brows, and/or mouth naturally. A single special face surrounded by identical faces creates only two transitions (enter/exit) and is rejected.
 - Keep body mass stable. Movement comes from joint rotation, weight shift, cloth/hair follow-through, gaze, and expression—not character scaling.
 - Row 0 is the automatic idle loop when no other state is active: breathing, blink, tiny gaze change, return. It must visibly animate while staying calm.
 - Codex runtime frame counts and playback cadence are fixed by the host. Smoothness comes from using all available frames without duplicates, not by inventing unsupported manifest FPS settings.

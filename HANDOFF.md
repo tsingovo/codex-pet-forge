@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.3` (published; structural silhouette identity gate)
+- Current release: `v0.2.4` (multi-frame expression continuity gate prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -115,6 +115,15 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: GitHub `main`, the `v0.2.3` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.3`; source and direct GPT娘 packages are uploaded, with every Chinese paragraph before its matching English paragraph.
 - 中文：真实 Codex 插件已升级到 `0.2.3`，GPT娘再次使用 `--replace` 无备份覆盖；样例与安装图集哈希一致，本地仍只有一个 `gpt-niang` 目录。
 - English: The real Codex plugin is upgraded to `0.2.3`, and GPT娘 is again replaced in place with `--replace` and no backup; sample and installed atlas hashes match, with exactly one local `gpt-niang` directory.
+
+### 2026-07-11 — 拒绝单帧闪现表情 / Reject single-frame expression flashes
+
+- 中文：原默认门槛允许两次头部变化，导致“相同脸 → 单帧特殊脸 → 相同脸”的孤立表情仍可通过；最低头部区域变化次数现从 2 提升为 3，明确拒绝只形成进入/退出两次变化的单帧表情。
+- English: The former default allowed two head changes, so an isolated “same face → one special face → same face” accent could pass; the minimum head-region transition count is now raised from two to three, explicitly rejecting a single-frame expression with only enter/exit changes.
+- 中文：工作流 JSON 新增 `expressionContinuityGate`，覆盖待机、招呼、悬停疑惑、失败、等待、托腮思考与复核行；生成规则与文档统一要求表情在至少三次相邻帧变化中自然发展。
+- English: Workflow JSON now includes `expressionContinuityGate` for idle, greeting, hover curiosity, failed, waiting, hand-under-chin thinking, and review rows; generation rules and documentation consistently require expression to evolve naturally across at least three adjacent-frame transitions.
+- 中文：新增保持下半身动作不同、但让头部仅在一帧变化的失败测试，证明门槛针对表情时间线而不是依赖整帧重复检测；下一步为完整测试、样例重验、v0.2.4 发布与本地覆盖。
+- English: Added a failure test that keeps lower-body motion distinct while changing the head in only one frame, proving the gate targets the expression timeline rather than relying on whole-frame duplicate detection; next actions are full tests, sample revalidation, v0.2.4 publication, and local replacement.
 
 ## Non-negotiable runtime facts
 

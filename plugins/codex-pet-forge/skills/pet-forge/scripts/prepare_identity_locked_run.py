@@ -124,6 +124,11 @@ animation frame must transition naturally back to the first.
             "maxSilhouetteWidthDrift": 0.11,
             "covers": ["head", "shoulder/sleeve", "torso/hem", "legs", "shoes"],
         },
+        "expressionContinuityGate": {
+            "expressiveRows": [0, 3, 4, 5, 6, 7, 8],
+            "minHeadRegionTransitions": 3,
+            "rejectsSingleFrameAccent": True,
+        },
         "chatContract": "Keep prompts and QA results in files; report only paths, failed gates, and final status.",
     }
     (out / "pet-workflow.json").write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

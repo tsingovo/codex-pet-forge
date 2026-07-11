@@ -58,6 +58,9 @@ Example prompt: `Create a pet from this image. Approve a canonical full-body cha
 验证器会检查图集尺寸、透明背景、空单元格、单格多人物、脚底基线、跨行高度、重复帧、动作跳变与多帧头部变化；联系表和 8 FPS 动作预览仍必须人工检查。
 The validator checks atlas geometry, transparency, empty cells, multi-character cells, baseline, cross-row height, duplicate frames, abrupt steps, and multi-frame head-region changes; the contact sheet and 8 FPS motion previews still require review.
 
+所有有表情的动作行至少需要三次头部区域变化；只有一帧出现特殊表情只会形成“进入/退出”两次变化，因此会被自动拒绝，避免表情像突然贴上去又消失。
+Every expressive action row requires at least three head-region transitions; a special face appearing in only one frame creates just an enter/exit pair and is automatically rejected, preventing expressions from popping on and immediately disappearing.
+
 人物完整性还会通过主体连通占比和四边安全区检查：主身体之外的可见残片超过 3% 即拒绝，可拦截断手、断脚、游离鞋子、邻格碎片和额外人物；循环动作步长变异系数超过 0.65 也会拒绝，避免一帧突跳拖低有效帧率。
 Character completeness is also checked through main-component coverage and four-edge safety zones: more than 3% visible pixels outside the main body is rejected to catch detached hands, feet, shoes, neighboring fragments, or extra figures; cyclic motion-step coefficient of variation above 0.65 is also rejected to prevent one abrupt frame from lowering effective frame rate.
 

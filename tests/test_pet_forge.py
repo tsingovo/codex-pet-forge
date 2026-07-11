@@ -125,6 +125,8 @@ class PetForgeTests(unittest.TestCase):
             self.assertEqual(len(workflow["jobs"]), 9)
             self.assertEqual(workflow["structuralIdentityGate"]["bands"], 8)
             self.assertEqual(workflow["structuralIdentityGate"]["maxSilhouetteWidthDrift"], 0.11)
+            self.assertEqual(workflow["expressionContinuityGate"]["minHeadRegionTransitions"], 3)
+            self.assertTrue(workflow["expressionContinuityGate"]["rejectsSingleFrameAccent"])
             self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
             self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
             with Image.open(run / "guides" / "row-00.png") as guide:
@@ -295,6 +297,35 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("motion-step variation", result.stdout)
+
+    def test_validator_rejects_expression_confined_to_one_frame(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            row = 6
+            head = atlas.crop((0, row * CELL_H, CELL_W, row * CELL_H + 120))
+            # Preserve distinct lower-body motion in every frame, but make the
+            # head identical except for column 3. This produces only the enter
+            # and exit transitions of a single-frame expression accent.
+            for column in (1, 2, 4, 5):
+                box = (column * CELL_W, row * CELL_H, (column + 1) * CELL_W, row * CELL_H + 120)
+                atlas.paste((0, 0, 0, 0), box)
+                atlas.alpha_composite(head, (column * CELL_W, row * CELL_H))
+            path = root / "one-frame-expression.png"
+            atlas.save(path)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("changes the head/expression region in only 2 transitions", result.stdout)
 
 
 if __name__ == "__main__":
