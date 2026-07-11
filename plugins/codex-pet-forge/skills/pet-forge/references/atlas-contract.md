@@ -11,7 +11,7 @@
 
 | Row | Runtime state | Used columns | Visual purpose |
 |---:|---|---:|---|
-| 0 | idle | 0-6 | six calm breathing/blinking phases plus neutral fallback |
+| 0 | idle | 0-5 | six slow automatic idle phases; columns 6-7 are unused |
 | 1 | running-right | 0-7 | drag toward screen-right |
 | 2 | running-left | 0-7 | drag toward screen-left |
 | 3 | waving | 0-3 | greeting/attention |
@@ -23,7 +23,7 @@
 
 ## Playback invariants
 
-- Row 0 columns 0-5 are the automatic idle loop used when no other action state is active; column 6 is the neutral fallback.
+- Row 0 columns 0-5 are the complete automatic idle loop used when no other state is active. Columns 6-7 must be transparent because the current host never references them.
 - Runtime frame counts and playback cadence are host-controlled. A pet cannot declare a custom FPS in `pet.json`.
 - Smoothness therefore requires every available runtime frame to be distinct, evenly phased, and loop-compatible; duplicating a pose lowers effective frame rate and is rejected.
 - Expressive rows 0 and 3-8 must develop the face across multiple frames, not reserve expression for one isolated frame.

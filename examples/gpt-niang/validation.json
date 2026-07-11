@@ -11,7 +11,7 @@
   "height": 1872,
   "transparent_rgb_residue_pixels": 0,
   "identity_height_medians": {
-    "0": 176,
+    "0": 176.0,
     "1": 176.0,
     "2": 176.0,
     "3": 176.0,
@@ -30,8 +30,7 @@
         0.038684,
         0.032361,
         0.026257,
-        0.037984,
-        0.044029
+        0.031782
       ],
       "head_differences": [
         0.020218,
@@ -39,10 +38,9 @@
         0.026188,
         0.028498,
         0.020184,
-        0.033018,
-        0.037734
+        0.020569
       ],
-      "motion_step_cv": 0.155987
+      "motion_step_cv": 0.12109
     },
     "1": {
       "state": "running-right",
@@ -226,11 +224,6 @@
           "column": 5,
           "palette_drift": 0.016393,
           "proportion_profile_drift": 0.000828
-        },
-        {
-          "column": 6,
-          "palette_drift": 0.015488,
-          "proportion_profile_drift": 0.002038
         }
       ]
     },
@@ -675,24 +668,14 @@
       "state": "idle",
       "row": 0,
       "column": 6,
-      "used": true,
-      "nontransparent_pixels": 12595,
-      "component_count": 3,
-      "largest_component_pixels": 11271,
-      "largest_component_share": 0.9960233297985154,
-      "detached_visible_share": 0.003976670201484622,
-      "visible_bbox": [
-        39,
-        18,
-        153,
-        194
-      ],
+      "used": false,
+      "nontransparent_pixels": 0,
+      "component_count": 0,
+      "largest_component_pixels": 0,
+      "largest_component_share": 0.0,
+      "detached_visible_share": 0.0,
       "opaque_chroma_key_pixels": 0,
-      "chroma_fringe_pixels": 0,
-      "top_safe_padding": 18,
-      "bottom_safe_padding": 14,
-      "left_safe_padding": 39,
-      "right_safe_padding": 39
+      "chroma_fringe_pixels": 0
     },
     {
       "state": "idle",

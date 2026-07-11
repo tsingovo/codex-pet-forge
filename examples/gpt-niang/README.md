@@ -12,6 +12,9 @@ This sample accepts one user reference, internally derives a canonical full-body
 以下 GIF 按 8 FPS 展示实际帧序列，用于检查待机触发、悬停疑惑和托腮思考的动作与表情连续性。
 The GIFs below render the real frame sequences at 8 FPS to review motion and expression continuity for automatic idle, hover curiosity, and hand-under-chin thinking.
 
+待机预览只包含宿主真实引用的六帧；Codex 实际会以约 6.6 秒的慢速循环自动播放它们，第 6–7 格保持透明。
+The idle preview contains only the six host-referenced frames; Codex automatically plays them as a roughly 6.6-second slow loop, while columns 6-7 remain transparent.
+
 | 待机 / Idle | 悬停疑惑 / Hover curiosity | 托腮思考 / Thinking |
 | --- | --- | --- |
 | ![待机](motion-previews/row-00-idle.gif) | ![悬停](motion-previews/row-04-hover-curiosity.gif) | ![思考](motion-previews/row-07-thinking.gif) |

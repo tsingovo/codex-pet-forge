@@ -66,7 +66,7 @@ class PetForgeTests(unittest.TestCase):
             with Image.open(run / "spritesheet.webp") as atlas:
                 self.assertEqual(atlas.size, (ATLAS_W, ATLAS_H))
                 self.assertEqual(atlas.mode, "RGBA")
-                unused = atlas.crop((7 * CELL_W, 0, 8 * CELL_W, CELL_H))
+                unused = atlas.crop((6 * CELL_W, 0, 7 * CELL_W, CELL_H))
                 self.assertEqual(unused.getchannel("A").getbbox(), None)
             self.run_script(
                 "validate_atlas.py",
@@ -126,9 +126,9 @@ class PetForgeTests(unittest.TestCase):
             self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
             self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
             with Image.open(run / "guides" / "row-00.png") as guide:
-                self.assertEqual(guide.size, (7 * CELL_W, CELL_H))
+                self.assertEqual(guide.size, (6 * CELL_W, CELL_H))
             idle = (run / "prompts" / "row-00-idle.md").read_text(encoding="utf-8")
-            self.assertIn("idle loop", idle)
+            self.assertIn("six runtime idle frames", idle)
             self.assertIn("no duplicate frames", idle)
 
     def test_validator_rejects_duplicate_animation_frame(self) -> None:

@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.1` (published completeness, motion-uniformity, and overlay-clipping diagnosis)
+- Current release: `v0.2.2` (runtime-accurate six-frame automatic idle prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -82,6 +82,17 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: All nine unit tests pass; GPT娘 diagnosis reports `asset_safe: true`, `desktop_installable: true`, and `host-overlay-bounds-desynchronization-likely`, with a 176px median height in all nine action rows.
 - 中文：真实 Codex 插件已由 0.2.0 升级到 0.2.1，GPT娘 已无备份覆盖；样例与安装图集 SHA256 完全一致，本地仍只有一个 `gpt-niang` 目录。
 - English: The real Codex plugin was upgraded from 0.2.0 to 0.2.1 and GPT娘 replaced without backup; sample and installed atlas SHA256 values match exactly, and only one `gpt-niang` directory remains.
+
+### 2026-07-11 — 宿主真实六帧自动待机 / Runtime-accurate six-frame automatic idle
+
+- 中文：只读核对 Codex Desktop `26.707.3748.0` 动画表确认：待机只播放第 0 行第 0–5 格，基础时长 `280/110/110/140/140/320ms` 均乘以 6，总循环约 6.6 秒；第 6 格从未被引用。
+- English: Read-only verification of Codex Desktop `26.707.3748.0` confirms that idle plays only row 0 columns 0-5; base durations `280/110/110/140/140/320ms` are each multiplied by 6 for a roughly 6.6-second loop, and column 6 is never referenced.
+- 中文：新增 `runtime-playback-contract.md`，把待机生成从七姿势减少到六姿势，并按慢速真实节奏重写为呼吸、眨眼、闭眼微笑、轻歪头视线、温和吐气微笑、精确回稳；第 6–7 格强制透明。
+- English: Added `runtime-playback-contract.md`, reduced idle generation from seven poses to six, and rewrote the slow real cadence as breathing, blink, closed-eye smile, tiny head/gaze shift, warm exhale smile, and exact return; columns 6-7 are forced transparent.
+- 中文：这使待机无需额外事件即可由宿主自动触发，同时删除一张永不播放的生成姿势，降低生图时间和提示 Token，不牺牲任何运行帧质量。
+- English: This makes idle automatically host-triggered without an extra event while deleting one never-played generated pose, reducing generation time and prompt tokens without sacrificing any runtime frame quality.
+- 中文：同时修复动作预览器仍保留旧 11 行计数的问题；现在直接复用唯一 `USED_COUNTS` 契约，并在生成前清理旧 `row-*.gif`，避免残留方向 GIF 误导用户。
+- English: Also fixed the motion preview renderer retaining the old eleven-row counts; it now reuses the single `USED_COUNTS` contract and removes stale `row-*.gif` files before rendering, preventing obsolete direction GIFs from misleading users.
 
 ## Non-negotiable runtime facts
 

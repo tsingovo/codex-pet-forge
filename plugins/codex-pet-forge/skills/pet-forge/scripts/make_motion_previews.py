@@ -5,13 +5,12 @@ from pathlib import Path
 
 from PIL import Image
 
-from pet_common import CELL_H, CELL_W
+from pet_common import CELL_H, CELL_W, USED_COUNTS
 
 
-RUNTIME_COUNTS = (6, 8, 8, 4, 5, 8, 6, 6, 6, 8, 8)
 STATE_NAMES = (
     "idle", "drag-right", "drag-left", "greeting", "hover-curiosity", "failed",
-    "waiting", "thinking", "review", "look-a", "look-b",
+    "waiting", "thinking", "review",
 )
 
 
@@ -36,8 +35,13 @@ def main() -> None:
         raise SystemExit(f"expected 1536x1872 desktop atlas, got {atlas.width}x{atlas.height}")
     out = Path(args.output_dir).expanduser().resolve()
     out.mkdir(parents=True, exist_ok=True)
+    # Remove stale previews from older 11-row builds before writing the exact
+    # nine Desktop runtime rows. Otherwise obsolete look-row GIFs survive and
+    # falsely imply that Desktop plays states which no longer exist.
+    for stale in out.glob("row-*.gif"):
+        stale.unlink()
     duration = max(20, round(1000 / args.fps))
-    for row, count in enumerate(RUNTIME_COUNTS):
+    for row, count in enumerate(USED_COUNTS):
         frames = [
             composite(atlas.crop((column * CELL_W, row * CELL_H, (column + 1) * CELL_W, (row + 1) * CELL_H)))
             for column in range(count)

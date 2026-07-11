@@ -22,9 +22,9 @@ ATLAS_WIDTH = COLUMNS * CELL_WIDTH
 ATLAS_HEIGHT = ROWS * CELL_HEIGHT
 EXTENDED_ATLAS_HEIGHT = EXTENDED_ROWS * CELL_HEIGHT
 ROW_BY_INDEX = {
-    # Desktop's idle row owns seven populated cells: six loop poses plus the
-    # neutral/rest frame used by the host's return-to-idle path.
-    0: ("idle", 7),
+    # Codex Desktop 26.707.3748.0 hardcodes exactly six idle frames (columns
+    # 0-5). Column 6 is never referenced by the runtime animation table.
+    0: ("idle", 6),
     1: ("running-right", 8),
     2: ("running-left", 8),
     3: ("waving", 4),

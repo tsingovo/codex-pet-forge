@@ -20,7 +20,7 @@ LOCK = (
 )
 
 ROWS = [
-    (0, "idle", 7, "Six-frame idle loop plus canonical neutral frame: calm inhale; blink starts; eyes closed with soft smile; eyes reopen/exhale; tiny attentive gaze shift; return to calm; exact neutral canonical. The first six frames must loop smoothly and contain natural face changes in at least three frames."),
+    (0, "idle", 6, "Exactly six runtime idle frames tuned for Codex's slow 6.6-second loop: calm inhale and attentive eyes; blink begins; eyes closed with a soft smile; eyes reopen with a tiny 3-degree head tilt and gaze shift; restrained warm smile while exhaling; return to the exact calm start. Make every phase readable but subtle, develop the face across at least three frames, and close the loop smoothly."),
     (1, "drag-right", 8, "Eight evenly phased three-quarter-right drag steps: contact; down; passing; lift; contact; down; passing; lift. Natural focused/relaxed/blink face changes across the sequence; same body volume and baseline."),
     (2, "drag-left", 8, "Eight evenly phased three-quarter-left drag steps using the left turnaround anchor: contact; down; passing; lift; contact; down; passing; lift. Preserve asymmetric ornaments on their physical side; do not mirror unless the character is symmetric."),
     (3, "greeting", 4, "Four meaningful greeting poses: notice and smile; hand rises with open eyes; warm wave with happy eyes; hand lowers with relaxed smile. Expression changes in every frame."),

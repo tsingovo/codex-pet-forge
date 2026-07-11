@@ -25,8 +25,11 @@ Fast full-atlas generation is draft-only; production pets use complete-row gener
 Codex 主程序固定了每个状态的帧位与播放节奏，宠物清单不能自定义 FPS；流畅度来自用满全部帧、相邻帧均匀推进、禁止重复帧并保证末帧自然回到首帧。
 The Codex host fixes state frame slots and playback cadence, and pet manifests cannot declare custom FPS; smoothness comes from using every frame, even phase progression, no duplicates, and natural last-to-first loop closure.
 
-第 0 行会在没有其他状态时自动触发待机循环：呼吸、眨眼、轻微视线变化、回稳。第 6 行则是等待用户输入/批准，二者不会混用。
-Row 0 automatically plays as the idle loop when no other state is active: breathing, blink, tiny gaze change, and return. Row 6 is specifically waiting for user input/approval; the two are not interchangeable.
+第 0 行第 0–5 格会在没有其他状态时自动触发待机循环：呼吸、眨眼、轻微歪头/视线、微笑、回稳；当前宿主把六帧总播放时间拉长到约 6.6 秒。第 6 行则是等待用户输入/批准，二者不会混用。
+Row 0 columns 0-5 automatically play as the idle loop when no other state is active: breathing, blink, tiny head/gaze shift, smile, and return; the current host stretches the six phases to about 6.6 seconds. Row 6 is specifically waiting for user input/approval; the two are not interchangeable.
+
+当前宿主从不引用待机第 6 格，因此框架不再生成这张无效姿势，并强制第 6–7 格透明；这同时减少一次生图负担和相关提示 Token。
+The current host never references idle column 6, so the framework no longer generates that unused pose and requires columns 6-7 to stay transparent; this removes one image-generation burden and its associated prompt tokens.
 
 所有有情绪的动作行都必须让表情在至少三帧中自然发展，不能只有一帧突然出现表情；动作必须包含起势、发展与回位，而不是随机摆手脚。
 Every expressive action row must develop the face naturally across at least three frames rather than showing expression in one isolated frame; motion needs anticipation, development, and return instead of random limb movement.

@@ -24,7 +24,7 @@ ROW_NAMES = [
     "running",
     "review",
 ]
-USED_COUNTS = [7, 8, 8, 4, 5, 8, 6, 6, 6]
+USED_COUNTS = [6, 8, 8, 4, 5, 8, 6, 6, 6]
 
 
 def is_used_cell(rows: int, row: int, column: int) -> bool:

@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, COLS, ROWS, slugify
 
 ROW_LABELS = [
-    "idle + neutral", "drag right", "drag left", "greeting", "hover curious",
+    "idle (6 runtime frames)", "drag right", "drag left", "greeting", "hover curious",
     "failed", "waiting", "thinking chin", "review",
 ]
 
@@ -38,7 +38,7 @@ Create one portrait atlas on a perfectly flat solid #FF00FF background, arranged
 If the reference shows only a face, bust, or partial body, preserve every visible identity cue and infer unseen clothing, legs, and footwear conservatively as a simple coherent extension of the visible design. Do not invent logos, weapons, complex props, or a second character.
 
 Rows, top to bottom:
-0 idle: six calm breathing/blinking frames, then one neutral front frame; last slot empty.
+0 idle: exactly six readable slow-loop frames—inhale/attentive eyes, blink start, soft closed-eye smile, reopen with tiny head tilt and gaze shift, restrained warm smile/exhale, exact calm return; columns 6-7 empty.
 1 horizontal drag right: eight right-facing pulled/locomotion frames.
 2 horizontal drag left: eight left-facing pulled/locomotion frames.
 3 greeting: four small wave frames; remaining slots empty.

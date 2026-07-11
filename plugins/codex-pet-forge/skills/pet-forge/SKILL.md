@@ -22,7 +22,7 @@ PYTHON=<absolute Python executable>
 
 Use this workflow whenever the user expects a coherent finished pet. It prevents the common failure where each action becomes a differently proportioned character.
 
-1. Read `references/identity-lock.md`, `references/character-rig-contract.md`, `references/trigger-semantics.md`, `references/atlas-contract.md`, and `references/runtime-overlay-clipping.md`.
+1. Read `references/identity-lock.md`, `references/character-rig-contract.md`, `references/trigger-semantics.md`, `references/atlas-contract.md`, `references/runtime-playback-contract.md`, and `references/runtime-overlay-clipping.md`.
 2. Prepare the run:
 
 ```powershell
@@ -37,7 +37,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
 5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, and chroma/geometry failures.
    Assembly automatically performs uniform Desktop safe-box registration: 176px visible height, fixed shoe baseline, and hard four-edge padding. Never bypass it by copying row strips directly into the install package.
 6. Render both `make_contact_sheet.py` and `make_motion_previews.py --fps 8`. Inspect the still identity comparison and every real loop; do not install if anatomy ratios, face, hair, garment layers/ornaments, practical scale, motion meaning, loop continuity, or expression continuity changes between rows.
-7. Row 0 is the automatically triggered idle loop when no other state is active. Require breathing/blink/gaze/return across its six runtime frames; column 6 remains the neutral fallback.
+7. Row 0 columns 0-5 are the automatically triggered idle loop when no other state is active. Require readable breathing/blink/tiny head-tilt/gaze/smile/return phases tuned for the host's 6.6-second slow loop; columns 6-7 remain transparent because the current host never references them.
 
 Compact QA commands:
 
