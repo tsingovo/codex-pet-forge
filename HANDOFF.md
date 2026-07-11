@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.2` (runtime-accurate six-frame automatic idle prepared)
+- Current release: `v0.2.2` (published; runtime-accurate six-frame automatic idle)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -93,6 +93,15 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: This makes idle automatically host-triggered without an extra event while deleting one never-played generated pose, reducing generation time and prompt tokens without sacrificing any runtime frame quality.
 - 中文：同时修复动作预览器仍保留旧 11 行计数的问题；现在直接复用唯一 `USED_COUNTS` 契约，并在生成前清理旧 `row-*.gif`，避免残留方向 GIF 误导用户。
 - English: Also fixed the motion preview renderer retaining the old eleven-row counts; it now reuses the single `USED_COUNTS` contract and removes stale `row-*.gif` files before rendering, preventing obsolete direction GIFs from misleading users.
+
+### 2026-07-11 — v0.2.2 发布与本地覆盖 / v0.2.2 publication and local replacement
+
+- 中文：GitHub `main`、`v0.2.2` 标签与公开 Release 已同步，发布地址为 `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.2`；源码 ZIP 与 GPT娘直装包均已上传，说明保持每段中文在对应英文之前。
+- English: GitHub `main`, the `v0.2.2` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.2`; both source ZIP and direct GPT娘 package are uploaded, with every Chinese paragraph before its matching English paragraph.
+- 中文：完整 9 项测试通过；GPT娘图集验证零错误、零警告，九行动作中位高度均为 176px，分屏裁切诊断为资产安全且疑似宿主窗口边界同步问题；动作预览严格为 9 个 GIF，待机 GIF 为宿主真实使用的 6 帧。
+- English: All nine tests pass; the GPT娘 atlas validates with zero errors and warnings, all nine rows have a 176px median visible height, split-screen clipping diagnosis reports asset-safe host-window-bounds desynchronization, and motion previews contain exactly nine GIFs with the host-accurate six-frame idle.
+- 中文：真实 Codex 插件已升级到 `0.2.2`，GPT娘使用 `--replace` 无备份覆盖；样例与安装图集 SHA256 同为 `F4D56054C6859EA3F9AC607A94927E2AC245F37B87D0F870A00526E38CE358F2`，本地仅有一个 `gpt-niang` 目录。
+- English: The real Codex plugin is upgraded to `0.2.2`, and GPT娘 is replaced in place with `--replace` and no backup; sample and installed atlas SHA256 are both `F4D56054C6859EA3F9AC607A94927E2AC245F37B87D0F870A00526E38CE358F2`, with exactly one local `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
