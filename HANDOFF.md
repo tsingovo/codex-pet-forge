@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.2` (published; runtime-accurate six-frame automatic idle)
+- Current release: `v0.2.3` (structural silhouette identity gate prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -102,6 +102,15 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: All nine tests pass; the GPT娘 atlas validates with zero errors and warnings, all nine rows have a 176px median visible height, split-screen clipping diagnosis reports asset-safe host-window-bounds desynchronization, and motion previews contain exactly nine GIFs with the host-accurate six-frame idle.
 - 中文：真实 Codex 插件已升级到 `0.2.2`，GPT娘使用 `--replace` 无备份覆盖；样例与安装图集 SHA256 同为 `F4D56054C6859EA3F9AC607A94927E2AC245F37B87D0F870A00526E38CE358F2`，本地仅有一个 `gpt-niang` 目录。
 - English: The real Codex plugin is upgraded to `0.2.2`, and GPT娘 is replaced in place with `--replace` and no backup; sample and installed atlas SHA256 are both `F4D56054C6859EA3F9AC607A94927E2AC245F37B87D0F870A00526E38CE358F2`, with exactly one local `gpt-niang` directory.
+
+### 2026-07-11 — 八段身体与服装结构锁 / Eight-band body and garment structure lock
+
+- 中文：现有高度与三段纵向质量门槛无法充分识别“身高相同但肩膀、袖子、躯干、衣摆、腿和鞋被重画”的人物漂移；新增八段归一化轮廓宽度指纹，以标准待机第 0 帧为结构基准，默认平均漂移超过 `0.11` 即拒绝。
+- English: Existing height and three-band vertical-mass gates cannot fully detect a same-height character whose shoulders, sleeves, torso, hem, legs, or shoes were redrawn; added an eight-band normalized silhouette-width fingerprint using canonical idle frame 0 as the structure reference, rejecting mean drift above `0.11` by default.
+- 中文：生成锁已细化到头单位下的肩/髋宽、上下臂、手掌、大腿/小腿、腿长、鞋长和服装层级尺寸；每行必须重新使用同一 canonical 与对应转台方向，不允许用上一条动画结果继续衍生，避免误差逐行累积。
+- English: The generation lock now explicitly freezes shoulder/hip width, upper/lower arms, palms, thighs/calves, leg and shoe lengths, and garment-layer dimensions in head units; every row must reuse the same canonical and matching turnaround view rather than deriving from a previous animation result, preventing row-by-row error accumulation.
+- 中文：新增默认门槛失败测试，证明在高度、基线、配色、连通性和四边安全区仍合格时，异常放大的身体/衣物轮廓仍会被拒绝；下一步为完整测试、样例重验、v0.2.3 发布与本地覆盖。
+- English: Added a default-gate failure test proving that an abnormally enlarged body/outfit silhouette is rejected even when height, baseline, palette, connectivity, and four-edge safety zones remain valid; next actions are full tests, sample revalidation, v0.2.3 publication, and local replacement.
 
 ## Non-negotiable runtime facts
 

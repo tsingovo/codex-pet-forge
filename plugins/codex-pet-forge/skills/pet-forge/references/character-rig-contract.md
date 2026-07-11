@@ -17,6 +17,29 @@ Treat the character like one rigged 3D model rendered into sprites. Lock these p
 
 An action may deform cloth/hair naturally but may not add, remove, swap sides, resize, or redesign a structure.
 
+### Canonical rig fingerprint
+
+Before producing any row, read the single reference once and freeze a compact rig fingerprint from
+`canonical.png`. Reuse it verbatim for every later job; never re-describe the character from memory:
+
+1. **Scale:** visible height, head-height unit, head:body ratio, shoe baseline, and orthographic camera.
+2. **Skeleton:** neck-to-shoulder width; shoulder-to-elbow, elbow-to-wrist, hip-to-knee, knee-to-ankle,
+   palm, and shoe lengths, each expressed in head units.
+3. **Body volumes:** head width, shoulder width, ribcage/waist/hip width, thigh/calf width, and hand/foot
+   scale. A pose rotates these volumes; it never scales them.
+4. **Garment construction:** collar, sleeve and cuff volume, waist position, hem length/width, skirt or
+   coat layers, seam intersections, fasteners, and every ornament's size and physical side.
+5. **Surface identity:** hair masses, face geometry, palette swatches, outline weight, and material order.
+
+Use the canonical front and the matching turnaround direction as image-conditioned inputs for every
+complete row. Do not let one generated animation row become the reference for another; that compounds
+identity drift. When a row fails, regenerate that whole row from the same canonical inputs.
+
+The validator records an eight-band normalized silhouette-width profile for every runtime frame. It
+compares head, shoulder/sleeve, torso/hem, leg, and shoe bands with canonical idle frame 0 and rejects
+structural width drift above `0.11`. This supplements—not replaces—visual inspection of joints, garment
+seams, and asymmetric ornaments.
+
 ## Complete-frame rule
 
 Every occupied cell contains exactly one complete character from highest hair/effect to both shoes. Reject a row when the model returns fewer figures than requested, multiple figures in one slot, neighboring fragments, cropped anatomy, disconnected limbs, or a replacement foot/face copied from another generation. Regenerate the complete row; never compensate by grouping, duplicating, or patching isolated body parts.

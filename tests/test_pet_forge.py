@@ -123,6 +123,8 @@ class PetForgeTests(unittest.TestCase):
             self.assertTrue(workflow["oneReferenceOnly"])
             self.assertEqual(workflow["userInputs"], ["reference.png"])
             self.assertEqual(len(workflow["jobs"]), 9)
+            self.assertEqual(workflow["structuralIdentityGate"]["bands"], 8)
+            self.assertEqual(workflow["structuralIdentityGate"]["maxSilhouetteWidthDrift"], 0.11)
             self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
             self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
             with Image.open(run / "guides" / "row-00.png") as guide:
@@ -177,6 +179,34 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("palette drift", result.stdout)
+
+    def test_validator_rejects_shoulder_torso_and_clothing_scale_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            # Keep height, baseline, palette, connectivity, and safe margins valid,
+            # but replace one pose with an implausibly wide body/outfit. The new
+            # eight-band structural profile must reject what a height-only gate
+            # would accept as the same character.
+            box = (0, 3 * CELL_H, CELL_W, 4 * CELL_H)
+            atlas.paste((0, 0, 0, 0), box)
+            draw = ImageDraw.Draw(atlas)
+            draw.ellipse((10, 3 * CELL_H + 16, 181, 3 * CELL_H + 191), fill=(40, 90, 160, 255))
+            path = root / "body-outfit-scale-drift.png"
+            atlas.save(path)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("structural silhouette-width drift", result.stdout)
 
     def test_desktop_validator_rejects_eleven_row_install_atlas(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

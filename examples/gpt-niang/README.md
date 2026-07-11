@@ -31,6 +31,9 @@ Copy-Item .\gpt-niang "$HOME\.codex\pets\gpt-niang" -Recurse -Force
 图集已通过桌面端 `1536×1872` / 8×9 结构、透明背景、单格人物数量、脚底基线、跨行高度、重复帧和动作连续性校验；安装前仍建议查看联系表与动作预览。
 The atlas passed Desktop `1536×1872` / 8×9 geometry, transparency, per-cell figure count, baseline, cross-row height, duplicate-frame, and motion-continuity checks; review the contact sheet and motion previews before installation.
 
+图集也通过八段结构轮廓指纹校验：头宽、肩膀/袖子体积、躯干/衣摆宽度、腿间距和鞋子尺度均未超过 `0.11` 漂移门槛。
+The atlas also passes the eight-band structural silhouette fingerprint: head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale remain within the `0.11` drift limit.
+
 所有运行帧现已统一为 176px 可见高度并放入保守内安全框，降低桌面悬浮窗轻微裁切头发及分屏拖动窗口失步时的影响。
 All runtime frames now use a uniform 176px visible height inside a conservative inner safe box, reducing hair clipping and the impact of transient overlay-window desynchronization during split-screen dragging.
 

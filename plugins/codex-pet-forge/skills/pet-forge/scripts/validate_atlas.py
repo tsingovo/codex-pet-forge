@@ -202,6 +202,39 @@ def vertical_mass_profile(image: Image.Image) -> list[float]:
     ]
 
 
+def silhouette_width_profile(image: Image.Image, bands: int = 8) -> list[float]:
+    """Measure body/outfit width by height without depending on cell scale.
+
+    Eight normalized horizontal bands retain substantially more structure than
+    the coarse top/middle/bottom mass gate: head width, shoulder/sleeve volume,
+    torso/hem width, leg spacing, and shoe volume cannot all drift while still
+    looking like the same rig. Median scan-line width makes the metric tolerant
+    of a raised hand, a loose hair tip, and small animation follow-through.
+    """
+    alpha = image.convert("RGBA").getchannel("A")
+    bbox = alpha.getbbox()
+    if bbox is None:
+        return [0.0] * bands
+    left, top, right, bottom = bbox
+    height = max(1, bottom - top)
+    pixels = alpha.load()
+    profile: list[float] = []
+    for band in range(bands):
+        y0 = top + round(band * height / bands)
+        y1 = top + round((band + 1) * height / bands)
+        widths: list[float] = []
+        for y in range(y0, max(y0 + 1, y1)):
+            visible_x = [x for x in range(left, right) if pixels[x, y] > 16]
+            if visible_x:
+                widths.append((visible_x[-1] - visible_x[0] + 1) / height)
+        profile.append(median(widths) if widths else 0.0)
+    return profile
+
+
+def mean_absolute_profile_drift(first: list[float], second: list[float]) -> float:
+    return sum(abs(a - b) for a, b in zip(first, second)) / len(first) if first else 0.0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
@@ -292,6 +325,12 @@ def main() -> None:
         type=float,
         default=0.15,
         help="Maximum top/middle/bottom visible-mass drift versus idle frame 0.",
+    )
+    parser.add_argument(
+        "--max-silhouette-width-drift",
+        type=float,
+        default=0.11,
+        help="Maximum eight-band normalized silhouette-width drift versus idle frame 0.",
     )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
@@ -511,6 +550,7 @@ def main() -> None:
     identity_reference = image.crop((0, 0, CELL_WIDTH, CELL_HEIGHT))
     reference_palette = coarse_palette(identity_reference)
     reference_profile = vertical_mass_profile(identity_reference)
+    reference_width_profile = silhouette_width_profile(identity_reference)
     identity_metrics: dict[str, object] = {}
     for row_index in range(row_count):
         state, frame_count = ROW_BY_INDEX[row_index]
@@ -519,10 +559,14 @@ def main() -> None:
             cell = image.crop((column_index * CELL_WIDTH, row_index * CELL_HEIGHT, (column_index + 1) * CELL_WIDTH, (row_index + 1) * CELL_HEIGHT))
             palette_drift = total_variation(reference_palette, coarse_palette(cell))
             profile_drift = total_variation(reference_profile, vertical_mass_profile(cell))
+            width_profile = silhouette_width_profile(cell)
+            width_drift = mean_absolute_profile_drift(reference_width_profile, width_profile)
             row_metrics.append({
                 "column": column_index,
                 "palette_drift": round(palette_drift, 6),
                 "proportion_profile_drift": round(profile_drift, 6),
+                "silhouette_width_drift": round(width_drift, 6),
+                "silhouette_width_profile": [round(value, 6) for value in width_profile],
             })
             if palette_drift > args.max_palette_drift:
                 errors.append(
@@ -533,6 +577,12 @@ def main() -> None:
                 errors.append(
                     f"{state} row {row_index} column {column_index} vertical body-mass drift is {profile_drift:.1%} "
                     f"(limit {args.max_proportion_profile_drift:.1%}); verify head/torso/leg proportions"
+                )
+            if width_drift > args.max_silhouette_width_drift:
+                errors.append(
+                    f"{state} row {row_index} column {column_index} structural silhouette-width drift is "
+                    f"{width_drift:.3f} (limit {args.max_silhouette_width_drift:.3f}); verify immutable "
+                    "head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale"
                 )
         identity_metrics[str(row_index)] = {"state": state, "cells": row_metrics}
 

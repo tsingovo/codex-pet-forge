@@ -198,32 +198,98 @@
         {
           "column": 0,
           "palette_drift": 0.0,
-          "proportion_profile_drift": 0.0
+          "proportion_profile_drift": 0.0,
+          "silhouette_width_drift": 0.0,
+          "silhouette_width_profile": [
+            0.215909,
+            0.366477,
+            0.400568,
+            0.519886,
+            0.579545,
+            0.607955,
+            0.411932,
+            0.181818
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.018452,
-          "proportion_profile_drift": 0.001707
+          "proportion_profile_drift": 0.001707,
+          "silhouette_width_drift": 0.003196,
+          "silhouette_width_profile": [
+            0.210227,
+            0.366477,
+            0.403409,
+            0.522727,
+            0.582386,
+            0.607955,
+            0.400568,
+            0.181818
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.014308,
-          "proportion_profile_drift": 0.003724
+          "proportion_profile_drift": 0.003724,
+          "silhouette_width_drift": 0.007102,
+          "silhouette_width_profile": [
+            0.210227,
+            0.366477,
+            0.403409,
+            0.522727,
+            0.588068,
+            0.613636,
+            0.386364,
+            0.176136
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.013927,
-          "proportion_profile_drift": 0.00191
+          "proportion_profile_drift": 0.00191,
+          "silhouette_width_drift": 0.004972,
+          "silhouette_width_profile": [
+            0.210227,
+            0.363636,
+            0.403409,
+            0.522727,
+            0.582386,
+            0.610795,
+            0.397727,
+            0.176136
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.014045,
-          "proportion_profile_drift": 0.001722
+          "proportion_profile_drift": 0.001722,
+          "silhouette_width_drift": 0.006037,
+          "silhouette_width_profile": [
+            0.204545,
+            0.363636,
+            0.397727,
+            0.517045,
+            0.579545,
+            0.613636,
+            0.394886,
+            0.176136
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.016393,
-          "proportion_profile_drift": 0.000828
+          "proportion_profile_drift": 0.000828,
+          "silhouette_width_drift": 0.005682,
+          "silhouette_width_profile": [
+            0.207386,
+            0.363636,
+            0.403409,
+            0.522727,
+            0.582386,
+            0.613636,
+            0.394886,
+            0.178977
+          ]
         }
       ]
     },
@@ -233,42 +299,130 @@
         {
           "column": 0,
           "palette_drift": 0.025019,
-          "proportion_profile_drift": 0.041907
+          "proportion_profile_drift": 0.041907,
+          "silhouette_width_drift": 0.077415,
+          "silhouette_width_profile": [
+            0.352273,
+            0.403409,
+            0.423295,
+            0.53125,
+            0.622159,
+            0.428977,
+            0.377841,
+            0.338068
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.028427,
-          "proportion_profile_drift": 0.04324
+          "proportion_profile_drift": 0.04324,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.34375,
+            0.403409,
+            0.420455,
+            0.534091,
+            0.599432,
+            0.4375,
+            0.321023,
+            0.355114
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.023379,
-          "proportion_profile_drift": 0.038652
+          "proportion_profile_drift": 0.038652,
+          "silhouette_width_drift": 0.087358,
+          "silhouette_width_profile": [
+            0.349432,
+            0.403409,
+            0.426136,
+            0.539773,
+            0.642045,
+            0.454545,
+            0.340909,
+            0.377841
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.026052,
-          "proportion_profile_drift": 0.043926
+          "proportion_profile_drift": 0.043926,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.352273,
+            0.403409,
+            0.428977,
+            0.545455,
+            0.571023,
+            0.465909,
+            0.377841,
+            0.423295
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.02381,
-          "proportion_profile_drift": 0.047262
+          "proportion_profile_drift": 0.047262,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.355114,
+            0.403409,
+            0.423295,
+            0.536932,
+            0.576705,
+            0.454545,
+            0.377841,
+            0.428977
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.032619,
-          "proportion_profile_drift": 0.045525
+          "proportion_profile_drift": 0.045525,
+          "silhouette_width_drift": 0.089489,
+          "silhouette_width_profile": [
+            0.355114,
+            0.403409,
+            0.423295,
+            0.536932,
+            0.607955,
+            0.443182,
+            0.349432,
+            0.426136
+          ]
         },
         {
           "column": 6,
           "palette_drift": 0.029352,
-          "proportion_profile_drift": 0.045086
+          "proportion_profile_drift": 0.045086,
+          "silhouette_width_drift": 0.086648,
+          "silhouette_width_profile": [
+            0.349432,
+            0.403409,
+            0.420455,
+            0.528409,
+            0.619318,
+            0.4375,
+            0.349432,
+            0.403409
+          ]
         },
         {
           "column": 7,
           "palette_drift": 0.030179,
-          "proportion_profile_drift": 0.039677
+          "proportion_profile_drift": 0.039677,
+          "silhouette_width_drift": 0.092685,
+          "silhouette_width_profile": [
+            0.355114,
+            0.411932,
+            0.426136,
+            0.545455,
+            0.644886,
+            0.463068,
+            0.366477,
+            0.431818
+          ]
         }
       ]
     },
@@ -278,42 +432,130 @@
         {
           "column": 0,
           "palette_drift": 0.030179,
-          "proportion_profile_drift": 0.039677
+          "proportion_profile_drift": 0.039677,
+          "silhouette_width_drift": 0.092685,
+          "silhouette_width_profile": [
+            0.355114,
+            0.411932,
+            0.426136,
+            0.545455,
+            0.644886,
+            0.463068,
+            0.366477,
+            0.431818
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.029352,
-          "proportion_profile_drift": 0.045086
+          "proportion_profile_drift": 0.045086,
+          "silhouette_width_drift": 0.086648,
+          "silhouette_width_profile": [
+            0.349432,
+            0.403409,
+            0.420455,
+            0.528409,
+            0.619318,
+            0.4375,
+            0.349432,
+            0.403409
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.032619,
-          "proportion_profile_drift": 0.045525
+          "proportion_profile_drift": 0.045525,
+          "silhouette_width_drift": 0.089489,
+          "silhouette_width_profile": [
+            0.355114,
+            0.403409,
+            0.423295,
+            0.536932,
+            0.607955,
+            0.443182,
+            0.349432,
+            0.426136
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.02381,
-          "proportion_profile_drift": 0.047262
+          "proportion_profile_drift": 0.047262,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.355114,
+            0.403409,
+            0.423295,
+            0.536932,
+            0.576705,
+            0.454545,
+            0.377841,
+            0.428977
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.026052,
-          "proportion_profile_drift": 0.043926
+          "proportion_profile_drift": 0.043926,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.352273,
+            0.403409,
+            0.428977,
+            0.545455,
+            0.571023,
+            0.465909,
+            0.377841,
+            0.423295
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.023379,
-          "proportion_profile_drift": 0.038652
+          "proportion_profile_drift": 0.038652,
+          "silhouette_width_drift": 0.087358,
+          "silhouette_width_profile": [
+            0.349432,
+            0.403409,
+            0.426136,
+            0.539773,
+            0.642045,
+            0.454545,
+            0.340909,
+            0.377841
+          ]
         },
         {
           "column": 6,
           "palette_drift": 0.028427,
-          "proportion_profile_drift": 0.04324
+          "proportion_profile_drift": 0.04324,
+          "silhouette_width_drift": 0.081676,
+          "silhouette_width_profile": [
+            0.34375,
+            0.403409,
+            0.420455,
+            0.534091,
+            0.599432,
+            0.4375,
+            0.321023,
+            0.355114
+          ]
         },
         {
           "column": 7,
           "palette_drift": 0.025019,
-          "proportion_profile_drift": 0.041907
+          "proportion_profile_drift": 0.041907,
+          "silhouette_width_drift": 0.077415,
+          "silhouette_width_profile": [
+            0.352273,
+            0.403409,
+            0.423295,
+            0.53125,
+            0.622159,
+            0.428977,
+            0.377841,
+            0.338068
+          ]
         }
       ]
     },
@@ -323,22 +565,66 @@
         {
           "column": 0,
           "palette_drift": 0.092594,
-          "proportion_profile_drift": 0.069648
+          "proportion_profile_drift": 0.069648,
+          "silhouette_width_drift": 0.079901,
+          "silhouette_width_profile": [
+            0.221591,
+            0.357955,
+            0.428977,
+            0.491477,
+            0.539773,
+            0.522727,
+            0.579545,
+            0.457386
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.088781,
-          "proportion_profile_drift": 0.068563
+          "proportion_profile_drift": 0.068563,
+          "silhouette_width_drift": 0.079545,
+          "silhouette_width_profile": [
+            0.227273,
+            0.355114,
+            0.4375,
+            0.508523,
+            0.545455,
+            0.528409,
+            0.585227,
+            0.460227
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.090676,
-          "proportion_profile_drift": 0.071559
+          "proportion_profile_drift": 0.071559,
+          "silhouette_width_drift": 0.07919,
+          "silhouette_width_profile": [
+            0.227273,
+            0.357955,
+            0.426136,
+            0.497159,
+            0.545455,
+            0.528409,
+            0.585227,
+            0.460227
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.091911,
-          "proportion_profile_drift": 0.07063
+          "proportion_profile_drift": 0.07063,
+          "silhouette_width_drift": 0.076705,
+          "silhouette_width_profile": [
+            0.221591,
+            0.355114,
+            0.420455,
+            0.497159,
+            0.539773,
+            0.522727,
+            0.573864,
+            0.448864
+          ]
         }
       ]
     },
@@ -348,27 +634,82 @@
         {
           "column": 0,
           "palette_drift": 0.074741,
-          "proportion_profile_drift": 0.074466
+          "proportion_profile_drift": 0.074466,
+          "silhouette_width_drift": 0.080611,
+          "silhouette_width_profile": [
+            0.227273,
+            0.352273,
+            0.380682,
+            0.494318,
+            0.539773,
+            0.519886,
+            0.585227,
+            0.454545
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.078856,
-          "proportion_profile_drift": 0.072764
+          "proportion_profile_drift": 0.072764,
+          "silhouette_width_drift": 0.080611,
+          "silhouette_width_profile": [
+            0.235795,
+            0.355114,
+            0.383523,
+            0.5,
+            0.542614,
+            0.508523,
+            0.582386,
+            0.451705
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.078688,
-          "proportion_profile_drift": 0.072512
+          "proportion_profile_drift": 0.072512,
+          "silhouette_width_drift": 0.078835,
+          "silhouette_width_profile": [
+            0.224432,
+            0.349432,
+            0.377841,
+            0.497159,
+            0.539773,
+            0.517045,
+            0.571023,
+            0.451705
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.076014,
-          "proportion_profile_drift": 0.063652
+          "proportion_profile_drift": 0.063652,
+          "silhouette_width_drift": 0.078125,
+          "silhouette_width_profile": [
+            0.238636,
+            0.357955,
+            0.400568,
+            0.5,
+            0.545455,
+            0.502841,
+            0.582386,
+            0.446023
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.082642,
-          "proportion_profile_drift": 0.074588
+          "proportion_profile_drift": 0.074588,
+          "silhouette_width_drift": 0.077415,
+          "silhouette_width_profile": [
+            0.230114,
+            0.355114,
+            0.380682,
+            0.497159,
+            0.542614,
+            0.528409,
+            0.573864,
+            0.454545
+          ]
         }
       ]
     },
@@ -378,42 +719,130 @@
         {
           "column": 0,
           "palette_drift": 0.084711,
-          "proportion_profile_drift": 0.059191
+          "proportion_profile_drift": 0.059191,
+          "silhouette_width_drift": 0.07919,
+          "silhouette_width_profile": [
+            0.252841,
+            0.377841,
+            0.420455,
+            0.514205,
+            0.551136,
+            0.519886,
+            0.599432,
+            0.4375
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.081832,
-          "proportion_profile_drift": 0.057934
+          "proportion_profile_drift": 0.057934,
+          "silhouette_width_drift": 0.079901,
+          "silhouette_width_profile": [
+            0.252841,
+            0.380682,
+            0.417614,
+            0.511364,
+            0.551136,
+            0.517045,
+            0.599432,
+            0.4375
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.081477,
-          "proportion_profile_drift": 0.057638
+          "proportion_profile_drift": 0.057638,
+          "silhouette_width_drift": 0.07777,
+          "silhouette_width_profile": [
+            0.25,
+            0.377841,
+            0.417614,
+            0.514205,
+            0.551136,
+            0.519886,
+            0.596591,
+            0.434659
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.082783,
-          "proportion_profile_drift": 0.057152
+          "proportion_profile_drift": 0.057152,
+          "silhouette_width_drift": 0.078835,
+          "silhouette_width_profile": [
+            0.25,
+            0.377841,
+            0.414773,
+            0.511364,
+            0.545455,
+            0.517045,
+            0.599432,
+            0.431818
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.07867,
-          "proportion_profile_drift": 0.056261
+          "proportion_profile_drift": 0.056261,
+          "silhouette_width_drift": 0.078835,
+          "silhouette_width_profile": [
+            0.25,
+            0.375,
+            0.417614,
+            0.514205,
+            0.551136,
+            0.514205,
+            0.602273,
+            0.434659
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.083896,
-          "proportion_profile_drift": 0.056136
+          "proportion_profile_drift": 0.056136,
+          "silhouette_width_drift": 0.078835,
+          "silhouette_width_profile": [
+            0.25,
+            0.372159,
+            0.417614,
+            0.511364,
+            0.548295,
+            0.514205,
+            0.602273,
+            0.431818
+          ]
         },
         {
           "column": 6,
           "palette_drift": 0.08269,
-          "proportion_profile_drift": 0.056183
+          "proportion_profile_drift": 0.056183,
+          "silhouette_width_drift": 0.07777,
+          "silhouette_width_profile": [
+            0.247159,
+            0.375,
+            0.420455,
+            0.514205,
+            0.553977,
+            0.517045,
+            0.602273,
+            0.431818
+          ]
         },
         {
           "column": 7,
           "palette_drift": 0.080177,
-          "proportion_profile_drift": 0.058114
+          "proportion_profile_drift": 0.058114,
+          "silhouette_width_drift": 0.07706,
+          "silhouette_width_profile": [
+            0.25,
+            0.369318,
+            0.414773,
+            0.511364,
+            0.551136,
+            0.517045,
+            0.599432,
+            0.431818
+          ]
         }
       ]
     },
@@ -423,32 +852,98 @@
         {
           "column": 0,
           "palette_drift": 0.068137,
-          "proportion_profile_drift": 0.014602
+          "proportion_profile_drift": 0.014602,
+          "silhouette_width_drift": 0.059304,
+          "silhouette_width_profile": [
+            0.173295,
+            0.298295,
+            0.357955,
+            0.46875,
+            0.505682,
+            0.474432,
+            0.434659,
+            0.142045
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.067152,
-          "proportion_profile_drift": 0.014637
+          "proportion_profile_drift": 0.014637,
+          "silhouette_width_drift": 0.060369,
+          "silhouette_width_profile": [
+            0.173295,
+            0.298295,
+            0.357955,
+            0.463068,
+            0.5,
+            0.471591,
+            0.428977,
+            0.142045
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.061729,
-          "proportion_profile_drift": 0.016002
+          "proportion_profile_drift": 0.016002,
+          "silhouette_width_drift": 0.057884,
+          "silhouette_width_profile": [
+            0.184659,
+            0.298295,
+            0.357955,
+            0.465909,
+            0.502841,
+            0.477273,
+            0.431818,
+            0.142045
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.065306,
-          "proportion_profile_drift": 0.013998
+          "proportion_profile_drift": 0.013998,
+          "silhouette_width_drift": 0.059659,
+          "silhouette_width_profile": [
+            0.181818,
+            0.295455,
+            0.357955,
+            0.460227,
+            0.5,
+            0.471591,
+            0.426136,
+            0.142045
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.058709,
-          "proportion_profile_drift": 0.014905
+          "proportion_profile_drift": 0.014905,
+          "silhouette_width_drift": 0.057173,
+          "silhouette_width_profile": [
+            0.181818,
+            0.298295,
+            0.357955,
+            0.465909,
+            0.502841,
+            0.482955,
+            0.428977,
+            0.142045
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.062443,
-          "proportion_profile_drift": 0.015558
+          "proportion_profile_drift": 0.015558,
+          "silhouette_width_drift": 0.058949,
+          "silhouette_width_profile": [
+            0.178977,
+            0.295455,
+            0.357955,
+            0.465909,
+            0.5,
+            0.480114,
+            0.431818,
+            0.142045
+          ]
         }
       ]
     },
@@ -458,32 +953,98 @@
         {
           "column": 0,
           "palette_drift": 0.056631,
-          "proportion_profile_drift": 0.01378
+          "proportion_profile_drift": 0.01378,
+          "silhouette_width_drift": 0.054332,
+          "silhouette_width_profile": [
+            0.190341,
+            0.301136,
+            0.357955,
+            0.471591,
+            0.511364,
+            0.477273,
+            0.431818,
+            0.147727
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.055433,
-          "proportion_profile_drift": 0.013209
+          "proportion_profile_drift": 0.013209,
+          "silhouette_width_drift": 0.056818,
+          "silhouette_width_profile": [
+            0.1875,
+            0.301136,
+            0.357955,
+            0.465909,
+            0.505682,
+            0.471591,
+            0.431818,
+            0.147727
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.048994,
-          "proportion_profile_drift": 0.013646
+          "proportion_profile_drift": 0.013646,
+          "silhouette_width_drift": 0.058239,
+          "silhouette_width_profile": [
+            0.1875,
+            0.301136,
+            0.355114,
+            0.465909,
+            0.505682,
+            0.471591,
+            0.434659,
+            0.142045
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.052229,
-          "proportion_profile_drift": 0.013812
+          "proportion_profile_drift": 0.013812,
+          "silhouette_width_drift": 0.058239,
+          "silhouette_width_profile": [
+            0.184659,
+            0.298295,
+            0.352273,
+            0.465909,
+            0.502841,
+            0.477273,
+            0.428977,
+            0.142045
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.04944,
-          "proportion_profile_drift": 0.014538
+          "proportion_profile_drift": 0.014538,
+          "silhouette_width_drift": 0.060014,
+          "silhouette_width_profile": [
+            0.176136,
+            0.301136,
+            0.357955,
+            0.465909,
+            0.502841,
+            0.465909,
+            0.431818,
+            0.142045
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.056525,
-          "proportion_profile_drift": 0.013986
+          "proportion_profile_drift": 0.013986,
+          "silhouette_width_drift": 0.058949,
+          "silhouette_width_profile": [
+            0.181818,
+            0.295455,
+            0.355114,
+            0.465909,
+            0.502841,
+            0.474432,
+            0.434659,
+            0.147727
+          ]
         }
       ]
     },
@@ -493,32 +1054,98 @@
         {
           "column": 0,
           "palette_drift": 0.056052,
-          "proportion_profile_drift": 0.016333
+          "proportion_profile_drift": 0.016333,
+          "silhouette_width_drift": 0.052557,
+          "silhouette_width_profile": [
+            0.1875,
+            0.306818,
+            0.363636,
+            0.474432,
+            0.505682,
+            0.494318,
+            0.440341,
+            0.147727
+          ]
         },
         {
           "column": 1,
           "palette_drift": 0.056586,
-          "proportion_profile_drift": 0.014374
+          "proportion_profile_drift": 0.014374,
+          "silhouette_width_drift": 0.055043,
+          "silhouette_width_profile": [
+            0.190341,
+            0.298295,
+            0.355114,
+            0.46875,
+            0.511364,
+            0.482955,
+            0.434659,
+            0.147727
+          ]
         },
         {
           "column": 2,
           "palette_drift": 0.05745,
-          "proportion_profile_drift": 0.015495
+          "proportion_profile_drift": 0.015495,
+          "silhouette_width_drift": 0.057173,
+          "silhouette_width_profile": [
+            0.181818,
+            0.301136,
+            0.363636,
+            0.471591,
+            0.5,
+            0.480114,
+            0.4375,
+            0.142045
+          ]
         },
         {
           "column": 3,
           "palette_drift": 0.055737,
-          "proportion_profile_drift": 0.015362
+          "proportion_profile_drift": 0.015362,
+          "silhouette_width_drift": 0.056818,
+          "silhouette_width_profile": [
+            0.184659,
+            0.301136,
+            0.355114,
+            0.465909,
+            0.511364,
+            0.480114,
+            0.434659,
+            0.142045
+          ]
         },
         {
           "column": 4,
           "palette_drift": 0.052446,
-          "proportion_profile_drift": 0.015017
+          "proportion_profile_drift": 0.015017,
+          "silhouette_width_drift": 0.055043,
+          "silhouette_width_profile": [
+            0.184659,
+            0.301136,
+            0.360795,
+            0.46875,
+            0.514205,
+            0.480114,
+            0.431818,
+            0.142045
+          ]
         },
         {
           "column": 5,
           "palette_drift": 0.052667,
-          "proportion_profile_drift": 0.015971
+          "proportion_profile_drift": 0.015971,
+          "silhouette_width_drift": 0.054687,
+          "silhouette_width_profile": [
+            0.181818,
+            0.301136,
+            0.363636,
+            0.471591,
+            0.508523,
+            0.488636,
+            0.440341,
+            0.147727
+          ]
         }
       ]
     }

@@ -12,10 +12,13 @@ from pet_common import slugify
 
 LOCK = (
     "Use canonical.png and turnaround.png as one immutable character rig. Preserve exact head/body "
-    "ratio, face and eye geometry, hair silhouette and parting, shoulder/arm/leg proportions, hand "
-    "and shoe size, outfit seams/layers/ornaments, palette, line weight, practical height, and shoe "
+    "ratio, face and eye geometry, hair silhouette and parting; preserve neck/shoulder/hip width, "
+    "upper/lower arm, hand, thigh/calf, leg and shoe lengths and volumes in the same head units; "
+    "preserve collar/sleeve/cuff/waist/hem construction, every seam/layer/ornament and its physical "
+    "side, palette, line weight, practical height, and shoe "
     "baseline. Keep the complete hair/head inside the cell with at least 12px clear space above it "
-    "and at least 10px below the shoes. Change only the requested pose, gaze, and expression. One "
+    "and at least 10px below the shoes. Rotate joints and shift weight; never scale the head, torso, "
+    "limbs, hands, shoes, clothing, or whole character. Change only pose, gaze, and expression. One "
     "complete character per cell."
 )
 
@@ -115,6 +118,12 @@ animation frame must transition naturally back to the first.
         "oneReferenceOnly": True,
         "jobs": jobs_json,
         "qualityOrder": ["identity", "complete anatomy", "meaningful motion", "natural expression", "token economy"],
+        "structuralIdentityGate": {
+            "reference": "canonical.png",
+            "bands": 8,
+            "maxSilhouetteWidthDrift": 0.11,
+            "covers": ["head", "shoulder/sleeve", "torso/hem", "legs", "shoes"],
+        },
         "chatContract": "Keep prompts and QA results in files; report only paths, failed gates, and final status.",
     }
     (out / "pet-workflow.json").write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

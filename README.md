@@ -61,8 +61,8 @@ The validator checks atlas geometry, transparency, empty cells, multi-character 
 人物完整性还会通过主体连通占比和四边安全区检查：主身体之外的可见残片超过 3% 即拒绝，可拦截断手、断脚、游离鞋子、邻格碎片和额外人物；循环动作步长变异系数超过 0.65 也会拒绝，避免一帧突跳拖低有效帧率。
 Character completeness is also checked through main-component coverage and four-edge safety zones: more than 3% visible pixels outside the main body is rejected to catch detached hands, feet, shoes, neighboring fragments, or extra figures; cyclic motion-step coefficient of variation above 0.65 is also rejected to prevent one abrupt frame from lowering effective frame rate.
 
-验证器还会把每格的粗粒度可见配色和“头部/躯干/腿部”纵向质量分布与标准待机帧比较，拦截衣物配色漂移和明显的上下身比例变化；细小饰品与脸部细节继续由转台和人工联系表确认。
-The validator also compares each cell's coarse visible-color histogram and top/middle/bottom mass profile with the canonical idle frame, rejecting outfit-color drift and obvious body-proportion changes; fine ornaments and facial details remain turnaround/contact-sheet review gates.
+验证器还会把每格的粗粒度可见配色、“头部/躯干/腿部”纵向质量分布以及八段归一化轮廓宽度与标准待机帧比较；八段轮廓专门覆盖头宽、肩膀/袖子体积、躯干/衣摆宽度、腿间距和鞋子尺度，默认结构漂移超过 0.11 即拒绝。细小饰品、关节位置与脸部细节继续由转台和人工联系表确认。
+The validator also compares each cell's coarse visible-color histogram, top/middle/bottom mass profile, and eight-band normalized silhouette width with the canonical idle frame; the eight bands specifically cover head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale, rejecting structural drift above 0.11 by default. Fine ornaments, joint placement, and facial details remain turnaround/contact-sheet review gates.
 
 最终装配会把每个完整人物等比例注册为统一 176px 可见高度、固定鞋底基线，并采用更保守的内安全框；验证器会拒绝贴顶、削头、四边越界或尺寸跳变。
 Final assembly proportionally registers every complete figure to a uniform 176px visible height and fixed shoe baseline inside a more conservative inner safe box; the validator rejects top-touching, head-clipped, edge-crossing, or size-popping frames.
