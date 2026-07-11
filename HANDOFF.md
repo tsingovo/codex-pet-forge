@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.3` (structural silhouette identity gate prepared)
+- Current release: `v0.2.3` (published; structural silhouette identity gate)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -109,8 +109,12 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: Existing height and three-band vertical-mass gates cannot fully detect a same-height character whose shoulders, sleeves, torso, hem, legs, or shoes were redrawn; added an eight-band normalized silhouette-width fingerprint using canonical idle frame 0 as the structure reference, rejecting mean drift above `0.11` by default.
 - 中文：生成锁已细化到头单位下的肩/髋宽、上下臂、手掌、大腿/小腿、腿长、鞋长和服装层级尺寸；每行必须重新使用同一 canonical 与对应转台方向，不允许用上一条动画结果继续衍生，避免误差逐行累积。
 - English: The generation lock now explicitly freezes shoulder/hip width, upper/lower arms, palms, thighs/calves, leg and shoe lengths, and garment-layer dimensions in head units; every row must reuse the same canonical and matching turnaround view rather than deriving from a previous animation result, preventing row-by-row error accumulation.
-- 中文：新增默认门槛失败测试，证明在高度、基线、配色、连通性和四边安全区仍合格时，异常放大的身体/衣物轮廓仍会被拒绝；下一步为完整测试、样例重验、v0.2.3 发布与本地覆盖。
-- English: Added a default-gate failure test proving that an abnormally enlarged body/outfit silhouette is rejected even when height, baseline, palette, connectivity, and four-edge safety zones remain valid; next actions are full tests, sample revalidation, v0.2.3 publication, and local replacement.
+- 中文：新增默认门槛失败测试，证明在高度、基线、配色、连通性和四边安全区仍合格时，异常放大的身体/衣物轮廓仍会被拒绝；完整 10 项测试、技能校验、插件校验与 GPT娘样例验证均已通过。
+- English: Added a default-gate failure test proving that an abnormally enlarged body/outfit silhouette is rejected even when height, baseline, palette, connectivity, and four-edge safety zones remain valid; all ten tests, skill validation, plugin validation, and GPT娘 sample validation pass.
+- 中文：GitHub `main`、`v0.2.3` 标签与公开 Release 已同步：`https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.3`，源码与 GPT娘直装包均已上传，发布说明维持中文段落在对应英文之前。
+- English: GitHub `main`, the `v0.2.3` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.3`; source and direct GPT娘 packages are uploaded, with every Chinese paragraph before its matching English paragraph.
+- 中文：真实 Codex 插件已升级到 `0.2.3`，GPT娘再次使用 `--replace` 无备份覆盖；样例与安装图集哈希一致，本地仍只有一个 `gpt-niang` 目录。
+- English: The real Codex plugin is upgraded to `0.2.3`, and GPT娘 is again replaced in place with `--replace` and no backup; sample and installed atlas hashes match, with exactly one local `gpt-niang` directory.
 
 ## Non-negotiable runtime facts
 
