@@ -28,9 +28,10 @@ class PetForgeTests(unittest.TestCase):
         for row, used in enumerate(USED_COUNTS):
             for col in range(used):
                 phase = 2 * math.pi * col / used
-                cx = int((col + 0.5) * cell_w + 5 * math.sin(phase))
-                y0 = int(row * cell_h + 15)
-                y1 = int((row + 1) * cell_h - 15)
+                cx = int((col + 0.5) * cell_w + 5 * math.cos(phase))
+                dy = int(5 * math.sin(phase))
+                y0 = int(row * cell_h + 15 + dy)
+                y1 = int((row + 1) * cell_h - 15 + dy)
                 color_shift = round(10 * math.sin(phase))
                 second_shift = round(10 * math.cos(phase))
                 draw.ellipse((cx - 24, y0, cx + 24, y1), fill=(40, 90 + color_shift, 160 + second_shift))
@@ -70,6 +71,7 @@ class PetForgeTests(unittest.TestCase):
             self.run_script(
                 "validate_atlas.py",
                 str(run / "spritesheet.webp"),
+                "--allow-chroma-fringe",
                 "--chroma-key",
                 "#FF00FF",
                 "--json-out",
@@ -88,7 +90,7 @@ class PetForgeTests(unittest.TestCase):
                 "--output", str(run / "reassembled.webp"), "--png-output", str(run / "reassembled.png"),
             )
             self.run_script(
-                "validate_atlas.py", str(run / "reassembled.webp"),
+                "validate_atlas.py", str(run / "reassembled.webp"), "--allow-chroma-fringe",
                 "--chroma-key", "#FF00FF", "--json-out", str(run / "reassembled-validation.json"),
             )
             self.assertTrue(json.loads((run / "reassembled-validation.json").read_text(encoding="utf-8"))["ok"])
@@ -222,6 +224,47 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("above the visible head/hair", result.stdout)
+
+    def test_validator_rejects_detached_sprite_fragment(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            # Simulate an isolated shoe/limb fragment inside the safe cell.
+            ImageDraw.Draw(atlas).rectangle((8, 150, 31, 181), fill=(40, 90, 160, 255))
+            path = root / "detached-fragment.png"
+            atlas.save(path)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("outside the main connected character", result.stdout)
+
+    def test_validator_reports_uneven_motion_steps(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            result = subprocess.run(
+                [
+                    sys.executable, str(SCRIPTS / "validate_atlas.py"), str(root / "atlas.png"),
+                    "--allow-chroma-fringe", "--max-motion-step-cv", "0.01",
+                ],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("motion-step variation", result.stdout)
 
 
 if __name__ == "__main__":

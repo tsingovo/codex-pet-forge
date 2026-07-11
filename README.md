@@ -55,11 +55,17 @@ Example prompt: `Create a pet from this image. Approve a canonical full-body cha
 验证器会检查图集尺寸、透明背景、空单元格、单格多人物、脚底基线、跨行高度、重复帧、动作跳变与多帧头部变化；联系表和 8 FPS 动作预览仍必须人工检查。
 The validator checks atlas geometry, transparency, empty cells, multi-character cells, baseline, cross-row height, duplicate frames, abrupt steps, and multi-frame head-region changes; the contact sheet and 8 FPS motion previews still require review.
 
+人物完整性还会通过主体连通占比和四边安全区检查：主身体之外的可见残片超过 3% 即拒绝，可拦截断手、断脚、游离鞋子、邻格碎片和额外人物；循环动作步长变异系数超过 0.65 也会拒绝，避免一帧突跳拖低有效帧率。
+Character completeness is also checked through main-component coverage and four-edge safety zones: more than 3% visible pixels outside the main body is rejected to catch detached hands, feet, shoes, neighboring fragments, or extra figures; cyclic motion-step coefficient of variation above 0.65 is also rejected to prevent one abrupt frame from lowering effective frame rate.
+
 验证器还会把每格的粗粒度可见配色和“头部/躯干/腿部”纵向质量分布与标准待机帧比较，拦截衣物配色漂移和明显的上下身比例变化；细小饰品与脸部细节继续由转台和人工联系表确认。
 The validator also compares each cell's coarse visible-color histogram and top/middle/bottom mass profile with the canonical idle frame, rejecting outfit-color drift and obvious body-proportion changes; fine ornaments and facial details remain turnaround/contact-sheet review gates.
 
-最终装配会把每个完整人物等比例注册为统一 184px 可见高度、固定鞋底基线，并保留至少 10px 头顶安全边距与 8px 鞋底安全边距；验证器会拒绝贴顶、削头或尺寸跳变。
-Final assembly proportionally registers every complete figure to a uniform 184px visible height and fixed shoe baseline, with at least 10px head clearance and 8px shoe clearance; the validator rejects top-touching, head-clipped, or size-popping frames.
+最终装配会把每个完整人物等比例注册为统一 176px 可见高度、固定鞋底基线，并采用更保守的内安全框；验证器会拒绝贴顶、削头、四边越界或尺寸跳变。
+Final assembly proportionally registers every complete figure to a uniform 176px visible height and fixed shoe baseline inside a more conservative inner safe box; the validator rejects top-touching, head-clipped, edge-crossing, or size-popping frames.
+
+若裁切只在分屏或跨显示区域拖动后出现、固定在一个矩形内且再次拖动可能恢复，请运行运行时裁切诊断；图集全部位于安全格时，该现象会判定为 Codex 悬浮 BrowserWindow 边界与布局短暂失步，而不是重新生图。
+If clipping appears only after split-screen or cross-display dragging, stays inside a fixed rectangle, and may recover after another drag, run the runtime clipping diagnostic; when every atlas cell is safe, it classifies the symptom as transient Codex overlay BrowserWindow bounds/layout desynchronization rather than regenerating art.
 
 低 Token 通过把人物规则、逐帧时间线、提示词和 QA 报告保存在工作文件中实现；聊天只返回路径、失败门槛和最终状态，质量门槛不会因节省 Token 而缩短。
 Low token use comes from storing rig rules, per-frame timelines, prompts, and QA reports in working files; chat returns only paths, failed gates, and final status, while quality gates are never shortened to save tokens.

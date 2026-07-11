@@ -22,7 +22,7 @@ PYTHON=<absolute Python executable>
 
 Use this workflow whenever the user expects a coherent finished pet. It prevents the common failure where each action becomes a differently proportioned character.
 
-1. Read `references/identity-lock.md`, `references/character-rig-contract.md`, `references/trigger-semantics.md`, and `references/atlas-contract.md`.
+1. Read `references/identity-lock.md`, `references/character-rig-contract.md`, `references/trigger-semantics.md`, `references/atlas-contract.md`, and `references/runtime-overlay-clipping.md`.
 2. Prepare the run:
 
 ```powershell
@@ -35,7 +35,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
 3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`.
 4. Run the listed row prompt files one at a time, attaching both internal identity assets. Require the exact figure count; never group/duplicate figures to compensate for a missing pose.
 5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, and chroma/geometry failures.
-   Assembly automatically performs uniform Desktop safe-box registration: 184px visible height, fixed shoe baseline, and hard head/shoe padding. Never bypass it by copying row strips directly into the install package.
+   Assembly automatically performs uniform Desktop safe-box registration: 176px visible height, fixed shoe baseline, and hard four-edge padding. Never bypass it by copying row strips directly into the install package.
 6. Render both `make_contact_sheet.py` and `make_motion_previews.py --fps 8`. Inspect the still identity comparison and every real loop; do not install if anatomy ratios, face, hair, garment layers/ornaments, practical scale, motion meaning, loop continuity, or expression continuity changes between rows.
 7. Row 0 is the automatically triggered idle loop when no other state is active. Require breathing/blink/gaze/return across its six runtime frames; column 6 remains the neutral fallback.
 
@@ -129,9 +129,11 @@ Then run the single final despill pass, validation, contact-sheet review, and in
 - A question mark must touch or overlap hair/hood; reject detached punctuation.
 - Preserve user identity and supplied art cues, but do not copy unrelated scenery, text, UI, or another character from expression references.
 - Never modify Codex application files or `app.asar`.
+- When clipping is fixed to a rectangle, appears only after split-screen/cross-display dragging, and recovers after another drag, run `diagnose_overlay_clipping.py`. If all cells pass, record it as host overlay bounds desynchronization and do not regenerate the character.
 - Keep no backup when the user explicitly requests replacement without old copies; verify only one same-ID pet directory remains.
 - Do not install unless `validate_atlas.py` passes and reports `desktop_installable: true`.
 - Reject any used row containing duplicate/near-duplicate adjacent frames or only one expressive frame.
+- Reject any cell with more than 3% visible pixels outside its main connected character, or any loop whose cyclic motion-step coefficient of variation exceeds 0.65.
 - Reject fewer/more generated figures than requested; do not fill missing frames by duplicating, grouping, or isolated body-part repair.
 
 ## Modes

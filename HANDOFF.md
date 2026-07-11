@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.0` (published Desktop 8×9 compatibility and head-safe registration)
+- Current release: `v0.2.1` (completeness/component and motion-uniformity guards prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -55,6 +55,24 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: `main` is synchronized to GitHub, and the `v0.2.0` tag and Release are published with `codex-pet-forge-v0.2.0.zip` and `gpt-niang-pet.zip`; release notes retain Chinese-first, English-second bilingual ordering.
 - 中文：真实 Codex marketplace 已升级，旧的 `codex-pet-forge@0.1.9` 已移除并安装 `0.2.0`；GPT娘 使用 `--replace` 无备份覆盖，本地仅存在一个 `gpt-niang` 目录。
 - English: The real Codex marketplace was upgraded, `codex-pet-forge@0.1.9` was removed and `0.2.0` installed; GPT娘 was replaced in place with `--replace` and no backup, leaving exactly one `gpt-niang` directory.
+
+### 2026-07-11 — 人物连通完整性与有效帧率门槛 / Character connectivity and effective-frame-rate gates
+
+- 中文：图集验证器新增四邻域 alpha 主体连通分析，默认要求至少 97% 可见像素属于最大人物主体，并记录组件数、最大组件占比及游离像素占比；用于拦截断手断脚、游离鞋子、邻格残片和额外小人物。
+- English: Atlas validation now performs four-neighbor alpha connectivity analysis, requiring at least 97% of visible pixels to belong to the largest character component by default, while recording component count, largest-component share, and detached share; this catches detached hands, feet, shoes, neighboring fragments, and extra small figures.
+- 中文：新增左右边至少 4px 安全区，并计算整个闭环的动作步长变异系数；默认 CV 超过 0.65 即拒绝，以避免单帧突跳或不均匀相位降低有效帧率。
+- English: Added minimum 4px left/right safety zones and cyclic motion-step coefficient of variation; CV above 0.65 is rejected by default to prevent abrupt one-frame jumps or uneven phases from lowering effective frame rate.
+- 中文：新增游离残片和不均匀动作步长失败测试；GPT娘 全部运行帧通过新门槛，最大游离可见占比仅 0.46%，所有动作 CV 为 0.11–0.31。
+- English: Added failure tests for detached fragments and uneven motion steps; every GPT娘 runtime frame passes the new gates, with a maximum detached visible share of only 0.46% and motion CV values from 0.11 to 0.31.
+
+### 2026-07-11 — 分屏拖动固定矩形裁切诊断 / Split-screen fixed-rectangle clipping diagnosis
+
+- 中文：只读审计 Codex Desktop `26.707.3748.0` 打包代码确认：旧悬浮页根节点使用 `h-screen w-screen overflow-hidden`；拖动跨显示区域时主进程重新选择 display、计算 layout 并设置 BrowserWindow bounds，而元素尺寸更新可能在 moved-window 定时器期间延迟。固定矩形裁切且继续拖动可恢复，符合宿主窗口边界与布局短暂失步。
+- English: Read-only inspection of packaged Codex Desktop `26.707.3748.0` confirms that the legacy overlay root uses `h-screen w-screen overflow-hidden`; cross-display dragging makes the main process reselect a display, calculate layout, and set BrowserWindow bounds, while element-size updates may be deferred during the moved-window timer. Fixed-rectangle clipping that recovers after more dragging matches transient host window-bounds/layout desynchronization.
+- 中文：新增 `runtime-overlay-clipping.md` 和 `diagnose_overlay_clipping.py`，在全部 192×208 单元格安全时输出 `host-overlay-bounds-desynchronization-likely`，防止错误重生角色图；不修改或分发 Codex `app.asar`。
+- English: Added `runtime-overlay-clipping.md` and `diagnose_overlay_clipping.py`, which reports `host-overlay-bounds-desynchronization-likely` when every 192×208 cell is safe, preventing unnecessary character regeneration; Codex `app.asar` is neither modified nor redistributed.
+- 中文：资产侧缓解进一步收紧为统一 176px 可见高度、14px 鞋底缓冲和 16px 横向装配安全框；这不能替代宿主修复，但能降低短暂窗口裁切对人物头发和四肢的影响。
+- English: Asset-side mitigation is tightened to a uniform 176px visible height, 14px shoe clearance, and 16px horizontal assembly safe box; this does not replace a host fix, but reduces the impact of transient window clipping on hair and limbs.
 
 ## Non-negotiable runtime facts
 

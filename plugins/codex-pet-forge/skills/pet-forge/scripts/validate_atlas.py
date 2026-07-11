@@ -9,7 +9,7 @@ import math
 import re
 from collections import defaultdict
 from pathlib import Path
-from statistics import median
+from statistics import median, pstdev
 
 from PIL import Image, ImageChops, ImageFilter
 
@@ -126,6 +126,44 @@ def alpha_bbox(image: Image.Image) -> tuple[int, int, int, int] | None:
     return image.getchannel("A").getbbox()
 
 
+def alpha_component_metrics(image: Image.Image, threshold: int = 16) -> dict[str, object]:
+    """Measure whether one complete sprite owns nearly all visible pixels."""
+    alpha = image.convert("RGBA").getchannel("A")
+    width, height = alpha.size
+    visible = bytearray(1 if value > threshold else 0 for value in alpha.getdata())
+    seen = bytearray(width * height)
+    sizes: list[int] = []
+    for start, present in enumerate(visible):
+        if not present or seen[start]:
+            continue
+        seen[start] = 1
+        stack = [start]
+        size = 0
+        while stack:
+            index = stack.pop()
+            size += 1
+            x, y = index % width, index // width
+            for neighbor in (
+                index - 1 if x else -1,
+                index + 1 if x + 1 < width else -1,
+                index - width if y else -1,
+                index + width if y + 1 < height else -1,
+            ):
+                if neighbor >= 0 and visible[neighbor] and not seen[neighbor]:
+                    seen[neighbor] = 1
+                    stack.append(neighbor)
+        sizes.append(size)
+    sizes.sort(reverse=True)
+    total = sum(sizes)
+    largest_share = sizes[0] / total if total else 0.0
+    return {
+        "component_count": len(sizes),
+        "largest_component_pixels": sizes[0] if sizes else 0,
+        "largest_component_share": largest_share,
+        "detached_visible_share": 1.0 - largest_share if total else 0.0,
+    }
+
+
 def mean_frame_difference(first: Image.Image, second: Image.Image) -> float:
     """Return normalized mean absolute RGBA difference in the range 0..1."""
     diff = ImageChops.difference(first.convert("RGBA"), second.convert("RGBA"))
@@ -208,6 +246,18 @@ def main() -> None:
         help="Minimum transparent pixels below every used sprite in its 208px cell.",
     )
     parser.add_argument(
+        "--min-side-safe-padding",
+        type=int,
+        default=4,
+        help="Minimum clear pixels at both left and right cell edges.",
+    )
+    parser.add_argument(
+        "--max-detached-visible-share",
+        type=float,
+        default=0.03,
+        help="Maximum fraction of visible pixels outside the largest connected sprite component.",
+    )
+    parser.add_argument(
         "--min-frame-difference",
         type=float,
         default=0.002,
@@ -224,6 +274,12 @@ def main() -> None:
         type=float,
         default=3.0,
         help="Maximum action-frame step difference relative to the row median; catches abrupt jumps.",
+    )
+    parser.add_argument(
+        "--max-motion-step-cv",
+        type=float,
+        default=0.65,
+        help="Maximum coefficient of variation across cyclic frame-step differences.",
     )
     parser.add_argument(
         "--max-palette-drift",
@@ -310,6 +366,8 @@ def main() -> None:
                 "nontransparent_pixels": nontransparent,
             }
             bbox = alpha_bbox(cell)
+            component_metrics = alpha_component_metrics(cell)
+            cell_info.update(component_metrics)
             if bbox is not None:
                 cell_info["visible_bbox"] = list(bbox)
             chroma_leak_pixels = opaque_chroma_key_count(
@@ -342,8 +400,12 @@ def main() -> None:
                 visible_width = bbox[2] - bbox[0]
                 top_padding = bbox[1]
                 bottom_padding = CELL_HEIGHT - bbox[3]
+                left_padding = bbox[0]
+                right_padding = CELL_WIDTH - bbox[2]
                 cell_info["top_safe_padding"] = top_padding
                 cell_info["bottom_safe_padding"] = bottom_padding
+                cell_info["left_safe_padding"] = left_padding
+                cell_info["right_safe_padding"] = right_padding
                 if top_padding < args.min_top_safe_padding:
                     errors.append(
                         f"{state} row {row_index} column {column_index} has only {top_padding}px "
@@ -354,6 +416,18 @@ def main() -> None:
                     errors.append(
                         f"{state} row {row_index} column {column_index} has only {bottom_padding}px "
                         f"below the shoes (minimum {args.min_bottom_safe_padding}px)"
+                    )
+                if min(left_padding, right_padding) < args.min_side_safe_padding:
+                    errors.append(
+                        f"{state} row {row_index} column {column_index} touches a side safety zone "
+                        f"(left {left_padding}px, right {right_padding}px; minimum {args.min_side_safe_padding}px)"
+                    )
+                detached_share = float(component_metrics["detached_visible_share"])
+                if detached_share > args.max_detached_visible_share:
+                    errors.append(
+                        f"{state} row {row_index} column {column_index} has {detached_share:.1%} of visible "
+                        f"pixels outside the main connected character (limit {args.max_detached_visible_share:.1%}); "
+                        "reject detached limbs, shoes, fragments, effects, or extra figures"
                     )
                 if visible_width > args.max_visible_width:
                     errors.append(
@@ -480,6 +554,13 @@ def main() -> None:
                 "use every runtime frame with a distinct meaningful pose/expression"
             )
         row_median = median(differences)
+        row_mean = sum(differences) / len(differences)
+        step_cv = pstdev(differences) / row_mean if row_mean else 0.0
+        if step_cv > args.max_motion_step_cv:
+            errors.append(
+                f"{state} row {row_index} cyclic motion-step variation is {step_cv:.2f} "
+                f"(limit {args.max_motion_step_cv:.2f}); use evenly phased frames and a smooth loop closure"
+            )
         if row_index <= 8 and row_median > 0:
             outliers = [index for index, value in enumerate(differences) if value > row_median * args.max_step_outlier_ratio]
             if outliers:
@@ -505,6 +586,7 @@ def main() -> None:
             "state": state,
             "frame_differences": [round(value, 6) for value in differences],
             "head_differences": [round(value, 6) for value in head_differences],
+            "motion_step_cv": round(step_cv, 6),
         }
 
     alpha_count = alpha_nonzero_count(image)

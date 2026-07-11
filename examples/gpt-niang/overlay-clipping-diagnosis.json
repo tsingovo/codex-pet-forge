@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "atlas": "F:\\桌面\\小学期\\codex-pet-forge\\examples\\gpt-niang\\spritesheet.webp",
+  "asset_safe": true,
+  "desktop_installable": true,
+  "all_used_cells_inside_safe_box": true,
+  "classification": "host-overlay-bounds-desynchronization-likely",
+  "guidance": "The atlas is fully inside every 192x208 cell. If clipping appears only after split-screen or cross-display dragging and recovers after another drag, treat it as a Codex overlay BrowserWindow bounds/layout synchronization issue; do not regenerate character art.",
+  "validation_errors": []
+}
