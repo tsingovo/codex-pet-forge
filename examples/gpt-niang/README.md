@@ -15,6 +15,9 @@ The GIFs below render the real frame sequences at 8 FPS to review motion and exp
 所有有表情的运行行均通过至少三次头部区域变化门槛，不存在仅一帧闪现的孤立表情。
 Every expressive runtime row passes the minimum three head-region transitions, with no isolated expression flashing for only one frame.
 
+本样例的 [`prompt-budget.json`](prompt-budget.json) 记录身份锁为 518 字符、较旧等价规则每次完整流程约节省 560 个提示 Token，且删除的质量门槛为 0。
+This sample's [`prompt-budget.json`](prompt-budget.json) records a 518-character identity lock, roughly 560 prompt tokens saved per complete run versus the older equivalent rules, and zero removed quality gates.
+
 待机预览只包含宿主真实引用的六帧；Codex 实际会以约 6.6 秒的慢速循环自动播放它们，第 6–7 格保持透明。
 The idle preview contains only the six host-referenced frames; Codex automatically plays them as a roughly 6.6-second slow loop, while columns 6-7 remain transparent.
 

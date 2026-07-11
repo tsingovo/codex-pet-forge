@@ -32,7 +32,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
   --output-dir <absolute-run-dir>
 ```
 
-3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`.
+3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`. Read `<run>/prompt-budget.json`; the compact identity lock must remain at or below 520 characters with `qualityGatesRemoved: 0`.
 4. Run the listed row prompt files one at a time, attaching both internal identity assets. Require the exact figure count; never group/duplicate figures to compensate for a missing pose.
 5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, chroma/geometry failures, and eight-band structural silhouette drift in head, shoulder/sleeve, torso/hem, leg, or shoe scale.
    Assembly automatically performs uniform Desktop safe-box registration: 176px visible height, fixed shoe baseline, and hard four-edge padding. Never bypass it by copying row strips directly into the install package.
@@ -111,6 +111,8 @@ Compact QA commands:
 ## Repair Only the Failed Row
 
 Do not regenerate the full atlas when one row fails. Generate one horizontal strip using `references/row-repair-prompts.md`, then run:
+
+Follow `pet-workflow.json.retryPolicy`: reuse the original canonical/turnaround anchors and report only the failed row, failed gates, retry prompt path, and final status. Do not replay the full chat or successful rows.
 
 ```powershell
 & $PYTHON "$SKILL_DIR/scripts/replace_atlas_row.py" `

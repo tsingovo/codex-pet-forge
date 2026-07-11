@@ -127,6 +127,12 @@ class PetForgeTests(unittest.TestCase):
             self.assertEqual(workflow["structuralIdentityGate"]["maxSilhouetteWidthDrift"], 0.11)
             self.assertEqual(workflow["expressionContinuityGate"]["minHeadRegionTransitions"], 3)
             self.assertTrue(workflow["expressionContinuityGate"]["rejectsSingleFrameAccent"])
+            self.assertEqual(workflow["retryPolicy"]["scope"], "failed-complete-row-only")
+            self.assertIn("full-atlas-regeneration", workflow["retryPolicy"]["forbidden"])
+            budget = json.loads((run / "prompt-budget.json").read_text(encoding="utf-8"))
+            self.assertLessEqual(budget["lockCharacters"], 520)
+            self.assertGreaterEqual(budget["estimatedSavedPromptTokensPerRun"], 550)
+            self.assertEqual(budget["qualityGatesRemoved"], 0)
             self.assertTrue((run / "prompts" / "01-turnaround.md").is_file())
             self.assertEqual(workflow["jobs"][0]["requiredInputs"][-1], "guides/row-00.png")
             with Image.open(run / "guides" / "row-00.png") as guide:

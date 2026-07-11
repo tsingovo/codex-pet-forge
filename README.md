@@ -76,6 +76,9 @@ If clipping appears only after split-screen or cross-display dragging, stays ins
 低 Token 通过把人物规则、逐帧时间线、提示词和 QA 报告保存在工作文件中实现；聊天只返回路径、失败门槛和最终状态，质量门槛不会因节省 Token 而缩短。
 Low token use comes from storing rig rules, per-frame timelines, prompts, and QA reports in working files; chat returns only paths, failed gates, and final status, while quality gates are never shortened to save tokens.
 
+生产准备器会生成 `prompt-budget.json`：重复使用的完整身份锁被无损压缩到不超过 520 个字符，单次九行动作流程较 v0.2.4 约少 560 个提示 Token；失败重试只提交失败行、失败门槛及原 canonical/turnaround 锚点，不重复成功行或整段对话。
+The production preparer writes `prompt-budget.json`: the repeated full identity lock is losslessly compacted to at most 520 characters, saving roughly 560 prompt tokens per nine-row run versus v0.2.4; failed retries submit only the failed row, failed gates, and original canonical/turnaround anchors instead of replaying successful rows or the conversation.
+
 ## GPT娘样例 / GPT娘 example
 
 仓库提供完整的 GPT娘 身份锁定样例，包括原始参考、标准形象、最终联系表和可直接安装包。

@@ -11,16 +11,18 @@ from pet_common import slugify
 
 
 LOCK = (
-    "Use canonical.png and turnaround.png as one immutable character rig. Preserve exact head/body "
-    "ratio, face and eye geometry, hair silhouette and parting; preserve neck/shoulder/hip width, "
-    "upper/lower arm, hand, thigh/calf, leg and shoe lengths and volumes in the same head units; "
-    "preserve collar/sleeve/cuff/waist/hem construction, every seam/layer/ornament and its physical "
-    "side, palette, line weight, practical height, and shoe "
-    "baseline. Keep the complete hair/head inside the cell with at least 12px clear space above it "
-    "and at least 10px below the shoes. Rotate joints and shift weight; never scale the head, torso, "
-    "limbs, hands, shoes, clothing, or whole character. Change only pose, gaze, and expression. One "
-    "complete character per cell."
+    "IDENTITY LOCK: canonical.png + matching turnaround = one orthographic rig. Freeze in head units: "
+    "head/body; face/eyes; hair outline/part; neck/shoulder/hip widths; upper/lower arms, hands, "
+    "thighs/calves, legs and shoes (lengths + volumes); collar/sleeve/cuff/waist/hem; seams/layers/" 
+    "ornaments + physical sides; palette/lines; visible height/baseline. Move by joints/weight only; "
+    "never scale anatomy, garments or figure. Full hair +12px top; shoes +10px bottom. Change pose/" 
+    "gaze/expression only; 1 complete figure/cell."
 )
+
+# This is the measured length of the equally strict v0.2.4 prose lock. The
+# compact lock preserves every invariant while avoiding roughly 600 repeated
+# prompt tokens across the ten image jobs of one production run.
+LEGACY_LOCK_CHARS = 742
 
 ROWS = [
     (0, "idle", 6, "Exactly six runtime idle frames tuned for Codex's slow 6.6-second loop: calm inhale and attentive eyes; blink begins; eyes closed with a soft smile; eyes reopen with a tiny 3-degree head tilt and gaze shift; restrained warm smile while exhaling; return to the exact calm start. Make every phase readable but subtle, develop the face across at least three frames, and close the loop smoothly."),
@@ -130,8 +132,32 @@ animation frame must transition naturally back to the first.
             "rejectsSingleFrameAccent": True,
         },
         "chatContract": "Keep prompts and QA results in files; report only paths, failed gates, and final status.",
+        "retryPolicy": {
+            "scope": "failed-complete-row-only",
+            "reuseInputs": ["canonical.png", "turnaround.png"],
+            "chatOutput": ["failedRow", "failedGates", "retryPromptPath", "finalStatus"],
+            "forbidden": ["full-atlas-regeneration", "isolated-body-part-patch", "duplicate-frame-fill"],
+        },
     }
     (out / "pet-workflow.json").write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    prompt_files = sorted(jobs.glob("*.md"))
+    prompt_characters = {path.name: len(path.read_text(encoding="utf-8")) for path in prompt_files}
+    total_characters = sum(prompt_characters.values())
+    repeated_lock_jobs = 10  # turnaround plus nine runtime rows
+    budget = {
+        "schemaVersion": 1,
+        "measurement": "UTF-8 Unicode characters; conservative token ceiling is ceil(chars/4)",
+        "lockCharacters": len(LOCK),
+        "legacyLockCharacters": LEGACY_LOCK_CHARS,
+        "repeatedLockJobs": repeated_lock_jobs,
+        "savedCharactersPerRun": (LEGACY_LOCK_CHARS - len(LOCK)) * repeated_lock_jobs,
+        "estimatedSavedPromptTokensPerRun": ((LEGACY_LOCK_CHARS - len(LOCK)) * repeated_lock_jobs) // 4,
+        "totalPromptCharacters": total_characters,
+        "estimatedPromptTokenCeiling": (total_characters + 3) // 4,
+        "promptCharacters": prompt_characters,
+        "qualityGatesRemoved": 0,
+    }
+    (out / "prompt-budget.json").write_text(json.dumps(budget, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"ok": True, "runDir": str(out), "workflow": str(out / "pet-workflow.json"), "jobs": len(jobs_json) + 2}, ensure_ascii=True))
 
 

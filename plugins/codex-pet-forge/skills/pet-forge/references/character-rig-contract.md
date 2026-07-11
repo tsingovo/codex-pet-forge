@@ -60,3 +60,5 @@ Direction rows are rotations of the same rig under an orthographic camera. Prese
 ## Token discipline
 
 Quality gates are never shortened. Token savings come from storing the canonical contract, prompts, frame timelines, and QA reports in files; the chat reports only selected paths, concrete failures, and final results. Generate only failed complete rows again—not the full pet and not isolated cells.
+
+The production preparer writes `prompt-budget.json` and keeps the repeated identity lock at 520 characters or fewer while retaining every anatomical, garment, scale, baseline, and safe-box invariant. It also writes a machine-readable failed-row-only retry policy. A retry reuses `canonical.png` and `turnaround.png`, sends only the failed row prompt and failed gate names, and never repeats successful rows or the full conversation.

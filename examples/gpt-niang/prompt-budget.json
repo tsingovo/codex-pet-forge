@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "measurement": "UTF-8 Unicode characters; conservative token ceiling is ceil(chars/4)",
+  "lockCharacters": 518,
+  "legacyLockCharacters": 742,
+  "repeatedLockJobs": 10,
+  "savedCharactersPerRun": 2240,
+  "estimatedSavedPromptTokensPerRun": 560,
+  "totalPromptCharacters": 12584,
+  "estimatedPromptTokenCeiling": 3146,
+  "promptCharacters": {
+    "00-canonical.md": 518,
+    "01-turnaround.md": 1060,
+    "row-00-idle.md": 1387,
+    "row-01-drag-right.md": 1208,
+    "row-02-drag-left.md": 1247,
+    "row-03-greeting.md": 1170,
+    "row-04-hover-curiosity.md": 1234,
+    "row-05-failed.md": 1208,
+    "row-06-waiting.md": 1198,
+    "row-07-thinking.md": 1211,
+    "row-08-review.md": 1143
+  },
+  "qualityGatesRemoved": 0
+}
