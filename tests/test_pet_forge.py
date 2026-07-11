@@ -125,6 +125,7 @@ class PetForgeTests(unittest.TestCase):
             self.assertEqual(len(workflow["jobs"]), 9)
             self.assertEqual(workflow["structuralIdentityGate"]["bands"], 8)
             self.assertEqual(workflow["structuralIdentityGate"]["maxSilhouetteWidthDrift"], 0.11)
+            self.assertEqual(workflow["structuralIdentityGate"]["maxWithinRowSilhouetteDrift"], 0.025)
             self.assertEqual(workflow["expressionContinuityGate"]["minHeadRegionTransitions"], 3)
             self.assertTrue(workflow["expressionContinuityGate"]["rejectsSingleFrameAccent"])
             self.assertEqual(workflow["retryPolicy"]["scope"], "failed-complete-row-only")
@@ -210,11 +211,14 @@ class PetForgeTests(unittest.TestCase):
             path = root / "body-outfit-scale-drift.png"
             atlas.save(path)
             result = subprocess.run(
-                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                [
+                    sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path),
+                    "--allow-chroma-fringe", "--max-silhouette-width-drift", "1",
+                ],
                 text=True, capture_output=True,
             )
             self.assertNotEqual(result.returncode, 0)
-            self.assertIn("structural silhouette-width drift", result.stdout)
+            self.assertIn("changes body/outfit scale within the action row", result.stdout)
 
     def test_desktop_validator_rejects_eleven_row_install_atlas(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -332,6 +336,29 @@ class PetForgeTests(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("changes the head/expression region in only 2 transitions", result.stdout)
+
+    def test_reviewed_row_width_repair_preserves_height_and_baseline(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            self.run_script(
+                "register_row_widths.py", str(root / "atlas.webp"),
+                "--row-scale", "6=1.10", "--output", str(root / "repaired.webp"),
+            )
+            with Image.open(root / "atlas.webp") as opened:
+                before = opened.convert("RGBA").crop((0, 6 * CELL_H, CELL_W, 7 * CELL_H)).getchannel("A").getbbox()
+            with Image.open(root / "repaired.webp") as opened:
+                after = opened.convert("RGBA").crop((0, 6 * CELL_H, CELL_W, 7 * CELL_H)).getchannel("A").getbbox()
+            self.assertIsNotNone(before)
+            self.assertIsNotNone(after)
+            self.assertEqual(before[1], after[1])
+            self.assertEqual(before[3], after[3])
+            self.assertGreater(after[2] - after[0], before[2] - before[0])
 
 
 if __name__ == "__main__":

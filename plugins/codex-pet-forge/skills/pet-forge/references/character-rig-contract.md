@@ -40,6 +40,11 @@ compares head, shoulder/sleeve, torso/hem, leg, and shoe bands with canonical id
 structural width drift above `0.11`. This supplements—not replaces—visual inspection of joints, garment
 seams, and asymmetric ornaments.
 
+It also derives the median eight-band profile independently for each action row and rejects any frame
+whose mean band drift exceeds `0.025`. This stricter within-action gate is direction-neutral: a genuine
+three-quarter view may differ from the front, but it may not become a smaller, taller, thinner, or
+differently clothed person for one gait phase.
+
 ## Complete-frame rule
 
 Every occupied cell contains exactly one complete character from highest hair/effect to both shoes. Reject a row when the model returns fewer figures than requested, multiple figures in one slot, neighboring fragments, cropped anatomy, disconnected limbs, or a replacement foot/face copied from another generation. Regenerate the complete row; never compensate by grouping, duplicating, or patching isolated body parts.

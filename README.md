@@ -67,6 +67,12 @@ Character completeness is also checked through main-component coverage and four-
 验证器还会把每格的粗粒度可见配色、“头部/躯干/腿部”纵向质量分布以及八段归一化轮廓宽度与标准待机帧比较；八段轮廓专门覆盖头宽、肩膀/袖子体积、躯干/衣摆宽度、腿间距和鞋子尺度，默认结构漂移超过 0.11 即拒绝。细小饰品、关节位置与脸部细节继续由转台和人工联系表确认。
 The validator also compares each cell's coarse visible-color histogram, top/middle/bottom mass profile, and eight-band normalized silhouette width with the canonical idle frame; the eight bands specifically cover head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale, rejecting structural drift above 0.11 by default. Fine ornaments, joint placement, and facial details remain turnaround/contact-sheet review gates.
 
+每条动作行还会独立建立八段轮廓中位基准，单帧相对本行动其他帧的平均漂移超过 0.025 即拒绝。因此三分之四方向可以合理区别于正面，但同一次行走循环不能突然变成更小、更瘦、更高或衣服尺寸不同的人。
+Each action row also receives its own median eight-band reference, rejecting a frame whose mean drift from its action peers exceeds 0.025. A three-quarter direction may legitimately differ from the front, but one gait phase cannot suddenly become a smaller, thinner, taller, or differently clothed person.
+
+若人工确认整行动作与人物都正确、只有统一的横向模型宽度偏差，可用 `register_row_widths.py` 对完整一行做同倍率修正；它不能用于掩盖单帧解剖漂移，修正后必须重新验证并重建所有预览与安装包。
+If review confirms that an entire row has the correct character and motion with only one uniform horizontal model-width error, `register_row_widths.py` may apply one factor to the complete row; it cannot hide per-frame anatomy drift, and all validation, previews, and packages must be rebuilt afterward.
+
 最终装配会把每个完整人物等比例注册为统一 176px 可见高度、固定鞋底基线，并采用更保守的内安全框；验证器会拒绝贴顶、削头、四边越界或尺寸跳变。
 Final assembly proportionally registers every complete figure to a uniform 176px visible height and fixed shoe baseline inside a more conservative inner safe box; the validator rejects top-touching, head-clipped, edge-crossing, or size-popping frames.
 

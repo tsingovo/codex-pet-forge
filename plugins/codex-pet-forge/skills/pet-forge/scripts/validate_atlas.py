@@ -332,6 +332,12 @@ def main() -> None:
         default=0.11,
         help="Maximum eight-band normalized silhouette-width drift versus idle frame 0.",
     )
+    parser.add_argument(
+        "--max-within-row-silhouette-drift",
+        type=float,
+        default=0.025,
+        help="Maximum mean eight-band width drift from the action row median; catches one frame changing body scale.",
+    )
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     parser.add_argument("--allow-chroma-leak", action="store_true")
@@ -584,7 +590,28 @@ def main() -> None:
                     f"{width_drift:.3f} (limit {args.max_silhouette_width_drift:.3f}); verify immutable "
                     "head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale"
                 )
-        identity_metrics[str(row_index)] = {"state": state, "cells": row_metrics}
+        row_reference_profile = [
+            median([cell["silhouette_width_profile"][band] for cell in row_metrics])
+            for band in range(8)
+        ]
+        for cell in row_metrics:
+            within_row_drift = mean_absolute_profile_drift(
+                row_reference_profile,
+                cell["silhouette_width_profile"],
+            )
+            cell["within_row_silhouette_drift"] = round(within_row_drift, 6)
+            if within_row_drift > args.max_within_row_silhouette_drift:
+                errors.append(
+                    f"{state} row {row_index} column {cell['column']} changes body/outfit scale within "
+                    f"the action row (eight-band drift {within_row_drift:.3f}; limit "
+                    f"{args.max_within_row_silhouette_drift:.3f}); keep head, shoulders, torso/hem, "
+                    "legs, and shoes as one rig while only joints and cloth follow-through move"
+                )
+        identity_metrics[str(row_index)] = {
+            "state": state,
+            "row_silhouette_reference": [round(value, 6) for value in row_reference_profile],
+            "cells": row_metrics,
+        }
 
     motion_metrics: dict[str, object] = {}
     expressive_rows = {0, 3, 4, 5, 6, 7, 8}

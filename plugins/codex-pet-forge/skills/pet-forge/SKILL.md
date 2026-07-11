@@ -34,7 +34,7 @@ Use this workflow whenever the user expects a coherent finished pet. It prevents
 
 3. Follow `<run>/pet-workflow.json`: generate and approve `canonical.png`, then generate/approve the exact eight-view `turnaround.png`. Read `<run>/prompt-budget.json`; the compact identity lock must remain at or below 520 characters with `qualityGatesRemoved: 0`.
 4. Run the listed row prompt files one at a time, attaching both internal identity assets. Require the exact figure count; never group/duplicate figures to compensate for a missing pose.
-5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, chroma/geometry failures, and eight-band structural silhouette drift in head, shoulder/sleeve, torso/hem, leg, or shoe scale.
+5. Run `validate_row_strip.py` on every normalized row, assemble only complete approved rows with `assemble_rows.py`, then validate with `validate_atlas.py`. Reject duplicate frames, multi-character cells, baseline/height drift, chroma/geometry failures, global eight-band structural drift above 0.11, and within-action frame-to-row-median drift above 0.025 in head, shoulder/sleeve, torso/hem, leg, or shoe scale.
    Assembly automatically performs uniform Desktop safe-box registration: 176px visible height, fixed shoe baseline, and hard four-edge padding. Never bypass it by copying row strips directly into the install package.
 6. Render both `make_contact_sheet.py` and `make_motion_previews.py --fps 8`. Inspect the still identity comparison and every real loop; do not install if anatomy ratios, face, hair, garment layers/ornaments, practical scale, motion meaning, loop continuity, or expression continuity changes between rows. Every expressive row needs at least three head-region transitions; one isolated special face is not an expression timeline.
 7. Row 0 columns 0-5 are the automatically triggered idle loop when no other state is active. Require readable breathing/blink/tiny head-tilt/gaze/smile/return phases tuned for the host's 6.6-second slow loop; columns 6-7 remain transparent because the current host never references them.
@@ -113,6 +113,8 @@ Compact QA commands:
 Do not regenerate the full atlas when one row fails. Generate one horizontal strip using `references/row-repair-prompts.md`, then run:
 
 Follow `pet-workflow.json.retryPolicy`: reuse the original canonical/turnaround anchors and report only the failed row, failed gates, retry prompt path, and final status. Do not replay the full chat or successful rows.
+
+If visual review proves that a whole completed row uses the correct identity and pose but has one uniform horizontal model-width error, `register_row_widths.py --row-scale ROW=FACTOR` may apply an explicitly reviewed 0.75-1.25 correction to every used frame in that row. Never use it to hide per-frame anatomy drift; validate again, rebuild contact sheet/GIFs/package, and prefer complete-row regeneration when the error is not uniform.
 
 ```powershell
 & $PYTHON "$SKILL_DIR/scripts/replace_atlas_row.py" `

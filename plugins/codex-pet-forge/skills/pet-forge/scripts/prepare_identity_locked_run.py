@@ -124,6 +124,7 @@ animation frame must transition naturally back to the first.
             "reference": "canonical.png",
             "bands": 8,
             "maxSilhouetteWidthDrift": 0.11,
+            "maxWithinRowSilhouetteDrift": 0.025,
             "covers": ["head", "shoulder/sleeve", "torso/hem", "legs", "shoes"],
         },
         "expressionContinuityGate": {

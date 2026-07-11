@@ -40,6 +40,12 @@ The atlas passed Desktop `1536×1872` / 8×9 geometry, transparency, per-cell fi
 图集也通过八段结构轮廓指纹校验：头宽、肩膀/袖子体积、躯干/衣摆宽度、腿间距和鞋子尺度均未超过 `0.11` 漂移门槛。
 The atlas also passes the eight-band structural silhouette fingerprint: head width, shoulder/sleeve volume, torso/hem width, leg spacing, and shoe scale remain within the `0.11` drift limit.
 
+同一动作行内部还通过更严格的 `0.025` 中位轮廓漂移门槛；GPT娘当前最差值为 `0.016868`，位于左右拖拽步态行。
+Within each action row, the stricter `0.025` median silhouette-drift gate also passes; GPT娘's current worst case is `0.016868` in the left/right drag gait rows.
+
+本版已把原先偏瘦的等待、托腮思考与复核三行分别按 `1.1467 / 1.1416 / 1.1302` 做整行等高横向模型校正；头顶 18px、鞋底 14px 安全区和 176px 可见高度保持不变，三行相对正面结构漂移现均低于 `0.03`。
+This build corrects the formerly thin waiting, hand-under-chin thinking, and review rows with reviewed equal-height row factors `1.1467 / 1.1416 / 1.1302`; 18px head clearance, 14px shoe clearance, and 176px visible height remain unchanged, while all three rows now stay below `0.03` structural drift from the front.
+
 所有运行帧现已统一为 176px 可见高度并放入保守内安全框，降低桌面悬浮窗轻微裁切头发及分屏拖动窗口失步时的影响。
 All runtime frames now use a uniform 176px visible height inside a conservative inner safe box, reducing hair clipping and the impact of transient overlay-window desynchronization during split-screen dragging.
 

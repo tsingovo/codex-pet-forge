@@ -8,7 +8,7 @@
 
 - Repository: `codex-pet-forge`
 - Purpose: package a Codex plugin that turns a user reference image into a validated Codex Desktop 8x9 pet.
-- Current release: `v0.2.5` (published; lossless prompt-budget and failed-row retry contract)
+- Current release: `v0.2.6` (within-action structural median gate prepared)
 - Baseline commits: `77673a1 feat: add Codex Pet Forge fast pet plugin`; `014bb12 docs: add copyright notice and maintenance handoff`
 - Maintainer copyright: `Copyright (c) 2026 HASEE`
 - License: Apache-2.0 with project notice in `NOTICE`; upstream attribution in `UPSTREAM.md`.
@@ -141,6 +141,19 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - English: GitHub `main`, the `v0.2.5` tag, and the public Release are synchronized at `https://github.com/tsingovo/codex-pet-forge/releases/tag/v0.2.5`; source and direct GPT娘 packages are uploaded, with each Chinese paragraph before its matching English paragraph.
 - 中文：真实 Codex 插件已升级到 `0.2.5`，GPT娘以 `--replace` 无备份覆盖；样例与安装图集哈希一致，本地仅有一个 `gpt-niang` 目录。
 - English: The real Codex plugin is upgraded to `0.2.5`, and GPT娘 is replaced with `--replace` and no backup; sample and installed atlas hashes match, with exactly one local `gpt-niang` directory.
+
+### 2026-07-11 — 同一动作行内的严格体型锁 / Strict within-action body-scale lock
+
+- 中文：仅对照正面待机的全局轮廓允许合理的方向差异，但不足以严格识别同一次行走循环中某一帧突然变小、变瘦或衣物尺度变化；验证器现为每条动作行建立八段轮廓中位基准，单帧平均漂移超过 `0.025` 即拒绝。
+- English: A global silhouette comparison against front idle allows legitimate direction differences but cannot strictly isolate one frame suddenly becoming smaller, thinner, or differently clothed within a gait; the validator now builds an eight-band median reference per action row and rejects per-frame mean drift above `0.025`.
+- 中文：门槛与方向无关：三分之四视角可整体区别于正面，但头、肩袖、躯干衣摆、腿和鞋在本行动的各相位必须保持同一模型体积；失败信息直接指出具体行列并要求整行重生。
+- English: The gate is direction-neutral: a three-quarter view may differ globally from the front, but head, shoulder/sleeve, torso/hem, leg, and shoe volumes must remain the same model across action phases; failures identify the exact row/column and require complete-row regeneration.
+- 中文：GPT娘九行动作全部通过，新门槛最差值为 `0.016868`；专项测试关闭全局 `0.11` 门槛后仍能独立拦截单帧身体/服装异常放大。
+- English: All nine GPT娘 actions pass, with a worst-case new-gate value of `0.016868`; the focused test disables the global `0.11` gate and still independently rejects a single enlarged body/outfit frame.
+- 中文：应用户要求实际更新宠物而非只升级验证器：原先偏瘦的等待、托腮思考、复核行分别应用经人工审查的 `1.1467 / 1.1416 / 1.1302` 整行横向校正；三行全局结构漂移降至 `0.03` 以下，同时保持 176px 高度、18px 头顶、14px 鞋底和原动作/表情时间线。
+- English: Per the user's request, the pet itself—not only the validator—is updated: the formerly thin waiting, hand-under-chin thinking, and review rows receive reviewed whole-row width factors `1.1467 / 1.1416 / 1.1302`; global structural drift for all three falls below `0.03` while preserving 176px height, 18px head clearance, 14px shoe clearance, and the original motion/expression timelines.
+- 中文：新增 `register_row_widths.py`，仅允许 0.75–1.25 的显式人工审查整行系数，并拒绝超过横向安全框的结果；已重建 GPT娘联系表、9 个 GIF、验证报告、裁切诊断和直装包，新图集 SHA256 为 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`。下一步为完整测试、v0.2.6 发布与本地覆盖。
+- English: Added `register_row_widths.py`, accepting only explicit reviewed 0.75–1.25 whole-row factors and rejecting results beyond the horizontal safe box; rebuilt the GPT娘 contact sheet, nine GIFs, validation report, clipping diagnosis, and direct package, with new atlas SHA256 `DE0BF9482611FEC46282C6112C075E4D9DABE1BD56A08B1F5F29E4DA79088743`. Next actions are full tests, v0.2.6 publication, and local replacement.
 
 ## Non-negotiable runtime facts
 
