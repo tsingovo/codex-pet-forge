@@ -196,6 +196,18 @@ def main() -> None:
         help="Maximum visible width per cell; catches multiple sprites packed into one frame.",
     )
     parser.add_argument(
+        "--min-top-safe-padding",
+        type=int,
+        default=10,
+        help="Minimum transparent pixels above every used sprite; rejects hair/head clipping risk.",
+    )
+    parser.add_argument(
+        "--min-bottom-safe-padding",
+        type=int,
+        default=8,
+        help="Minimum transparent pixels below every used sprite in its 208px cell.",
+    )
+    parser.add_argument(
         "--min-frame-difference",
         type=float,
         default=0.002,
@@ -328,6 +340,21 @@ def main() -> None:
                 row_bottoms[row_index].append((column_index, bbox[3]))
                 row_heights[row_index].append(bbox[3] - bbox[1])
                 visible_width = bbox[2] - bbox[0]
+                top_padding = bbox[1]
+                bottom_padding = CELL_HEIGHT - bbox[3]
+                cell_info["top_safe_padding"] = top_padding
+                cell_info["bottom_safe_padding"] = bottom_padding
+                if top_padding < args.min_top_safe_padding:
+                    errors.append(
+                        f"{state} row {row_index} column {column_index} has only {top_padding}px "
+                        f"above the visible head/hair (minimum {args.min_top_safe_padding}px); "
+                        "run uniform safe-box registration to prevent Desktop overlay clipping"
+                    )
+                if bottom_padding < args.min_bottom_safe_padding:
+                    errors.append(
+                        f"{state} row {row_index} column {column_index} has only {bottom_padding}px "
+                        f"below the shoes (minimum {args.min_bottom_safe_padding}px)"
+                    )
                 if visible_width > args.max_visible_width:
                     errors.append(
                         f"{state} row {row_index} column {column_index} visible width is "

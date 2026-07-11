@@ -58,6 +58,9 @@ The validator checks atlas geometry, transparency, empty cells, multi-character 
 验证器还会把每格的粗粒度可见配色和“头部/躯干/腿部”纵向质量分布与标准待机帧比较，拦截衣物配色漂移和明显的上下身比例变化；细小饰品与脸部细节继续由转台和人工联系表确认。
 The validator also compares each cell's coarse visible-color histogram and top/middle/bottom mass profile with the canonical idle frame, rejecting outfit-color drift and obvious body-proportion changes; fine ornaments and facial details remain turnaround/contact-sheet review gates.
 
+最终装配会把每个完整人物等比例注册为统一 184px 可见高度、固定鞋底基线，并保留至少 10px 头顶安全边距与 8px 鞋底安全边距；验证器会拒绝贴顶、削头或尺寸跳变。
+Final assembly proportionally registers every complete figure to a uniform 184px visible height and fixed shoe baseline, with at least 10px head clearance and 8px shoe clearance; the validator rejects top-touching, head-clipped, or size-popping frames.
+
 低 Token 通过把人物规则、逐帧时间线、提示词和 QA 报告保存在工作文件中实现；聊天只返回路径、失败门槛和最终状态，质量门槛不会因节省 Token 而缩短。
 Low token use comes from storing rig rules, per-frame timelines, prompts, and QA reports in working files; chat returns only paths, failed gates, and final status, while quality gates are never shortened to save tokens.
 

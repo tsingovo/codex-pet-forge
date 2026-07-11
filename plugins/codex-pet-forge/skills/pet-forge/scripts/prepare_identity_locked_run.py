@@ -14,7 +14,9 @@ LOCK = (
     "Use canonical.png and turnaround.png as one immutable character rig. Preserve exact head/body "
     "ratio, face and eye geometry, hair silhouette and parting, shoulder/arm/leg proportions, hand "
     "and shoe size, outfit seams/layers/ornaments, palette, line weight, practical height, and shoe "
-    "baseline. Change only the requested pose, gaze, and expression. One complete character per cell."
+    "baseline. Keep the complete hair/head inside the cell with at least 12px clear space above it "
+    "and at least 10px below the shoes. Change only the requested pose, gaze, and expression. One "
+    "complete character per cell."
 )
 
 ROWS = [

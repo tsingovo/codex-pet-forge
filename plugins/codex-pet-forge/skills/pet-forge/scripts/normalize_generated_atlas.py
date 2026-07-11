@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from PIL import Image
 
-from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_alpha, clear_unused_cells, parse_color, save_lossless
+from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_alpha, parse_color, register_cells_to_safe_box, save_lossless
 
 
 def main() -> None:
@@ -24,7 +24,7 @@ def main() -> None:
         raise SystemExit(f"generated atlas aspect ratio is incompatible: {source.size}")
     resized = source.resize((ATLAS_W, ATLAS_H), Image.Resampling.LANCZOS)
     atlas = chroma_to_alpha(resized, parse_color(args.chroma_key))
-    clear_unused_cells(atlas)
+    atlas = register_cells_to_safe_box(atlas)
 
     errors = []
     coverage = []

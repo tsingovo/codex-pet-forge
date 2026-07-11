@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 from PIL import Image
 
-from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_alpha, clear_unused_cells, parse_color, save_lossless
+from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, chroma_to_alpha, parse_color, register_cells_to_safe_box, save_lossless
 
 
 def main() -> None:
@@ -30,7 +30,7 @@ def main() -> None:
     y0 = args.row * CELL_H
     atlas.paste((0, 0, 0, 0), (0, y0, ATLAS_W, y0 + CELL_H))
     atlas.alpha_composite(strip, (0, y0))
-    clear_unused_cells(atlas)
+    atlas = register_cells_to_safe_box(atlas)
     save_lossless(atlas, Path(args.png_output) if args.png_output else None, Path(args.output))
     print(f"replaced row {args.row} with {count} frames -> {args.output}")
 

@@ -12,6 +12,9 @@ COLS, ROWS = 8, 9
 CELL_W, CELL_H = 192, 208
 ATLAS_W, ATLAS_H = COLS * CELL_W, ROWS * CELL_H
 USED_COUNTS = (7, 8, 8, 4, 5, 8, 6, 6, 6)
+TARGET_VISIBLE_HEIGHT = 184
+BOTTOM_SAFE_PADDING = 10
+SIDE_SAFE_PADDING = 8
 
 
 def slugify(value: str) -> str:
@@ -51,6 +54,37 @@ def clear_unused_cells(image: Image.Image) -> None:
         for col in range(used, COLS):
             x0 = col * CELL_W
             image.paste((0, 0, 0, 0), (x0, y0, x0 + CELL_W, y0 + CELL_H))
+
+
+def register_cells_to_safe_box(image: Image.Image) -> Image.Image:
+    """Uniformly fit every used sprite into the Desktop overlay safe box.
+
+    The Desktop renderer clips a fixed 192x208 background cell.  Generated
+    figures that nearly touch the cell top can lose hair pixels in the floating
+    overlay even though the atlas itself is valid.  Normalize every complete
+    figure to one visible height and one shoe baseline without changing aspect
+    ratio; this also removes cross-action size popping.
+    """
+    registered = Image.new("RGBA", image.size, (0, 0, 0, 0))
+    max_width = CELL_W - 2 * SIDE_SAFE_PADDING
+    baseline = CELL_H - BOTTOM_SAFE_PADDING
+    for row, used in enumerate(USED_COUNTS):
+        for col in range(used):
+            box = (col * CELL_W, row * CELL_H, (col + 1) * CELL_W, (row + 1) * CELL_H)
+            cell = image.crop(box).convert("RGBA")
+            bbox = cell.getchannel("A").getbbox()
+            if bbox is None:
+                continue
+            sprite = cell.crop(bbox)
+            scale = min(TARGET_VISIBLE_HEIGHT / sprite.height, max_width / sprite.width)
+            width = max(1, round(sprite.width * scale))
+            height = max(1, round(sprite.height * scale))
+            sprite = sprite.resize((width, height), Image.Resampling.LANCZOS)
+            x = col * CELL_W + (CELL_W - width) // 2
+            y = row * CELL_H + baseline - height
+            registered.alpha_composite(sprite, (x, y))
+    clear_unused_cells(registered)
+    return clear_hidden_rgb(registered)
 
 
 def chroma_to_alpha(image: Image.Image, key: tuple[int, int, int], transparent: int = 18, opaque: int = 105) -> Image.Image:

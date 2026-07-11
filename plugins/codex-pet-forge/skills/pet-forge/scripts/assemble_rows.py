@@ -5,7 +5,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, clear_unused_cells, save_lossless
+from pet_common import ATLAS_H, ATLAS_W, CELL_H, CELL_W, USED_COUNTS, register_cells_to_safe_box, save_lossless
 
 
 def main() -> None:
@@ -26,7 +26,7 @@ def main() -> None:
         if strip.size != expected:
             raise SystemExit(f"row {row} must be {expected[0]}x{expected[1]}, got {strip.width}x{strip.height}")
         atlas.alpha_composite(strip, (0, row * CELL_H))
-    clear_unused_cells(atlas)
+    atlas = register_cells_to_safe_box(atlas)
     save_lossless(atlas, Path(args.png_output).resolve() if args.png_output else None, Path(args.output).resolve())
     print(f"assembled 9 approved desktop rows -> {args.output}")
 

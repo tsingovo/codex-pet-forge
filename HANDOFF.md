@@ -40,6 +40,15 @@ Fast one-atlas generation remains draft-only. Production repair regenerates only
 - 中文：验证证据：`python -m unittest discover -s tests -v` 通过 6 项（新增 11 行安装图集拒绝测试）；样例图集通过完整桌面验证。待下一步：发布 v0.2.0，并以无备份覆盖方式安装至真实 Codex。
 - English: Verification evidence: all six unit tests pass (including the new eleven-row install-atlas rejection test), and the sample atlas passes full Desktop validation. Next action: publish v0.2.0 and replace the real Codex pet in place with no backup.
 
+### 2026-07-11 — 统一头顶安全框与尺寸注册 / Uniform head-safe box and scale registration
+
+- 中文：为解决部分动作头发贴顶或被悬浮窗轻微截断，新增 `register_cells_to_safe_box` 和独立脚本 `register_atlas_safe_box.py`；所有安装帧保持原始宽高比，统一到 184px 可见高度、固定 198px 鞋底基线、10px 鞋底缓冲，并产生至少 14px 的实际头顶缓冲。
+- English: To prevent hair from touching the cell top or being slightly clipped by the overlay, added `register_cells_to_safe_box` and `register_atlas_safe_box.py`; all install frames preserve aspect ratio, use a uniform 184px visible height, fixed 198px shoe baseline, 10px shoe clearance, and at least 14px actual head clearance.
+- 中文：安全框注册已接入整图归一化、逐行装配和单行替换三个路径；验证器新增头顶最小 10px、鞋底最小 8px 的硬门槛，并新增贴顶头部拒绝测试。
+- English: Safe-box registration now runs in full-atlas normalization, row assembly, and single-row replacement; the validator adds hard minimums of 10px above the head and 8px below the shoes, plus a top-touching head rejection test.
+- 中文：GPT娘 已重新注册并通过验证：9 行中位可见高度全部为 184px、透明 RGB 残留为 0、无错误；联系表和全部 9 行 8 FPS 预览已重建。
+- English: GPT娘 was re-registered and passes validation: all nine rows have a 184px median visible height, transparent RGB residue is zero, and there are no errors; the contact sheet and all nine 8 FPS previews were rebuilt.
+
 ## Non-negotiable runtime facts
 
 Source: `plugins/codex-pet-forge/skills/pet-forge/references/trigger-semantics.md`, verified against Codex Desktop `26.707.3748.0` local frontend code.

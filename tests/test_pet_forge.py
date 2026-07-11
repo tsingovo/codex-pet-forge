@@ -197,6 +197,32 @@ class PetForgeTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("1536x1872", result.stdout)
 
+    def test_validator_rejects_head_touching_cell_top(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            generated = root / "generated.png"
+            self.make_generated_atlas(generated)
+            self.run_script(
+                "normalize_generated_atlas.py", "--input", str(generated),
+                "--output", str(root / "atlas.png"), "--webp-output", str(root / "atlas.webp"),
+            )
+            with Image.open(root / "atlas.png") as opened:
+                atlas = opened.convert("RGBA")
+            cell = atlas.crop((0, 0, CELL_W, CELL_H))
+            bbox = cell.getchannel("A").getbbox()
+            self.assertIsNotNone(bbox)
+            sprite = cell.crop(bbox)
+            atlas.paste((0, 0, 0, 0), (0, 0, CELL_W, CELL_H))
+            atlas.alpha_composite(sprite, ((CELL_W - sprite.width) // 2, 0))
+            path = root / "head-clipped-risk.png"
+            atlas.save(path)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPTS / "validate_atlas.py"), str(path), "--allow-chroma-fringe"],
+                text=True, capture_output=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("above the visible head/hair", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
